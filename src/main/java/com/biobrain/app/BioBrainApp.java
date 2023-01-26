@@ -1,5 +1,6 @@
 package com.biobrain.app;
 
+import com.apps.util.Console;
 import com.apps.util.Prompter;
 
 import java.io.IOException;
@@ -14,23 +15,28 @@ public class BioBrainApp {
     public void execute() {
 
         welcome();
+        Console.pause(1500);
         askIfUserWantToPlay();
     }
 
     private void welcome() {
-        printFile("src/main/images/welcomeRobot.txt");
+        String splashScreen = "src/main/images/welcomeRobot.txt";
+        printFile(splashScreen);
     }
 
     private void askIfUserWantToPlay() {
 
-        String input = prompter.prompt("\nWould you like to play Bio Brain? [Y]es or [N]o", "[YyNn]", "\nInvalid input... Please enter [Y]es or [N]o \n");
+        String dontWantToPlayBanner = "src/main/images/dontWantToPlayBanner.txt";
+        System.out.println("\nWould you like to play Bio Brain? [Y]es or [N]o ");
+        String input = prompter.prompt("Enter response: ", "[YyNn]", "\nInvalid input... Please enter [Y]es or [N]o \n");
 
         if (input.equalsIgnoreCase("y")) {
             // this is where we start the game
             System.out.println("Let's play!");
         } else {
-            System.out.println("Don't be a wimp! Next time, say yes!");
-            System.exit(0);
+//            System.out.println("Don't be scared! Next time, say yes!");
+            printFile(dontWantToPlayBanner);
+//            System.exit(0);
         }
     }
 
