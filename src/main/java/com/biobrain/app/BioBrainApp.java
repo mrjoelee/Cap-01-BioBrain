@@ -11,6 +11,7 @@ import java.util.Scanner;
 public class BioBrainApp {
 
     private final Prompter prompter = new Prompter(new Scanner(System.in));
+    private boolean gameOver = false;
 
     public void execute() {
 
@@ -31,12 +32,19 @@ public class BioBrainApp {
         String input = prompter.prompt("Enter response: ", "[YyNn]", "\nInvalid input... Please enter [Y]es or [N]o \n");
 
         if (input.equalsIgnoreCase("y")) {
-            // this is where we start the game
+
             System.out.println("Let's play!");
+            // this is where we start the game
+            game();
         } else {
-//            System.out.println("Don't be scared! Next time, say yes!");
             printFile(dontWantToPlayBanner);
-//            System.exit(0);
+        }
+    }
+
+    private void game() {
+
+        if (!gameOver){
+            printFile("src/main/images/mapBioBrain.txt");
         }
     }
 
