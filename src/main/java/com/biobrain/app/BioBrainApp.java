@@ -1,5 +1,7 @@
 package com.biobrain.app;
 
+import com.apps.util.Prompter;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -7,7 +9,8 @@ import java.util.Scanner;
 
 public class BioBrainApp {
 
-    Scanner input = new Scanner(System.in);
+    private final Prompter prompter = new Prompter(new Scanner(System.in));
+
     public void execute() {
 
         welcome();
@@ -20,29 +23,21 @@ public class BioBrainApp {
 
     private void askIfUserWantToPlay() {
 
-        String answer;
+        String input = prompter.prompt("\nWould you like to play Bio Brain? [Y]es or [N]o", "[YyNn]", "\nInvalid input... Please enter [Y]es or [N]o \n");
 
-        while(true) {
-            System.out.println("Do you want to play Bio Brain? (y/n)");
-            answer = input.nextLine();
-
-            if(answer.equalsIgnoreCase("y")) {
-                System.out.println("Let's play!");
-                // game would start here
-                break;
-            } else if(answer.equalsIgnoreCase("n")) {
-                System.out.println("You are missing out!! Bye!!");
-                System.exit(0);
-            } else {
-                System.out.println("Invalid answer. Please type 'y' or 'n'.");
-            }
+        if (input.equalsIgnoreCase("y")) {
+            // this is where we start the game
+            System.out.println("Let's play!");
+        } else {
+            System.out.println("Don't be a wimp! Next time, say yes!");
+            System.exit(0);
         }
     }
+
     private void printFile(String fileName) {
-        try{
+        try {
             System.out.println(Files.readString(Path.of(fileName)));
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
