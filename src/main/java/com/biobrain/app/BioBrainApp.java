@@ -14,10 +14,14 @@ public class BioBrainApp {
     private boolean gameOver = false;
 
     public void execute() {
-
+        intro();
         welcome();
         Console.pause(1500);
         askIfUserWantToPlay();
+    }
+
+    public void intro() {
+        printFile("src/main/intro/intro.txt");
     }
 
     private void welcome() {
@@ -55,4 +59,6 @@ public class BioBrainApp {
             e.printStackTrace();
         }
     }
+
+
 }
