@@ -15,6 +15,7 @@ public class BioBrainApp {
 
     public void execute() {
         intro();
+        Console.pause(1500);
         welcome();
         Console.pause(1500);
         askIfUserWantToPlay();
@@ -22,6 +23,7 @@ public class BioBrainApp {
 
     public void intro() {
         printFile("src/main/intro/intro.txt");
+
     }
 
     private void welcome() {
@@ -47,7 +49,20 @@ public class BioBrainApp {
 
     private void game() {
 
-        if (!gameOver){
+        Thread inputThread = new Thread(() -> {
+            Scanner scanner = new Scanner(System.in);
+            while (!gameOver) {
+                String quitInput = scanner.nextLine();
+                if (quitInput.equalsIgnoreCase("quit")) {
+                    gameOver = true;
+                    break;
+                }
+            }
+            scanner.close();
+        });
+        inputThread.start();
+
+        if (!gameOver) {
             printFile("src/main/images/mapBioBrain.txt");
         }
     }
@@ -59,6 +74,5 @@ public class BioBrainApp {
             e.printStackTrace();
         }
     }
-
 
 }
