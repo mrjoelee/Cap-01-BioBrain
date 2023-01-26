@@ -60,6 +60,14 @@
       <scope>test</scope>
     </dependency>
 
+    <dependency>
+      <groupId>app-utils</groupId>
+      <artifactId>app-utils</artifactId>
+      <version>1.1</version>
+      <scope>system</scope>
+      <systemPath>${project.basedir}/lib/app-utils-1.1.jar</systemPath>
+    </dependency>
+
 <!--
     To use JUnit4 instead of JUnit5, comment out the previous 2 dependency elements and uncomment
     the following 2 elements.
