@@ -13,7 +13,6 @@ import java.io.IOException;
 import java.lang.reflect.Type;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
 import java.util.Scanner;
 
@@ -31,14 +30,6 @@ public class BioBrainApp {
         Console.pause(1500);
         askIfUserWantToPlay();
 
-//        Gson gson = new Gson();
-//        Type locationList = new TypeToken<List<Location>>() {
-//        }.getType();
-//        try (BufferedReader reader = new BufferedReader(new FileReader("jsonFiles/locations.json"))) {
-//            List<Location> locations = gson.fromJson(reader, locationList);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
     }
 
     public void intro() {
@@ -69,25 +60,7 @@ public class BioBrainApp {
 
     private void game() {
 
-        Gson gson = new Gson();
-        Type locationList = new TypeToken<List<Location>>() {
-        }.getType();
-        try (BufferedReader reader = new BufferedReader(new FileReader("jsonFiles/locations.json"))) {
-
-            locations = gson.fromJson(reader, locationList);
-
-            if(locations != null && !locations.isEmpty()){
-
-                currentLocation = locations.get(0);
-
-                System.out.printf("You are currently in " + currentLocation.getName());
-            } else {
-                System.out.println("Error in getting the location");
-            }
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        locationsJsonParsed();
 
         Thread inputThread = new Thread(() -> {
             Scanner scanner = new Scanner(System.in);
@@ -104,8 +77,60 @@ public class BioBrainApp {
 
         if (!gameOver) {
             printFile("src/main/images/mapBioBrain.txt");
-
+            askPlayerAction();
         }
+    }
+
+    private void locationsJsonParsed() {
+        Gson gson = new Gson();
+        Type locationList = new TypeToken<List<Location>>() {
+        }.getType();
+        try (BufferedReader reader = new BufferedReader(new FileReader("jsonFiles/locations.json"))) {
+
+            locations = gson.fromJson(reader, locationList);
+
+            if (locations != null && !locations.isEmpty()) {
+
+                currentLocation = locations.get(0);
+
+                System.out.printf("\nYou are currently in %s \n", currentLocation.getName());
+                System.out.printf("\nLook around you. There is a %s ", currentLocation.getItems());
+                System.out.printf("\nYou can choose to go East to %s ", currentLocation.getDirections().get("east"));
+                System.out.printf("\nOr you can go South to %s", currentLocation.getDirections().get("south"));
+
+            } else {
+                System.out.println("Error in getting the location");
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void askPlayerAction() {
+        System.out.println("What would you like to do? [L]ook at items or [M]ove to a different location");
+        String input = prompter.prompt("Enter response: ", "[LlMm]", "\nInvalid input... Please enter [L]ook or [M]ove \n");
+        if (input.equalsIgnoreCase("l")) {
+            lookAtItems();
+        } else if (input.equalsIgnoreCase("m")) {
+            moveToDifferentLocation();
+        }
+    }
+
+    private void moveToDifferentLocation() {
+        System.out.println("Where would you like to move? [E]ast or [S]outh");
+        String direction = prompter.prompt("Enter response: ", "[EeSs]", "\nInvalid input... Please enter [E]ast or [S]outh \n");
+        String locationName = currentLocation.getDirections().get(direction.toLowerCase());
+        if (locationName != null) {
+            currentLocation = locations.stream().filter(location -> location.getName().equals(locationName)).findFirst().orElse(null);
+            System.out.printf("\nYou are currently in %s", currentLocation.getName());
+        } else {
+            System.out.println("You can't move in that direction");
+        }
+    }
+
+    private void lookAtItems() {
+        System.out.printf("\nLook around you. There is a %s ", currentLocation.getItems());
     }
 
     private void printFile(String fileName) {
