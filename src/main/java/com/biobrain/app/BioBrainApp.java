@@ -72,7 +72,7 @@ public class BioBrainApp {
         Gson gson = new Gson();
         Type locationList = new TypeToken<List<Location>>() {
         }.getType();
-        try (BufferedReader reader = new BufferedReader(new FileReader("src/jsonFiles/locations.json"))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader("jsonFiles/locations.json"))) {
 
             locations = gson.fromJson(reader, locationList);
 
