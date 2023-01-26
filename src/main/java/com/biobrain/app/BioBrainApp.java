@@ -7,7 +7,12 @@ import java.nio.file.Path;
 public class BioBrainApp {
 
     public void execute() {
+        intro();
         welcome();
+    }
+
+    public void intro() {
+        printFile("src/main/intro/intro.txt");
     }
 
     private void welcome() {
@@ -22,4 +27,6 @@ public class BioBrainApp {
             e.printStackTrace();
         }
     }
+
+
 }
