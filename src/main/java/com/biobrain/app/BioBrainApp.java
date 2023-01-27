@@ -51,6 +51,7 @@ public class BioBrainApp {
 
             System.out.println("Let's play!");
             // this is where we start the game
+            Console.clear();
             game();
         } else {
             printFile(dontWantToPlayBanner);
@@ -58,9 +59,9 @@ public class BioBrainApp {
     }
 
     private void game() {
-
-        locationsJsonParsed();
         quitGameThread();
+        locationsJsonParsed();
+
 
         if (!gameOver) {
             printFile("src/main/images/mapBioBrain.txt");
@@ -110,8 +111,8 @@ public class BioBrainApp {
     }
 
     private void askPlayerAction() {
-        System.out.println("What would you like to do? [L]ook at items or [M]ove to a different location");
-        String input = prompter.prompt("\nEnter response: ", "[LlMm]", "\nInvalid input... Please enter [L]ook or [M]ove \n");
+        System.out.println("\nWhat would you like to do? [L]ook at items or [M]ove to a different location");
+//        String input = prompter.prompt("\nEnter response: ", "[LlMm]", "\nInvalid input... Please enter [L]ook or [M]ove \n");
     }
 
 
