@@ -2,27 +2,38 @@ package com.biobrain.app;
 
 import com.apps.util.Console;
 import com.apps.util.Prompter;
+import com.biobrain.Location;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.List;
 import java.util.Scanner;
 
 public class BioBrainApp {
 
     private final Prompter prompter = new Prompter(new Scanner(System.in));
+    private Location currentLocation;
+    private List<Location> locations;
     private boolean gameOver = false;
 
     public void execute() {
         intro();
+        Console.pause(1500);
         welcome();
         Console.pause(1500);
         askIfUserWantToPlay();
-        instructions();
     }
 
-    private void intro(){
+    public void intro() {
         printFile("src/main/intro/intro.txt");
+
     }
 
     private void welcome() {
@@ -40,6 +51,7 @@ public class BioBrainApp {
 
             System.out.println("Let's play!");
             // this is where we start the game
+            Console.clear();
             game();
         } else {
             printFile(dontWantToPlayBanner);
@@ -47,14 +59,60 @@ public class BioBrainApp {
     }
 
     private void game() {
+//        quitGameThread();
+        locationsJsonParsed();
 
-        if (!gameOver){
+
+        if (!gameOver) {
             printFile("src/main/images/mapBioBrain.txt");
+            askPlayerAction();
         }
     }
 
-    private void instructions(){
-        printFile("src/main/instructions/instructions.txt");
+    private void quitGameThread() {
+        Thread inputThread = new Thread(() -> {
+            Scanner scanner = new Scanner(System.in);
+            while (!gameOver) {
+                String quitInput = scanner.nextLine();
+                if (quitInput.equalsIgnoreCase("quit")) {
+                    gameOver = true;
+                    break;
+                }
+            }
+            scanner.close();
+        });
+        inputThread.start();
+    }
+
+    private void locationsJsonParsed() {
+        Gson gson = new Gson();
+        Type locationList = new TypeToken<List<Location>>() {
+        }.getType();
+        try (BufferedReader reader = new BufferedReader(new FileReader("jsonFiles/locations.json"))) {
+
+            locations = gson.fromJson(reader, locationList);
+
+            if (locations != null && !locations.isEmpty()) {
+
+                currentLocation = locations.get(0);
+
+                System.out.printf("\nYou are currently in %s \n", currentLocation.getName());
+                System.out.printf("\nLook around you. There is a %s ", currentLocation.getItems());
+                System.out.printf("\nYou can choose to go East to %s ", currentLocation.getDirections().get("east"));
+                System.out.printf("\nOr you can go South to %s", currentLocation.getDirections().get("south"));
+
+            } else {
+                System.out.println("Error in getting the location");
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void askPlayerAction() {
+        System.out.println("\nWhat would you like to do? [L]ook at items or [M]ove to a different location");
+//        String input = prompter.prompt("\nEnter response: ", "[LlMm]", "\nInvalid input... Please enter [L]ook or [M]ove \n");
     }
 
     private void printFile(String fileName) {
