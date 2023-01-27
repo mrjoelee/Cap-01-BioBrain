@@ -14,10 +14,15 @@ public class BioBrainApp {
     private boolean gameOver = false;
 
     public void execute() {
-
+        intro();
         welcome();
         Console.pause(1500);
         askIfUserWantToPlay();
+        instructions();
+    }
+
+    private void intro(){
+        printFile("src/main/intro/intro.txt");
     }
 
     private void welcome() {
@@ -46,6 +51,10 @@ public class BioBrainApp {
         if (!gameOver){
             printFile("src/main/images/mapBioBrain.txt");
         }
+    }
+
+    private void instructions(){
+        printFile("src/main/instructions/instructions.txt");
     }
 
     private void printFile(String fileName) {
