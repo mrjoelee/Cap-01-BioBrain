@@ -29,7 +29,6 @@ public class BioBrainApp {
         welcome();
         Console.pause(1500);
         askIfUserWantToPlay();
-
     }
 
     public void intro() {
@@ -61,7 +60,15 @@ public class BioBrainApp {
     private void game() {
 
         locationsJsonParsed();
+        quitGameThread();
 
+        if (!gameOver) {
+            printFile("src/main/images/mapBioBrain.txt");
+            askPlayerAction();
+        }
+    }
+
+    private void quitGameThread() {
         Thread inputThread = new Thread(() -> {
             Scanner scanner = new Scanner(System.in);
             while (!gameOver) {
@@ -74,11 +81,6 @@ public class BioBrainApp {
             scanner.close();
         });
         inputThread.start();
-
-        if (!gameOver) {
-            printFile("src/main/images/mapBioBrain.txt");
-            askPlayerAction();
-        }
     }
 
     private void locationsJsonParsed() {
@@ -109,29 +111,9 @@ public class BioBrainApp {
 
     private void askPlayerAction() {
         System.out.println("What would you like to do? [L]ook at items or [M]ove to a different location");
-        String input = prompter.prompt("Enter response: ", "[LlMm]", "\nInvalid input... Please enter [L]ook or [M]ove \n");
-        if (input.equalsIgnoreCase("l")) {
-            lookAtItems();
-        } else if (input.equalsIgnoreCase("m")) {
-            moveToDifferentLocation();
-        }
+        String input = prompter.prompt("\nEnter response: ", "[LlMm]", "\nInvalid input... Please enter [L]ook or [M]ove \n");
     }
 
-    private void moveToDifferentLocation() {
-        System.out.println("Where would you like to move? [E]ast or [S]outh");
-        String direction = prompter.prompt("Enter response: ", "[EeSs]", "\nInvalid input... Please enter [E]ast or [S]outh \n");
-        String locationName = currentLocation.getDirections().get(direction.toLowerCase());
-        if (locationName != null) {
-            currentLocation = locations.stream().filter(location -> location.getName().equals(locationName)).findFirst().orElse(null);
-            System.out.printf("\nYou are currently in %s", currentLocation.getName());
-        } else {
-            System.out.println("You can't move in that direction");
-        }
-    }
-
-    private void lookAtItems() {
-        System.out.printf("\nLook around you. There is a %s ", currentLocation.getItems());
-    }
 
     private void printFile(String fileName) {
         try {
@@ -140,6 +122,4 @@ public class BioBrainApp {
             e.printStackTrace();
         }
     }
-
-
 }
