@@ -10,11 +10,14 @@ import com.google.gson.reflect.TypeToken;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.lang.reflect.Type;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
+import java.util.Objects;
 import java.util.Scanner;
+import java.util.stream.Stream;
 
 public class BioBrainApp {
 
@@ -32,12 +35,12 @@ public class BioBrainApp {
     }
 
     public void intro() {
-        printFile("src/main/intro/intro.txt");
+        printFile("src/main/resources/intro/intro.txt");
 
     }
 
     private void welcome() {
-        String splashScreen = "src/main/images/welcomeRobot.txt";
+        String splashScreen = "src/main/resources/images/welcomeRobot.txt";
         printFile(splashScreen);
     }
 
@@ -64,7 +67,7 @@ public class BioBrainApp {
 
 
         if (!gameOver) {
-            printFile("src/main/images/mapBioBrain.txt");
+            printFile("src/main/resources/images/mapBioBrain.txt");
             askPlayerAction();
         }
     }
@@ -88,7 +91,7 @@ public class BioBrainApp {
         Gson gson = new Gson();
         Type locationList = new TypeToken<List<Location>>() {
         }.getType();
-        try (BufferedReader reader = new BufferedReader(new FileReader("jsonFiles/locations.json"))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader("src/main/resources/jsonFiles/locations.json"))) {
 
             locations = gson.fromJson(reader, locationList);
 
@@ -116,8 +119,17 @@ public class BioBrainApp {
     }
 
     private void printFile(String fileName) {
-        try {
-            System.out.println(Files.readString(Path.of(fileName)));
+        //noinspection ConstantConditions
+        try (BufferedReader buffer = new BufferedReader(new InputStreamReader(getClass().getClassLoader().getResourceAsStream(fileName)))) {
+            Stream.generate(() -> {
+                        try {
+                            return buffer.readLine();
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+                    })
+                    .takeWhile(Objects::nonNull)
+                    .forEach(System.out::println);
         } catch (IOException e) {
             e.printStackTrace();
         }
