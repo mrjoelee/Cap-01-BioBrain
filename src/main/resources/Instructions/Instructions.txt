@@ -1,0 +1,8 @@
+                ====== MISSION: ESCAPE WITH THE BIOBRAIN! Get to the TRAIN DOCK! ======
+
+                                      == Instructions ==
+
+                        Directions: North(N), South (S), East(E), West(W)
+                          Movement: Look Around(Look), Walk, Run, Jump
+                           Fight: Shoot, Neuralyzer(Zap), Punch, Kick
+                          Inventory: Blaster(B), Harpoon(H), Neuralyzer
