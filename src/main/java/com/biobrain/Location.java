@@ -49,6 +49,5 @@ public class Location {
         this.items = items;
     }
 
-
 }
 
