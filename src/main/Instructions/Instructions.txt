@@ -1,0 +1,7 @@
+                            ====== MISSION ESCAPE WITH THE BIOBRAIN! ======
+
+                                         == Instructions ==
+
+                           Directions: North(N), South (S), East(E), West(W)
+                            Movement: Look Around(Look), Walk, Run, Jump
+                            Fight: Shoot, Neuralyzer(Zap), Punch, Kick
