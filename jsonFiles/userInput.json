@@ -9,7 +9,8 @@
       "use",
       "run",
       "walk",
-      "restore"
+      "restore",
+      "look"
     ],
     "objects": [
       "north",
