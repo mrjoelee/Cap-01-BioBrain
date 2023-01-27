@@ -59,7 +59,7 @@ public class BioBrainApp {
     }
 
     private void game() {
-        quitGameThread();
+//        quitGameThread();
         locationsJsonParsed();
 
 
@@ -114,7 +114,6 @@ public class BioBrainApp {
         System.out.println("\nWhat would you like to do? [L]ook at items or [M]ove to a different location");
 //        String input = prompter.prompt("\nEnter response: ", "[LlMm]", "\nInvalid input... Please enter [L]ook or [M]ove \n");
     }
-
 
     private void printFile(String fileName) {
         try {

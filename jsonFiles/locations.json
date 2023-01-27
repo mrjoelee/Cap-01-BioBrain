@@ -5,7 +5,7 @@
       "east": "Sector 2 - Control Lab",
       "south": "Sector 4 - Storage"
     },
-    "description": "",
+    "description": "This is the Weapon's Chamber",
     "items": [
       "blaster",
       "harpoon"
@@ -18,7 +18,7 @@
       "south": "Sector 5 - Lobby Area",
       "west": "Sector 1 - Weapons Chamber"
     },
-    "description": "",
+    "description": "This is the Control Lab",
     "items": [
       "tablet"
     ]
@@ -29,7 +29,7 @@
       "south": "Sector 6 - Train Dock",
       "west": "Sector 2 - Control Lab"
     },
-    "description": "",
+    "description": "This is the Production Room",
     "items": [
       "harpoon",
       "potion"
@@ -41,7 +41,7 @@
       "north": "Sector 1 - Weapons Chamber",
       "east": "Sector 5 - Lobby Area"
     },
-    "description": "",
+    "description": "This is the Storage",
     "items": [
       "neuralyzer"
     ]
@@ -53,7 +53,7 @@
       "west": "Sector 4 - Storage",
       "east": "Sector 6 - Train Dock"
     },
-    "description": "",
+    "description": "This is the Lobby Area",
     "items": [
       "neuralyzer"
     ]
@@ -64,7 +64,7 @@
       "north": "Sector 3 - Production Room",
       "west": "Sector 5 - Lobby Area"
     },
-    "description": ".......",
+    "description": "This is the Train Dock.. This is where you can escape.",
     "items": [
       "...."
     ]
