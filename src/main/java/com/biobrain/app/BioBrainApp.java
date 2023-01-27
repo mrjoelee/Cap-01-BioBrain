@@ -28,25 +28,26 @@ public class BioBrainApp {
 
     public void execute() {
         intro();
-        Console.pause(1500);
+
         welcome();
         Console.pause(1500);
         askIfUserWantToPlay();
     }
 
     public void intro() {
-        printFile("src/main/resources/intro/intro.txt");
-
+        printFile("intro/intro.txt");
+        Console.pause(5000);
+        Console.clear();
     }
 
     private void welcome() {
-        String splashScreen = "src/main/resources/images/welcomeRobot.txt";
+        String splashScreen = "images/welcomeRobot.txt";
         printFile(splashScreen);
     }
 
     private void askIfUserWantToPlay() {
 
-        String dontWantToPlayBanner = "src/main/images/dontWantToPlayBanner.txt";
+        String dontWantToPlayBanner = "images/dontWantToPlayBanner.txt";
         System.out.println("\nWould you like to play Bio Brain? [Y]es or [N]o ");
         String input = prompter.prompt("Enter response: ", "[YyNn]", "\nInvalid input... Please enter [Y]es or [N]o \n");
 
@@ -67,7 +68,7 @@ public class BioBrainApp {
 
 
         if (!gameOver) {
-            printFile("src/main/resources/images/mapBioBrain.txt");
+            printFile("images/mapBioBrain.txt");
             askPlayerAction();
         }
     }
@@ -99,9 +100,14 @@ public class BioBrainApp {
 
                 currentLocation = locations.get(0);
 
+                List<String> itemsInRoom = currentLocation.getItems();
+
                 System.out.printf("\nYou are currently in %s \n", currentLocation.getName());
-                System.out.printf("\nLook around you. There is a %s ", currentLocation.getItems());
-                System.out.printf("\nYou can choose to go East to %s ", currentLocation.getDirections().get("east"));
+                System.out.println("\nYou see the following items: ");
+                for (String item : itemsInRoom) {
+                    System.out.print("\n "+ item);
+                }
+                System.out.printf("\n\nYou can choose to go East to %s ", currentLocation.getDirections().get("east"));
                 System.out.printf("\nOr you can go South to %s", currentLocation.getDirections().get("south"));
 
             } else {
@@ -114,7 +120,8 @@ public class BioBrainApp {
     }
 
     private void askPlayerAction() {
-        System.out.println("\nWhat would you like to do? [L]ook at items or [M]ove to a different location");
+        System.out.println("\nWhat would you like to do? Look at items or Move to a different location");
+        System.out.println("\nType Go Look to check item or Type Go to the direction you want to move to.");
 //        String input = prompter.prompt("\nEnter response: ", "[LlMm]", "\nInvalid input... Please enter [L]ook or [M]ove \n");
     }
 
