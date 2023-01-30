@@ -35,18 +35,18 @@ public class BioBrainApp {
     }
 
     public void intro() {
-        printFile("src/main/resources/intro/intro.txt");
+        printFile("intro/intro.txt");
 
     }
 
     private void welcome() {
-        String splashScreen = "src/main/resources/images/welcomeRobot.txt";
+        String splashScreen = "images/welcomeRobot.txt";
         printFile(splashScreen);
     }
 
     private void askIfUserWantToPlay() {
 
-        String dontWantToPlayBanner = "src/main/images/dontWantToPlayBanner.txt";
+        String dontWantToPlayBanner = "images/dontWantToPlayBanner.txt";
         System.out.println("\nWould you like to play Bio Brain? [Y]es or [N]o ");
         String input = prompter.prompt("Enter response: ", "[YyNn]", "\nInvalid input... Please enter [Y]es or [N]o \n");
 
@@ -67,7 +67,7 @@ public class BioBrainApp {
 
 
         if (!gameOver) {
-            printFile("src/main/resources/images/mapBioBrain.txt");
+            printFile("images/mapBioBrain.txt");
             askPlayerAction();
         }
     }
