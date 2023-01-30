@@ -1,26 +1,22 @@
-[
-
-  {
-    "commands": [
-      "pick up",
-      "go",
-      "punch",
-      "kick",
-      "use",
-      "run",
-      "walk",
-      "restore",
-      "look"
-    ],
-    "objects": [
-      "north",
-      "south",
-      "east",
-      "west",
-      "m4",
-      "neutralizer",
-      "potion"
-    ]
-  }
-
-]
+{
+  "commands": [
+    "pick up",
+    "go",
+    "punch",
+    "kick",
+    "use",
+    "run",
+    "walk",
+    "restore",
+    "look"
+  ],
+  "objects": [
+    "north",
+    "south",
+    "east",
+    "west",
+    "m4",
+    "neutralizer",
+    "potion"
+  ]
+}
