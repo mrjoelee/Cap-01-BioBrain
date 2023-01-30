@@ -2,18 +2,16 @@ package com.biobrain.app;
 
 import com.apps.util.Console;
 import com.apps.util.Prompter;
+import com.biobrain.Item;
 import com.biobrain.Location;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
-
 import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.reflect.Type;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.List;
 import java.util.Objects;
 import java.util.Scanner;
@@ -26,9 +24,9 @@ public class BioBrainApp {
     private List<Location> locations;
     private boolean gameOver = false;
 
+
     public void execute() {
         intro();
-
         welcome();
         Console.pause(1500);
         askIfUserWantToPlay();
@@ -63,36 +61,21 @@ public class BioBrainApp {
     }
 
     private void game() {
-//        quitGameThread();
         locationsJsonParsed();
 
-
         if (!gameOver) {
-            printFile("images/mapBioBrain.txt");
+//            printFile("images/mapBioBrain.txt");
             askPlayerAction();
         }
-    }
-
-    private void quitGameThread() {
-        Thread inputThread = new Thread(() -> {
-            Scanner scanner = new Scanner(System.in);
-            while (!gameOver) {
-                String quitInput = scanner.nextLine();
-                if (quitInput.equalsIgnoreCase("quit")) {
-                    gameOver = true;
-                    break;
-                }
-            }
-            scanner.close();
-        });
-        inputThread.start();
     }
 
     private void locationsJsonParsed() {
         Gson gson = new Gson();
         Type locationList = new TypeToken<List<Location>>() {
         }.getType();
-        try (BufferedReader reader = new BufferedReader(new FileReader("src/main/resources/jsonFiles/locations.json"))) {
+        //noinspection ConstantConditions
+        try (InputStream input = getClass().getClassLoader().getResourceAsStream("jsonFiles/locations.json");
+             BufferedReader reader = new BufferedReader(new InputStreamReader(input))) {
 
             locations = gson.fromJson(reader, locationList);
 
@@ -105,7 +88,7 @@ public class BioBrainApp {
                 System.out.printf("\nYou are currently in %s \n", currentLocation.getName());
                 System.out.println("\nYou see the following items: ");
                 for (String item : itemsInRoom) {
-                    System.out.print("\n "+ item);
+                    System.out.print("\n " + item);
                 }
                 System.out.printf("\n\nYou can choose to go East to %s ", currentLocation.getDirections().get("east"));
                 System.out.printf("\nOr you can go South to %s", currentLocation.getDirections().get("south"));
@@ -121,8 +104,22 @@ public class BioBrainApp {
 
     private void askPlayerAction() {
         System.out.println("\nWhat would you like to do? Look at items or Move to a different location");
-        System.out.println("\nType Go Look to check item or Type Go to the direction you want to move to.");
-//        String input = prompter.prompt("\nEnter response: ", "[LlMm]", "\nInvalid input... Please enter [L]ook or [M]ove \n");
+        System.out.println("\nType Look to check item or Type Go to the direction you want to move to.");
+        String input = prompter.prompt("\nEnter response: ", "[LlMm]", "\nInvalid input... Please enter [L]ook or [M]ove \n");
+        if(input.equalsIgnoreCase("l")) {
+            System.out.println("\nWhich item would you like to look at?");
+            String itemToLookAt = prompter.prompt("Enter item name: ");
+            if(currentLocation.getItems().contains(itemToLookAt)) {
+                System.out.printf("\nYou are looking at %s", itemToLookAt);
+//                String itemDescription = Item.getDescriptions(itemToLookAt);
+//                System.out.println("\nItem description: " + itemDescription);
+
+            } else {
+                System.out.println("\nItem not found");
+            }
+        } else {
+            System.out.println("You are moving to a different location");
+        }
     }
 
     private void printFile(String fileName) {
