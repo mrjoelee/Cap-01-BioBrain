@@ -28,7 +28,7 @@ public class BioBrainApp {
 
     public void execute() {
         intro();
-        Console.pause(1500);
+
         welcome();
         Console.pause(1500);
         askIfUserWantToPlay();
@@ -36,7 +36,8 @@ public class BioBrainApp {
 
     public void intro() {
         printFile("intro/intro.txt");
-
+        Console.pause(5000);
+        Console.clear();
     }
 
     private void welcome() {
@@ -99,9 +100,14 @@ public class BioBrainApp {
 
                 currentLocation = locations.get(0);
 
+                List<String> itemsInRoom = currentLocation.getItems();
+
                 System.out.printf("\nYou are currently in %s \n", currentLocation.getName());
-                System.out.printf("\nLook around you. There is a %s ", currentLocation.getItems());
-                System.out.printf("\nYou can choose to go East to %s ", currentLocation.getDirections().get("east"));
+                System.out.println("\nYou see the following items: ");
+                for (String item : itemsInRoom) {
+                    System.out.print("\n "+ item);
+                }
+                System.out.printf("\n\nYou can choose to go East to %s ", currentLocation.getDirections().get("east"));
                 System.out.printf("\nOr you can go South to %s", currentLocation.getDirections().get("south"));
 
             } else {
@@ -114,7 +120,8 @@ public class BioBrainApp {
     }
 
     private void askPlayerAction() {
-        System.out.println("\nWhat would you like to do? [L]ook at items or [M]ove to a different location");
+        System.out.println("\nWhat would you like to do? Look at items or Move to a different location");
+        System.out.println("\nType Go Look to check item or Type Go to the direction you want to move to.");
 //        String input = prompter.prompt("\nEnter response: ", "[LlMm]", "\nInvalid input... Please enter [L]ook or [M]ove \n");
     }
 
