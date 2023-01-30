@@ -39,7 +39,7 @@ public class Item {
 
     public static Item[] getAllItems() {
         Gson gson = new Gson();
-        InputStream inputStream = Item.class.getResourceAsStream("jsonFiles/items.json");
+        InputStream inputStream = Item.class.getClassLoader().getResourceAsStream("jsonFiles/items.json");
         InputStreamReader reader = new InputStreamReader(inputStream);
         return gson.fromJson(reader, Item[].class);
     }
@@ -52,6 +52,16 @@ public class Item {
             }
         }
         return "Item description not found";
+    }
+
+    public static int getDamageValue(String itemName) {
+        Item[] allItems = getAllItems();
+        for (Item item : allItems) {
+            if (item.getName().equalsIgnoreCase(itemName)) {
+                return item.getDamage();
+            }
+        }
+        return 0;
     }
 }
 

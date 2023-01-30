@@ -1,5 +1,9 @@
 package com.biobrain;
 
+import com.google.gson.Gson;
+
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.List;
 import java.util.Map;
 
@@ -49,5 +53,31 @@ public class Location {
         this.items = items;
     }
 
+//    public static List<Location> getAllLocations() {
+//        Gson gson = new Gson();
+//        InputStream inputStream = Location.class.getClassLoader().getResourceAsStream("jsonFiles/locations.json");
+//        InputStreamReader reader = new InputStreamReader(inputStream);
+//        return gson.fromJson(reader, List.class);
+//    }
+//
+//    public static String getLocationDescription(String locationName) {
+//        List<Location> allLocations = getAllLocations();
+//        for (Location location : allLocations) {
+//            if (location.getName().equalsIgnoreCase(locationName)) {
+//                return location.getDescription();
+//            }
+//        }
+//        return "Location description not found";
+//    }
+//
+//    public static Map<String, String> getDirections(String locationName) {
+//        List<Location> allLocations = getAllLocations();
+//        for (Location location : allLocations) {
+//            if (location.getName().equalsIgnoreCase(locationName)) {
+//                return location.getDirections();
+//            }
+//        }
+//        return null;
+//    }
 }
 
