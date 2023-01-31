@@ -26,4 +26,12 @@ public class Player extends Character {
         return inventory;
     }
 
+    public String displayPlayerInfo(){
+        return String.format("\nYour health is at %s", getHealth());
+    }
+
+    public static void main(String[] args) {
+        Player p1 = Player.create();
+        System.out.println(p1.displayPlayerInfo());
+    }
 }

@@ -74,21 +74,23 @@ public class UserInput {
 //                System.out.println(" Command is valid. " + userInput);
 
             String[] words = userInput.split(" ");
-            if(words.length != 2) {
+            if (words.length != 2) {
                 System.out.println("Please enter a valid command of two words");
             } else {
                 String verb = words[0];
                 String noun = words[1];
-                if(!input.commands.contains(verb)) {
+                if (!input.commands.contains(verb)) {
                     System.out.printf("%s not on list of valid commands", verb);
                 }
-                if(!input.objects.contains(noun)) {
-                    System.out.printf("%s not on list of valid commands", noun);
+                if (!input.objects.contains(noun)) {
+                    System.out.printf("\n%s not on list of valid commands", noun);
                 }
             }
-            }
+        } catch (IOException e){
+            e.printStackTrace();
         }
     }
+}
 
 
 
