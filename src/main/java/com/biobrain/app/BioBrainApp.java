@@ -13,7 +13,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.reflect.Type;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.Scanner;
 import java.util.stream.Stream;
@@ -47,13 +46,12 @@ public class BioBrainApp {
     private void askIfUserWantToPlay() {
 
         String dontWantToPlayBanner = "images/dontWantToPlayBanner.txt";
-        System.out.println("\nWould you like to play Bio Brain? [Y]es or [N]o ");
-        String input = prompter.prompt("Enter response: ", "[YyNn]", "\nInvalid input... Please enter [Y]es or [N]o \n");
+        System.out.println("\nWould you like to play Bio Brain? Yes or No ");
+        String input = prompter.prompt("Enter response: ", "(?i)(Yes|No)", "\nInvalid input... Please type Yes or No \n");
 
-        if (input.equalsIgnoreCase("y")) {
+        if (input.equalsIgnoreCase("yes")) {
 
             System.out.println("Let's play!");
-            // this is where we start the game
             Console.clear();
             game();
         } else {
@@ -63,16 +61,13 @@ public class BioBrainApp {
 
     private void game() {
         locationsJsonParsed();
-//        startGame();
 
         if (!gameOver) {
 //            printFile("images/mapBioBrain.txt");
-          askPlayerAction();
+            while (!gameOver) {
+                askPlayerAction();
+            }
         }
-
-//        while (!gameOver) {
-//            askPlayerAction();
-//        }
     }
 
     private void locationsJsonParsed() {
@@ -108,13 +103,11 @@ public class BioBrainApp {
         }
     }
 
-
-
     private void askPlayerAction() {
-        System.out.println("\nWhat would you like to do? Look at items or Move to a different location");
-        System.out.println("\nType Look to check item or Type Go to the direction you want to move to.");
-        String input = prompter.prompt("\nEnter response: ", "[LlMm]", "\nInvalid input... Please type Look or Move \n");
-        if (input.equalsIgnoreCase("l")) {
+        System.out.println("\nWhat would you like to do? Look at items or Move to a different location or quit?");
+        System.out.println("\nType Look to check item, Move to a different location, or Quit to exit the game");
+        String input = prompter.prompt("\nEnter response: ", "(?i)(Look|Move|Quit)", "\nInvalid input... Please type Look, Move, or Quit \n");
+        if (input.equalsIgnoreCase("look")) {
             System.out.println("\nWhich item would you like to look at?");
             String itemToLookAt = prompter.prompt("Enter item name: ");
             if (currentLocation.getItems().contains(itemToLookAt)) {
@@ -122,38 +115,48 @@ public class BioBrainApp {
                 int damageValue = Item.getDamageValue(itemToLookAt);
                 System.out.printf("\nItem description:  %s it has a damage value of %s", itemDescription, damageValue);
 
+            } else if (itemToLookAt.equalsIgnoreCase("quit")) {
+                System.out.println("\nThanks for playing!");
+                gameOver = true;
             } else {
                 System.out.println("\nItem not found");
             }
-        } else {
+        } else if (input.equalsIgnoreCase("move")) {
             System.out.println("\nWhich direction would you like to move to?");
-            String direction = prompter.prompt("Enter direction: ", "[EeSs]", "\nInvalid input... Please type East or South \n");
-            movePlayer(direction);
-        }
+            String direction = prompter.prompt("Enter direction: ");
+            if (direction.equalsIgnoreCase("q") || direction.equalsIgnoreCase("quit")) {
+                System.out.println("\nThanks for playing!");
+                gameOver = true;
+            } else {
+                movePlayer(direction);
+            }
 
+        } else if (input.equalsIgnoreCase("quit")) {
+            System.out.println("\nThanks for playing!");
+            gameOver = true;
+        }
     }
 
     private void movePlayer(String direction) {
-            String nextLocation = currentLocation.getDirections().get(direction.toLowerCase());
-            if(nextLocation != null){
-                for(Location location : locations){
-                    if(location.getName().equalsIgnoreCase(nextLocation)) {
-                        currentLocation = location;
-                        break;
-                    }
+        String nextLocation = currentLocation.getDirections().get(direction.toLowerCase());
+        if (nextLocation != null) {
+            for (Location location : locations) {
+                if (location.getName().equalsIgnoreCase(nextLocation)) {
+                    currentLocation = location;
+                    break;
                 }
-                itemsInRoom = currentLocation.getItems();
-                System.out.printf("\nYou are currently in %s \n", currentLocation.getName());
-                System.out.println("\nYou see the following items: ");
-                for (String item : itemsInRoom) {
-                    System.out.print("\n " + item);
-                }
-                System.out.printf("\n\nYou can choose to go East to %s ", currentLocation.getDirections().get("east"));
-                System.out.printf("\nOr you can go South to %s", currentLocation.getDirections().get("south"));
             }
-            else {
-                System.out.println("\nYou can't go that way");
+            itemsInRoom = currentLocation.getItems();
+            System.out.printf("\nYou are currently in %s \n", currentLocation.getName());
+            System.out.println("\nYou see the following items: ");
+            for (String item : itemsInRoom) {
+                System.out.print("\n " + item);
             }
+            System.out.printf("\n\nYou can choose to go East to %s ", currentLocation.getDirections().get("east"));
+            System.out.printf("\nOr you can go South to %s", currentLocation.getDirections().get("south"));
+        } else {
+            System.out.println("\nYou can't go that way");
+        }
     }
 
     private void printFile(String fileName) {
