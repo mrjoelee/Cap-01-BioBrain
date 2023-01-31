@@ -24,7 +24,6 @@ public class Item {
         this.name = name;
     }
 
-
     public String getDescription() {
         return description;
     }

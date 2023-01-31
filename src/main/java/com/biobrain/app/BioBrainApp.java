@@ -47,7 +47,7 @@ public class BioBrainApp {
 
         String dontWantToPlayBanner = "images/dontWantToPlayBanner.txt";
         System.out.println("\nWould you like to play Bio Brain? Yes or No ");
-        String input = prompter.prompt("Enter response: ", "(?i)(Yes|No)", "\nInvalid input... Please type Yes or No \n").toLowerCase();
+        String input = prompter.prompt("Enter response: ", "(?i)(Yes|No)", "\nInvalid input... Please type Yes or No \n");
 
         if (input.equalsIgnoreCase("yes")) {
 
@@ -106,7 +106,7 @@ public class BioBrainApp {
     private void askPlayerAction() {
         System.out.println("\nWhat would you like to do? Look at items or Move to a different location or quit?");
         System.out.println("\nType Look to check item, Move to a different location, or Quit to exit the game");
-        String input = prompter.prompt("\nEnter response: ", "(?i)(Look|Move|Quit)", "\nInvalid input... Please type Look, Move, or Quit \n").toLowerCase();
+        String input = prompter.prompt("\nEnter response: ", "(?i)(Look|Move|Quit)", "\nInvalid input... Please type Look, Move, or Quit \n");
         if (input.equalsIgnoreCase("look")) {
             System.out.println("\nWhich item would you like to look at?");
             String itemToLookAt = prompter.prompt("Enter item name: ");
