@@ -17,34 +17,24 @@ public class UserInput {
         String noun;
         String verb;
 
-        Gson gson = new Gson();
-        Type userInput = new TypeToken<List<UserInput>>() {
-        }.getType();
-
-        try (Reader reader = new FileReader("src/main/resources/jsonFiles/userInput.json")) {
-            userInput = gson.<Type>fromJson(reader, userInput);
-
-            if (wordList.size() != 2) {
-                System.out.println("Please enter a valid command of two words)");
-            } else {
-                verb = wordList.get(0);
-                noun = wordList.get(1);
-                if (!userInput.equals(verb)) {
-                    System.out.println(verb + "not on list");
-                }
-                if (!userInput.equals(noun)) {
-                    System.out.println(noun + "not on list");
-                }
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public static void main(String[] args) throws IOException {
         try (Reader reader = new InputStreamReader(UserInput.class.getClassLoader().getResourceAsStream("jsonFiles/userInput.json"))) {
             Gson gson = new Gson();
             UserInput input = gson.fromJson(reader, UserInput.class);
+
+            while (true) {
+                System.out.println("Choose a command: ");
+                Scanner scanner = new Scanner(System.in);
+                String userInput = scanner.nextLine().trim();
+                String[] words = userInput.split(" ");
+
+                verb = words[0];
+                noun = words[1];
+
+                if (words.length != 2) {
+                    System.out.println("Please enter a valid command of two words\n");
+                } else if (!input.commands.contains(verb)) {
+                    System.out.printf("%s not on list of valid commands\n", verb);
+
             System.out.println("Choose a command: ");
             Scanner scanner = new Scanner(System.in);
             String userInput = scanner.nextLine().trim();
@@ -85,8 +75,13 @@ public class UserInput {
                 if (!input.objects.contains(noun)) {
                     System.out.printf("\n%s not on list of valid commands", noun);
                 }
+                if (!input.objects.contains(noun)) {
+                    System.out.printf("%s not on list of valid commands\n", noun);
+                } else
+                    break;
             }
-        } catch (IOException e){
+
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
