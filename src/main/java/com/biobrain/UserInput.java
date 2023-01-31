@@ -48,27 +48,36 @@ public class UserInput {
             System.out.println("Choose a command: ");
             Scanner scanner = new Scanner(System.in);
             String userInput = scanner.nextLine().trim();
-
             boolean isValid = false;
 
-            while (!isValid) {
-                for (String verb : input.commands) {
-                    if (!userInput.startsWith(verb))
-                        System.out.println(verb + " not on the list");
+            // Validate command
+            for (String verb : input.commands) {
+                if (userInput.startsWith(verb)) {
+                    isValid = true;
                     break;
                 }
             }
-            for (String noun : input.objects) {
-                if (!userInput.endsWith(noun))
-                    System.out.println(noun + " not on the list");
-                break;
+            if (!isValid) {
+                System.out.printf(" Invalid verb: %s", userInput);
             }
-            isValid = true;
-        }
-        System.out.println("Command is not valid. ");
-    }
+            isValid = false;
 
+
+            for (String noun : input.objects) {
+                if (!userInput.endsWith(noun)) {
+                    isValid = true;
+                    break;
+                }
+            }
+            if (!isValid) {
+                System.out.printf("Invalid noun: %s", userInput);
+            }
+            System.out.println("Command is valid. " + userInput);
+        }
+    }
 }
+
+
 
 
 
