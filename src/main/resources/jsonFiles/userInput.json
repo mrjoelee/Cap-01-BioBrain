@@ -8,7 +8,9 @@
     "run",
     "walk",
     "restore",
-    "look"
+    "look",
+    "get",
+    "drop"
   ],
   "objects": [
     "north",
@@ -17,6 +19,8 @@
     "west",
     "m4",
     "neutralizer",
-    "potion"
+    "potion",
+    "tablet",
+    "harpoon"
   ]
 }

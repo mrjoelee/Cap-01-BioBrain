@@ -5,6 +5,7 @@ import com.apps.util.Prompter;
 import com.biobrain.Item;
 import com.biobrain.Location;
 import com.biobrain.Player;
+import com.biobrain.UserInput;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -20,6 +21,7 @@ public class BioBrainApp {
     private static final String SPLASH_SCREEN = "images/welcomeRobot.txt";
     private static final String NO_BANNER = "images/dontWantToPlayBanner.txt";
     private final Prompter prompter = new Prompter(new Scanner(System.in));
+
     private Player player;
     private Location currentLocation;
     private List<Location> locations;
@@ -93,12 +95,13 @@ public class BioBrainApp {
     }
 
     private void askPlayerAction() {
-        System.out.println("\nWhat would you like to do? Look at items or Move to a different location or quit?");
-        System.out.println("\nType Look to check item, Move to a different location, or Quit to exit the game");
-        String input = prompter.prompt("\nEnter response: ", "(?i)(Look|Move|Quit)", "\nInvalid input... Please type Look, Move, or Quit \n");
+        System.out.println("\nWhat would you like to do? Look at items, Get item, Move to a different location or quit?");
+        System.out.println("\nType Go Look to check item, Move to a different location, or Quit to exit the game");
+        String input = prompter.prompt("\nEnter response: ", "(?i)(Go Look|Get Item|Move|Quit)", "\nInvalid input... Please type Look, Move, or Quit \n");
+
 
         switch (input.toLowerCase()) {
-            case "look":
+            case "go look":
                 System.out.println("\nWhich item would you like to look at?");
                 String itemToLookAt = prompter.prompt("Enter item name: ");
                 if (currentLocation.getItems().contains(itemToLookAt)) {
@@ -122,6 +125,18 @@ public class BioBrainApp {
                     movePlayer(direction);
                 }
                 break;
+            case "get item":
+                String itemToPickUp = prompter.prompt("\nEnter which item you want to pick up: ");
+                if(currentLocation.getItems().contains(itemToPickUp)){
+                player.addItem(itemToPickUp);
+                    System.out.printf("\n You picked up %s ", itemToPickUp);
+                System.out.println(player.displayPlayerInfo());}
+                else if (itemToPickUp.equalsIgnoreCase("quit")) {
+                    System.out.println("\nThanks for playing!");
+                    gameOver = true;
+                } else {
+                    System.out.println("\nItem not found");
+                }
             case "quit":
                 System.out.println("\nThanks for playing!");
                 gameOver = true;
@@ -153,7 +168,6 @@ public class BioBrainApp {
             System.out.println("\nYou can't go that way");
         }
     }
-
     private void printFile(String fileName) {
         //noinspection ConstantConditions
         try (BufferedReader buffer = new BufferedReader(new InputStreamReader(getClass().getClassLoader().getResourceAsStream(fileName)))) {
