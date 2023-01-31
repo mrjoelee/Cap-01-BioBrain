@@ -10,7 +10,7 @@
       "blaster",
       "harpoon"
     ],
-    "enemy": ""
+    "npc": ""
   },
   {
     "name": "Sector 2",
@@ -23,7 +23,7 @@
     "items": [
       "tablet"
     ],
-    "enemy": ""
+    "npc": ""
   },
   {
     "name": "Sector 3",
@@ -36,7 +36,7 @@
       "harpoon",
       "potion"
     ],
-    "enemy": "Rouge AI Robot1"
+    "npc": "Rouge AI Robot1"
   },
   {
     "name": "Sector 4",
@@ -48,7 +48,7 @@
     "items": [
       "neuralyzer"
     ],
-    "enemy": "Rouge AI Robot2"
+    "npc": "Rouge AI Robot2"
   },
   {
     "name": "Sector 5",
@@ -61,7 +61,7 @@
     "items": [
       "neuralyzer"
     ],
-    "enemy": "Rouge AI Robot3"
+    "npc": "Rouge AI Robot3"
   },
   {
     "name": "Sector 6",
@@ -71,7 +71,7 @@
     },
     "description": "This is the Train Dock.. This is where you can escape. But in order to escape, you must defeat the Boss AI Robot.",
     "items": [],
-    "enemy": "Boss AI Robot"
+    "npc": "Boss AI Robot"
   }
 ]
 

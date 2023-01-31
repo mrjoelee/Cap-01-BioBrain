@@ -5,7 +5,7 @@ import com.google.gson.Gson;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
-public class Item {
+public class Item implements Inventory{
     private String name;
     private String description;
     private int damage;
@@ -62,6 +62,7 @@ public class Item {
         }
         return 0;
     }
+
 }
 
 
