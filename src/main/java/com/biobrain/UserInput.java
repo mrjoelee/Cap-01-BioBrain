@@ -5,8 +5,6 @@ import com.google.gson.reflect.TypeToken;
 
 import java.io.*;
 import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
@@ -20,7 +18,7 @@ public class UserInput {
         String verb;
 
         Gson gson = new Gson();
-        Type userInput = new TypeToken<List<Location>>() {
+        Type userInput = new TypeToken<List<UserInput>>() {
         }.getType();
 
         try (Reader reader = new FileReader("src/main/resources/jsonFiles/userInput.json")) {
@@ -44,13 +42,45 @@ public class UserInput {
     }
 
     public static void main(String[] args) throws IOException {
-        try(Reader reader = new InputStreamReader(UserInput.class.getClassLoader().getResourceAsStream("jsonFiles/userInput.json"))){
+        try (Reader reader = new InputStreamReader(UserInput.class.getClassLoader().getResourceAsStream("jsonFiles/userInput.json"))) {
             Gson gson = new Gson();
             UserInput input = gson.fromJson(reader, UserInput.class);
-            System.out.println();
+            System.out.println("Choose a command: ");
+            Scanner scanner = new Scanner(System.in);
+            String userInput = scanner.nextLine().trim();
+            boolean isValid = false;
+
+            // Validate command
+                for (String verb : input.commands) {
+                    if (userInput.startsWith(verb)) {
+                        isValid = true;
+                        break;
+                    }
+                }
+                if (!isValid) {
+                    System.out.printf(" Invalid command: %s", userInput);
+                    isValid = false;
+                }
+
+                for (String noun : input.objects) {
+                    if (userInput.endsWith(noun)) {
+                        isValid = true;
+//                        break;
+                    }
+                }
+                if (!isValid) {
+                    System.out.printf("Invalid command: %s", userInput);
+                }
+                System.out.println(" Command is valid. " + userInput);
+            }
         }
     }
-}
+
+
+
+
+
+
 
 
 
