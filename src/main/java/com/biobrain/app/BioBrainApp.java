@@ -20,18 +20,19 @@ public class BioBrainApp {
     private static final String SPLASH_SCREEN = "images/welcomeRobot.txt";
     private static final String NO_BANNER = "images/dontWantToPlayBanner.txt";
     private final Prompter prompter = new Prompter(new Scanner(System.in));
-    private Player player = null;
+    private Player player;
     private Location currentLocation;
     private List<Location> locations;
     private List<String> itemsInRoom;
     private boolean gameOver = false;
 
     public void execute() {
+        player = Player.create();
         intro();
         welcome();
         Console.pause(1500);
         askIfUserWantToPlay();
-        player = Player.create();
+
     }
 
     public void intro() {
@@ -71,7 +72,8 @@ public class BioBrainApp {
     }
 
     private void sector1() {
-
+        System.out.println(player.displayPlayerInfo());
+        Console.pause(1000);
         locations = Location.parsedLocationsFromJson();
 
         if (locations != null && !locations.isEmpty()) {
@@ -94,33 +96,39 @@ public class BioBrainApp {
         System.out.println("\nWhat would you like to do? Look at items or Move to a different location or quit?");
         System.out.println("\nType Look to check item, Move to a different location, or Quit to exit the game");
         String input = prompter.prompt("\nEnter response: ", "(?i)(Look|Move|Quit)", "\nInvalid input... Please type Look, Move, or Quit \n");
-        if (input.equalsIgnoreCase("look")) {
-            System.out.println("\nWhich item would you like to look at?");
-            String itemToLookAt = prompter.prompt("Enter item name: ");
-            if (currentLocation.getItems().contains(itemToLookAt)) {
-                String itemDescription = Item.getDescriptions(itemToLookAt);
-                int damageValue = Item.getDamageValue(itemToLookAt);
-                System.out.printf("\nItem description:  %s it has a damage value of %s", itemDescription, damageValue);
 
-            } else if (itemToLookAt.equalsIgnoreCase("quit")) {
+        switch (input.toLowerCase()) {
+            case "look":
+                System.out.println("\nWhich item would you like to look at?");
+                String itemToLookAt = prompter.prompt("Enter item name: ");
+                if (currentLocation.getItems().contains(itemToLookAt)) {
+                    String itemDescription = Item.getDescriptions(itemToLookAt);
+                    int damageValue = Item.getDamageValue(itemToLookAt);
+                    System.out.printf("\nItem description:  %s it has a damage value of %s", itemDescription, damageValue);
+                } else if (itemToLookAt.equalsIgnoreCase("quit")) {
+                    System.out.println("\nThanks for playing!");
+                    gameOver = true;
+                } else {
+                    System.out.println("\nItem not found");
+                }
+                break;
+            case "move":
+                System.out.println("\nWhich direction would you like to move to?");
+                String direction = prompter.prompt("Enter direction: ");
+                if (direction.equalsIgnoreCase("q") || direction.equalsIgnoreCase("quit")) {
+                    System.out.println("\nThanks for playing!");
+                    gameOver = true;
+                } else {
+                    movePlayer(direction);
+                }
+                break;
+            case "quit":
                 System.out.println("\nThanks for playing!");
                 gameOver = true;
-            } else {
-                System.out.println("\nItem not found");
-            }
-        } else if (input.equalsIgnoreCase("move")) {
-            System.out.println("\nWhich direction would you like to move to?");
-            String direction = prompter.prompt("Enter direction: ");
-            if (direction.equalsIgnoreCase("q") || direction.equalsIgnoreCase("quit")) {
-                System.out.println("\nThanks for playing!");
-                gameOver = true;
-            } else {
-                movePlayer(direction);
-            }
-
-        } else if (input.equalsIgnoreCase("quit")) {
-            System.out.println("\nThanks for playing!");
-            gameOver = true;
+                break;
+            default:
+                System.out.println("\nInvalid input... Please type Look, Move, or Quit \n");
+                break;
         }
     }
 
