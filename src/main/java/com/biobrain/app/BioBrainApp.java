@@ -4,6 +4,7 @@ import com.apps.util.Console;
 import com.apps.util.Prompter;
 import com.biobrain.Item;
 import com.biobrain.Location;
+import com.biobrain.Player;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -20,6 +21,7 @@ import java.util.stream.Stream;
 public class BioBrainApp {
 
     private final Prompter prompter = new Prompter(new Scanner(System.in));
+    private Player player = null;
     private Location currentLocation;
     private List<Location> locations;
     private List<String> itemsInRoom;
@@ -30,6 +32,7 @@ public class BioBrainApp {
         welcome();
         Console.pause(1500);
         askIfUserWantToPlay();
+        player = Player.create();
     }
 
     public void intro() {

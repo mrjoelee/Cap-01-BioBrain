@@ -14,11 +14,14 @@ public class Location {
     private String description;
     private List<String> items;
 
-    public Location(String name, Map<String, String> directions, String description, List<String> items) {
+    private String npc;
+
+    public Location(String name, Map<String, String> directions, String description, List<String> items, String npc) {
         this.name = name;
         this.directions = directions;
         this.description = description;
         this.items = items;
+        this.npc = npc;
     }
 
     public String getName() {
@@ -51,6 +54,14 @@ public class Location {
 
     public void setItems(List<String> items) {
         this.items = items;
+    }
+
+    public String getNpc() {
+        return npc;
+    }
+
+    public void setNpc(String npc) {
+        this.npc = npc;
     }
 
 //    public static List<Location> getAllLocations() {
