@@ -51,31 +51,31 @@ public class UserInput {
             boolean isValid = false;
 
             // Validate command
-            for (String verb : input.commands) {
-                if (userInput.startsWith(verb)) {
-                    isValid = true;
-                    break;
+                for (String verb : input.commands) {
+                    if (userInput.startsWith(verb)) {
+                        isValid = true;
+                        break;
+                    }
                 }
-            }
-            if (!isValid) {
-                System.out.printf(" Invalid verb: %s", userInput);
-            }
-            isValid = false;
-
-
-            for (String noun : input.objects) {
-                if (!userInput.endsWith(noun)) {
-                    isValid = true;
-                    break;
+                if (!isValid) {
+                    System.out.printf(" Invalid command: %s", userInput);
+                    isValid = false;
                 }
+
+                for (String noun : input.objects) {
+                    if (userInput.endsWith(noun)) {
+                        isValid = true;
+//                        break;
+                    }
+                }
+                if (!isValid) {
+                    System.out.printf("Invalid command: %s", userInput);
+                }
+                System.out.println(" Command is valid. " + userInput);
             }
-            if (!isValid) {
-                System.out.printf("Invalid noun: %s", userInput);
-            }
-            System.out.println("Command is valid. " + userInput);
         }
     }
-}
+
 
 
 
