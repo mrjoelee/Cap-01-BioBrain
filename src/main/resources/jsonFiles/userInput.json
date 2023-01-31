@@ -1,6 +1,6 @@
 {
   "commands": [
-    "pick up",
+    "pickup",
     "go",
     "punch",
     "kick",
