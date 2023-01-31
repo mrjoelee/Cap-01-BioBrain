@@ -9,7 +9,8 @@
     "items": [
       "blaster",
       "harpoon"
-    ]
+    ],
+    "npc": ""
   },
   {
     "name": "Sector 2",
@@ -21,7 +22,8 @@
     "description": "This is the Control Lab",
     "items": [
       "tablet"
-    ]
+    ],
+    "npc": ""
   },
   {
     "name": "Sector 3",
@@ -33,7 +35,8 @@
     "items": [
       "harpoon",
       "potion"
-    ]
+    ],
+    "npc": "Rouge AI Robot1"
   },
   {
     "name": "Sector 4",
@@ -44,7 +47,8 @@
     "description": "This is the Storage",
     "items": [
       "neuralyzer"
-    ]
+    ],
+    "npc": "Rouge AI Robot2"
   },
   {
     "name": "Sector 5",
@@ -56,7 +60,8 @@
     "description": "This is the Lobby Area",
     "items": [
       "neuralyzer"
-    ]
+    ],
+    "npc": "Rouge AI Robot3"
   },
   {
     "name": "Sector 6",
@@ -64,10 +69,9 @@
       "north": "Sector 3 - Production Room",
       "west": "Sector 5 - Lobby Area"
     },
-    "description": "This is the Train Dock.. This is where you can escape.",
-    "items": [
-      "...."
-    ]
+    "description": "This is the Train Dock.. This is where you can escape. But in order to escape, you must defeat the Boss AI Robot.",
+    "items": [],
+    "npc": "Boss AI Robot"
   }
 ]
 

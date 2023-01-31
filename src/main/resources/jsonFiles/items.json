@@ -1,0 +1,22 @@
+[
+  {
+    "name" : "blaster",
+    "description": "This is a blaster, you can use this to fight the rouge robots",
+    "damage": 10
+  },
+  {
+    "name" : "harpoon",
+    "description": "This is a harpoon, you can use this to fight the rouge robots",
+    "damage": 5
+  },
+  {
+    "name" : "neuralyzer",
+    "description": "This is a neuralyzer, you can use this to fight the rouge robots",
+    "damage": "5"
+  },
+  {
+    "name" : "tablet",
+    "description": "This is a tablet, you can use this to get around the map",
+    "damage": 0
+  }
+]
