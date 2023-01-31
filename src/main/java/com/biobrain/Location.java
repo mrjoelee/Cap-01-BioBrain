@@ -1,9 +1,12 @@
 package com.biobrain;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Map;
 
@@ -64,31 +67,17 @@ public class Location {
         this.npc = npc;
     }
 
-//    public static List<Location> getAllLocations() {
-//        Gson gson = new Gson();
-//        InputStream inputStream = Location.class.getClassLoader().getResourceAsStream("jsonFiles/locations.json");
-//        InputStreamReader reader = new InputStreamReader(inputStream);
-//        return gson.fromJson(reader, List.class);
-//    }
-//
-//    public static String getLocationDescription(String locationName) {
-//        List<Location> allLocations = getAllLocations();
-//        for (Location location : allLocations) {
-//            if (location.getName().equalsIgnoreCase(locationName)) {
-//                return location.getDescription();
-//            }
-//        }
-//        return "Location description not found";
-//    }
-//
-//    public static Map<String, String> getDirections(String locationName) {
-//        List<Location> allLocations = getAllLocations();
-//        for (Location location : allLocations) {
-//            if (location.getName().equalsIgnoreCase(locationName)) {
-//                return location.getDirections();
-//            }
-//        }
-//        return null;
-//    }
+   public static List<Location>parsedLocationsFromJson() {
+       Gson gson = new Gson();
+       Type locationList = new TypeToken<List<Location>>() {
+       }.getType();
+       try (InputStream input = Location.class.getClassLoader().getResourceAsStream("jsonFiles/locations.json");
+            BufferedReader reader = new BufferedReader(new InputStreamReader(input))) {
+           return gson.fromJson(reader, locationList);
+       } catch (Exception e) {
+           e.printStackTrace();
+           return null;
+       }
+   }
 }
 

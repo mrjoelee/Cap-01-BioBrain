@@ -34,12 +34,53 @@ public class UserInput {
                     System.out.println("Please enter a valid command of two words\n");
                 } else if (!input.commands.contains(verb)) {
                     System.out.printf("%s not on list of valid commands\n", verb);
+
+            System.out.println("Choose a command: ");
+            Scanner scanner = new Scanner(System.in);
+            String userInput = scanner.nextLine().trim();
+//            boolean isValid = false;
+//
+//            // Validate command
+//                for (String verb : input.commands) {
+//                    if (userInput.startsWith(verb)) {
+//                        isValid = true;
+//                        break;
+//                    }
+//                }
+//                if (!isValid) {
+//                    System.out.printf(" Invalid command: %s", userInput);
+//                    isValid = false;
+//                }
+//
+//                for (String noun : input.objects) {
+//                    if (userInput.endsWith(noun)) {
+//                        isValid = true;
+////                        break;
+//                    }
+//                }
+//                if (!isValid) {
+//                    System.out.printf("Invalid command: %s", userInput);
+//                }
+//                System.out.println(" Command is valid. " + userInput);
+
+            String[] words = userInput.split(" ");
+            if (words.length != 2) {
+                System.out.println("Please enter a valid command of two words");
+            } else {
+                String verb = words[0];
+                String noun = words[1];
+                if (!input.commands.contains(verb)) {
+                    System.out.printf("%s not on list of valid commands", verb);
+                }
+                if (!input.objects.contains(noun)) {
+                    System.out.printf("\n%s not on list of valid commands", noun);
                 }
                 if (!input.objects.contains(noun)) {
                     System.out.printf("%s not on list of valid commands\n", noun);
                 } else
                     break;
             }
+
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -5,14 +5,10 @@ import com.apps.util.Prompter;
 import com.biobrain.Item;
 import com.biobrain.Location;
 import com.biobrain.Player;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Objects;
 import java.util.Scanner;
@@ -20,6 +16,9 @@ import java.util.stream.Stream;
 
 public class BioBrainApp {
 
+    private static final String GAME_INTRO = "intro/intro.txt";
+    private static final String SPLASH_SCREEN = "images/welcomeRobot.txt";
+    private static final String NO_BANNER = "images/dontWantToPlayBanner.txt";
     private final Prompter prompter = new Prompter(new Scanner(System.in));
     private Player player = null;
     private Location currentLocation;
@@ -36,19 +35,16 @@ public class BioBrainApp {
     }
 
     public void intro() {
-        printFile("intro/intro.txt");
+        printFile(GAME_INTRO);
         Console.pause(5000);
         Console.clear();
     }
 
     private void welcome() {
-        String splashScreen = "images/welcomeRobot.txt";
-        printFile(splashScreen);
+        printFile(SPLASH_SCREEN);
     }
 
     private void askIfUserWantToPlay() {
-
-        String dontWantToPlayBanner = "images/dontWantToPlayBanner.txt";
         System.out.println("\nWould you like to play Bio Brain? Yes or No ");
         String input = prompter.prompt("Enter response: ", "(?i)(Yes|No)", "\nInvalid input... Please type Yes or No \n");
 
@@ -58,51 +54,39 @@ public class BioBrainApp {
             Console.clear();
             game();
         } else {
-            printFile(dontWantToPlayBanner);
+            printFile(NO_BANNER);
         }
     }
 
     private void game() {
-        locationsJsonParsed();
+        sector1();
 
         if (!gameOver) {
 //            printFile("images/mapBioBrain.txt");
+
             while (!gameOver) {
                 askPlayerAction();
             }
         }
     }
 
-    private void locationsJsonParsed() {
-        Gson gson = new Gson();
-        Type locationList = new TypeToken<List<Location>>() {
-        }.getType();
-        //noinspection ConstantConditions
-        try (InputStream input = getClass().getClassLoader().getResourceAsStream("jsonFiles/locations.json");
-             BufferedReader reader = new BufferedReader(new InputStreamReader(input))) {
+    private void sector1() {
 
-            locations = gson.fromJson(reader, locationList);
+        locations = Location.parsedLocationsFromJson();
 
-            if (locations != null && !locations.isEmpty()) {
-
-                currentLocation = locations.get(0);
-
-                itemsInRoom = currentLocation.getItems();
-
-                System.out.printf("\nYou are currently in %s \n", currentLocation.getName());
-                System.out.println("\nYou see the following items: ");
-                for (String item : itemsInRoom) {
-                    System.out.print("\n " + item);
-                }
-                System.out.printf("\n\nYou can choose to go East to %s ", currentLocation.getDirections().get("east"));
-                System.out.printf("\nOr you can go South to %s", currentLocation.getDirections().get("south"));
-
-            } else {
-                System.out.println("Error in getting the location");
+        if (locations != null && !locations.isEmpty()) {
+            currentLocation = locations.get(0);
+            itemsInRoom = currentLocation.getItems();
+            System.out.printf("\nYou are currently in %s \n", currentLocation.getName());
+            System.out.println("\nYou see the following items: ");
+            for (String item : itemsInRoom) {
+                System.out.print("\n " + item);
             }
+            System.out.printf("\n\nYou can choose to go East to %s ", currentLocation.getDirections().get("east"));
+            System.out.printf("\nOr you can go South to %s", currentLocation.getDirections().get("south"));
 
-        } catch (IOException e) {
-            e.printStackTrace();
+        } else {
+            System.out.println("Error in getting the location");
         }
     }
 
