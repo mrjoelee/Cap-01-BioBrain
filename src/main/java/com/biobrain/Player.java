@@ -25,4 +25,5 @@ public class Player extends Character {
     public ArrayList<String> getInventory(){
         return inventory;
     }
+
 }
