@@ -21,9 +21,9 @@ public class BioBrainApp {
     private static final String NO_BANNER = "images/dontWantToPlayBanner.txt";
     private final Prompter prompter = new Prompter(new Scanner(System.in));
     private Player player = null;
-//    private Location currentLocation;
-//    private List<Location> locations;
-//    private List<String> itemsInRoom;
+    private Location currentLocation;
+    private List<Location> locations;
+    private List<String> itemsInRoom;
     private boolean gameOver = false;
 
     public void execute() {
