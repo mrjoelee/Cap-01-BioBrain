@@ -1,0 +1,26 @@
+[
+  {
+    "name": "Rouge AI Robot1",
+    "weapon": "Blaster",
+    "description": "A rouge AI robot that has been programmed to stop you. It is armed with a blaster and is very dangerous.",
+    "location": "Sector 3"
+  },
+  {
+    "name": "Rouge AI Robot2",
+    "weapon": "Blaster",
+    "description": "A rouge AI robot that has been programmed to stop you. It is armed with a blaster and is very dangerous.",
+    "location" : "Sector 4"
+  },
+  {
+    "name": "Rouge AI Robot3",
+    "weapon": "Blaster",
+    "description": "A rouge AI robot that has been programmed to stop you. It is armed with a blaster and is very dangerous.",
+    "location": "Sector 5"
+  },
+  {
+    "name": "Boss AI Robot..",
+    "weapon": "Blaster",
+    "description" : "This is the boss of the game. You need to defeat it to escape the facility.",
+    "location": "Sector 6"
+  }
+]

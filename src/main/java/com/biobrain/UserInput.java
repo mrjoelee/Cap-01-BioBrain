@@ -1,45 +1,56 @@
 package com.biobrain;
 
-import com.biobrain.Location;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+
+import java.io.*;
 import java.lang.reflect.Type;
 import java.util.List;
+import java.util.Scanner;
 
 
 public class UserInput {
+    private List<String> commands;
+    private List<String> objects;
 
-    public void WordCommands(List<String> wordList) throws IOException {
+    public static void WordCommands(List<String> wordList) throws IOException {
         String noun;
         String verb;
 
-        Gson gson = new Gson();
-        Type userInput = new TypeToken<List<Location>>() {
-        }.getType();
+        try (Reader reader = new InputStreamReader(UserInput.class.getClassLoader().getResourceAsStream("jsonFiles/userInput.json"))) {
+            Gson gson = new Gson();
+            UserInput input = gson.fromJson(reader, UserInput.class);
 
-        try (BufferedReader reader = new BufferedReader(new FileReader("jsonFiles/userInput.json"))) {
-            userInput = gson.fromJson(reader, userInput);
+            while (true) {
+                System.out.println("Choose a command: ");
+                Scanner scanner = new Scanner(System.in);
+                String userInput = scanner.nextLine().trim();
+                String[] words = userInput.split(" ");
 
-            if (wordList.size() != 2) {
-                System.out.println("Please enter a valid command of two words)");
-            } else {
-                verb = wordList.get(0);
-                noun = wordList.get(1);
-                if (userInput.equals(verb)) {
-                    System.out.println(verb + "not on list");
+                verb = words[0];
+                noun = words[1];
+
+                if (words.length != 2) {
+                    System.out.println("Please enter a valid command of two words\n");
+                } else if (!input.commands.contains(verb)) {
+                    System.out.printf("%s not on list of valid commands\n", verb);
                 }
-                if (userInput.equals(noun)) {
-                    System.out.println(noun + "not on list");
-                }
+                if (!input.objects.contains(noun)) {
+                    System.out.printf("%s not on list of valid commands\n", noun);
+                } else
+                    break;
             }
-        }catch (IOException e) {
-            e.printStackTrace();
         }
+
     }
 }
+
+
+
+
+
+
+
 
 
 
