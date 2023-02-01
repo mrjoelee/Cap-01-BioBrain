@@ -183,7 +183,7 @@ public class BioBrainApp {
     }
 
     private void updateAll() {
-
+        // using as extract method
         updatedLocation.getNpc();
         updatedLocation.getName();
         updatedLocation.getItems();
