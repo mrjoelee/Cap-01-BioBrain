@@ -71,6 +71,7 @@ public class Location {
        Gson gson = new Gson();
        Type locationList = new TypeToken<List<Location>>() {
        }.getType();
+       //noinspection ConstantConditions
        try (InputStream input = Location.class.getClassLoader().getResourceAsStream("jsonFiles/locations.json");
             BufferedReader reader = new BufferedReader(new InputStreamReader(input))) {
            return gson.fromJson(reader, locationList);
