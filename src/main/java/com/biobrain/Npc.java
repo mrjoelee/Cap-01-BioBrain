@@ -7,11 +7,8 @@ import java.io.InputStreamReader;
 
 public class Npc extends Character {
     private String name;
-
     private String weapon;
     private String description;
-
-    private int damage;
 
     public Npc(String name, String description, String weapon) {
         this.name = name;
@@ -45,6 +42,7 @@ public class Npc extends Character {
     }
 
     public static Npc[] getAllNpcs() {
+
         Gson gson = new Gson();
         InputStream inputStream = Npc.class.getClassLoader().getResourceAsStream("jsonFiles/npc.json");
         InputStreamReader reader = new InputStreamReader(inputStream);
