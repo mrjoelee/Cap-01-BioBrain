@@ -5,7 +5,6 @@ import com.apps.util.Prompter;
 import com.biobrain.Item;
 import com.biobrain.Location;
 import com.biobrain.Player;
-import com.biobrain.UserInput;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -52,8 +51,7 @@ public class BioBrainApp {
         String input = prompter.prompt("Enter response: ", "(?i)(Yes|No)", "\nInvalid input... Please type Yes or No \n");
 
         if (input.equalsIgnoreCase("yes")) {
-
-            System.out.println("Let's play!");
+            System.out.println("\nLet's play!");
             Console.clear();
             game();
         } else {
@@ -62,7 +60,7 @@ public class BioBrainApp {
     }
 
     private void game() {
-        sector1();
+        currentPlayerLocation();
 
         if (!gameOver) {
 //            printFile("images/mapBioBrain.txt");
@@ -73,7 +71,7 @@ public class BioBrainApp {
         }
     }
 
-    private void sector1() {
+    private void currentPlayerLocation() {
         System.out.println(player.displayPlayerInfo());
         Console.pause(1000);
         locations = Location.parsedLocationsFromJson();
@@ -81,13 +79,16 @@ public class BioBrainApp {
         if (locations != null && !locations.isEmpty()) {
             currentLocation = locations.get(0);
             itemsInRoom = currentLocation.getItems();
+            System.out.println("\n=====================================================");
             System.out.printf("\nYou are currently in %s \n", currentLocation.getName());
             System.out.println("\nYou see the following items: ");
             for (String item : itemsInRoom) {
                 System.out.print("\n " + item);
             }
+
             System.out.printf("\n\nYou can choose to go East to %s ", currentLocation.getDirections().get("east"));
-            System.out.printf("\nOr you can go South to %s", currentLocation.getDirections().get("south"));
+            System.out.printf("\n\nOr you can go South to %s \n", currentLocation.getDirections().get("south"));
+            System.out.println("\n===================================================");
 
         } else {
             System.out.println("Error in getting the location");
@@ -97,13 +98,12 @@ public class BioBrainApp {
     private void askPlayerAction() {
         System.out.println("\nWhat would you like to do? Look at items, Get item, Move to a different location or quit?");
         System.out.println("\nType Go Look to check item, Move to a different location, or Quit to exit the game");
-        String input = prompter.prompt("\nEnter response: ", "(?i)(Go Look|Get Item|Move|Quit)", "\nInvalid input... Please type Look, Move, or Quit \n");
-
+        String input = prompter.prompt("\nEnter response: ", "(?i)(Go Look|Get Item|Move|Quit)", "\nInvalid input... Please type Go Look, Get Item, Move, or Quit \n");
 
         switch (input.toLowerCase()) {
             case "go look":
                 System.out.println("\nWhich item would you like to look at?");
-                String itemToLookAt = prompter.prompt("Enter item name: ");
+                String itemToLookAt = prompter.prompt("\nEnter item name: ");
                 if (currentLocation.getItems().contains(itemToLookAt)) {
                     String itemDescription = Item.getDescriptions(itemToLookAt);
                     int damageValue = Item.getDamageValue(itemToLookAt);
@@ -118,7 +118,7 @@ public class BioBrainApp {
             case "move":
                 System.out.println("\nWhich direction would you like to move to?");
                 String direction = prompter.prompt("Enter direction: ");
-                if (direction.equalsIgnoreCase("q") || direction.equalsIgnoreCase("quit")) {
+                if (direction.equalsIgnoreCase("quit")) {
                     System.out.println("\nThanks for playing!");
                     gameOver = true;
                 } else {
@@ -127,11 +127,11 @@ public class BioBrainApp {
                 break;
             case "get item":
                 String itemToPickUp = prompter.prompt("\nEnter which item you want to pick up: ");
-                if(currentLocation.getItems().contains(itemToPickUp)){
-                player.addItem(itemToPickUp);
+                if (currentLocation.getItems().contains(itemToPickUp)) {
+                    player.addItem(itemToPickUp);
                     System.out.printf("\n You picked up %s ", itemToPickUp);
-                System.out.println(player.displayPlayerInfo());}
-                else if (itemToPickUp.equalsIgnoreCase("quit")) {
+                    System.out.println(player.displayPlayerInfo());
+                } else if (itemToPickUp.equalsIgnoreCase("quit")) {
                     System.out.println("\nThanks for playing!");
                     gameOver = true;
                 } else {
@@ -142,7 +142,7 @@ public class BioBrainApp {
                 gameOver = true;
                 break;
             default:
-                System.out.println("\nInvalid input... Please type Look, Move, or Quit \n");
+                System.out.println("\nInvalid input... Please type Go Look, Get Item,  Move, or Quit \n");
                 break;
         }
     }
@@ -153,7 +153,7 @@ public class BioBrainApp {
             for (Location location : locations) {
                 if (location.getName().equalsIgnoreCase(nextLocation)) {
                     currentLocation = location;
-                    break;
+//                    break;
                 }
             }
             itemsInRoom = currentLocation.getItems();
@@ -162,12 +162,13 @@ public class BioBrainApp {
             for (String item : itemsInRoom) {
                 System.out.print("\n " + item);
             }
-            System.out.printf("\n\nYou can choose to go East to %s ", currentLocation.getDirections().get("east"));
-            System.out.printf("\nOr you can go South to %s", currentLocation.getDirections().get("south"));
+            System.out.printf("\n\nYou can choose to go East to %s \n", currentLocation.getDirections().get("east"));
+            System.out.printf("\nOr you can go South to %s \n", currentLocation.getDirections().get("south"));
         } else {
             System.out.println("\nYou can't go that way");
         }
     }
+
     private void printFile(String fileName) {
         //noinspection ConstantConditions
         try (BufferedReader buffer = new BufferedReader(new InputStreamReader(getClass().getClassLoader().getResourceAsStream(fileName)))) {
