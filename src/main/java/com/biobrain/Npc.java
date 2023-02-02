@@ -25,7 +25,7 @@ public class Npc extends Character {
         this.name = name;
     }
 
-    public String getDescription() {
+    public  String getDescription() {
         return description;
     }
 
