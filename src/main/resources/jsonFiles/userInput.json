@@ -10,7 +10,9 @@
     "restore",
     "look",
     "get",
-    "drop"
+    "drop",
+    "move",
+    "show"
   ],
   "objects": [
     "north",
@@ -18,9 +20,10 @@
     "east",
     "west",
     "m4",
-    "neutralizer",
+    "neuralyzer",
     "potion",
     "tablet",
-    "harpoon"
+    "harpoon",
+    "inventory"
   ]
 }
