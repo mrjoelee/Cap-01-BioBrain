@@ -23,6 +23,8 @@ public class BioBrainApp {
     private List<String> itemsInRoom;
     private boolean gameOver = false;
 
+    private String randomDialogue = Npc.getRandomDialogue();
+
 
     public void execute() throws IOException {
         player = Player.create();
