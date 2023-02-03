@@ -88,12 +88,12 @@ public class BioBrainApp {
         System.out.printf("\nYou are currently in %s \n", currentLocation.getName());
         Console.pause(1000);
 
-        System.out.println("\nYou see the following items: ");
+        System.out.println("\nLooking around you see the following items: ");
         for (String item : itemsInRoom) {
             System.out.println("\n " + item);
         }
 
-        System.out.println("\n\nYou can choose to go: ");
+        System.out.println("\n\nThere are also doors that lead to:");
         directions = currentLocation.getDirections();
         for (Map.Entry<String, String> direction : directions.entrySet()) {
             System.out.printf("\n%s to %s", direction.getKey(), direction.getValue());
@@ -103,7 +103,7 @@ public class BioBrainApp {
 
 
     private void askPlayerAction() {
-        System.out.println("\nType Look to check item, Get to pick up item, Go to move to a different location, Show Inventory to see inventory or Quit to exit the game");
+        System.out.println("\nType one of the following commands:\n - (Look) to check item\n- (Get) to pick up item\n- (Go + direction) to move to a different location\n- (Show Inventory) to see inventory\n- (Quit) to exit the game.");
         UserInput.WordCommands(new ArrayList<>());
         String verb = UserInput.verb.toLowerCase();
         String noun = UserInput.noun;
@@ -132,14 +132,14 @@ public class BioBrainApp {
 
     private void lookAtItem(String item) {
         if (!currentLocation.getItems().contains(item)) {
-            System.out.println("\nItem not found");
+            System.out.println("\nItem not found! Please try again.");
             return;
         }
 
         String itemDescription = Item.getDescriptions(item);
         int damageValue = Item.getDamageValue(item);
         System.out.println("\n===================================================");
-        System.out.printf("\nItem description:  %s it has a damage value of %s \n", itemDescription, damageValue);
+        System.out.printf("\nItem description:\n  %s it has a damage value of %s \n", itemDescription, damageValue);
         System.out.println("\n===================================================");
         Console.pause(1000);
     }
