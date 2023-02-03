@@ -8,9 +8,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.*;
-import java.util.stream.Stream;
 
-import static com.biobrain.UserInput.WordCommands;
 
 public class BioBrainApp {
     private static final String GAME_INTRO = "intro/intro.txt";
@@ -221,4 +219,12 @@ public class BioBrainApp {
         return null;
     }
 
+
+    private void printFile(String fileName) {
+    try (BufferedReader buffer = new BufferedReader(new InputStreamReader(getClass().getClassLoader().getResourceAsStream(fileName)))) {
+        buffer.lines().forEach(System.out::println);
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
+}
 }
