@@ -55,9 +55,7 @@ public class BioBrainApp {
     }
 
     private void game() {
-        System.out.println("\n\nYour plan worked! You reprogrammed the BioBrain and now they know everything!\n" +
-                "It's the last day before the director shuts down the Jung_E project. If you're going to escape with\n" +
-                "the BioBrain it's now or never. Hurry! Try to make it to the Train Dock! There isn't much time!\n\n");
+        printFile("intro/startGame.txt");
         Console.pause(8000);
         System.out.println("BEEP BEEP BEEP!\n");
         System.out.println("\nThat's the alarm! Someone must have detected that the BioBrain is missing from the Production Room!\n" +
@@ -221,10 +219,10 @@ public class BioBrainApp {
 
 
     private void printFile(String fileName) {
-    try (BufferedReader buffer = new BufferedReader(new InputStreamReader(getClass().getClassLoader().getResourceAsStream(fileName)))) {
-        buffer.lines().forEach(System.out::println);
-    } catch (IOException e) {
-        e.printStackTrace();
+        try (BufferedReader buffer = new BufferedReader(new InputStreamReader(getClass().getClassLoader().getResourceAsStream(fileName)))) {
+            buffer.lines().forEach(System.out::println);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
-}
 }

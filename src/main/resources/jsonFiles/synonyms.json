@@ -1,0 +1,21 @@
+{
+  "synonyms": [
+    {
+      "word": "go",
+      "synonyms": ["move", "head"]
+    },
+    {
+      "word": "get",
+      "synonyms" : ["take", "grab", "pick up"]
+    },
+    {
+      "word": "drop",
+      "synonyms": ["release", "let go"]
+    },
+    {
+      "word": "look",
+      "synonyms": ["see", "check", "view"]
+    }
+  ]
+}
+
