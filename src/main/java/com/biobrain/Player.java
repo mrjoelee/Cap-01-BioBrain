@@ -31,7 +31,7 @@ public class Player extends Character {
         if (inventory.isEmpty()) {
             return String.format("\n =========== PLAYER INFO =================\n" +
                     "\n      Your health is at %s", getHealth() +
-                    "\n      Your current inventory is empty." +
+                    "\n      Your current inventory is empty.\n" +
                     "\n\n =========================================\n");
         }
 

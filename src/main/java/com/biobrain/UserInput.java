@@ -22,6 +22,7 @@ public class UserInput {
             Gson gson = new Gson();
             UserInput input = gson.fromJson(reader, UserInput.class);
 
+
             while (true) {
                 System.out.println("Choose a command: ");
                 Scanner scanner = new Scanner(System.in);
@@ -34,14 +35,15 @@ public class UserInput {
                 }
                 String[] words = userInput.split(" ");
 
-                verb = words[0];
+                verb = VerbSynonymList.getSynonym(words[0]);
                 noun = words[1];
 
                 if (words.length != 2) {
                     System.out.println("Please enter a valid command of two words\n");
                 } else {
-                    verb = words[0];
+                    verb = VerbSynonymList.getSynonym(words[0]);
                     noun = words[1];
+
                     if (!input.commands.contains(verb)) {
                         System.out.printf("%s not on list of valid commands\n", verb);
                     }
@@ -58,12 +60,5 @@ public class UserInput {
 
     }
 }
-
-
-
-
-
-
-
 
 
