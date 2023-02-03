@@ -16,15 +16,16 @@ public class Location {
     private Map<String, String> directions;
     private String description;
     private List<String> items;
-
     private String npc;
+    private String map;
 
-    public Location(String name, Map<String, String> directions, String description, List<String> items, String npc) {
+    public Location(String name, Map<String, String> directions, String description, List<String> items, String npc, String map) {
         this.name = name;
         this.directions = directions;
         this.description = description;
         this.items = items;
         this.npc = npc;
+        this.map = map;
     }
 
     public String getName() {
@@ -65,6 +66,10 @@ public class Location {
 
     public void setNpc(String npc) {
         this.npc = npc;
+    }
+
+    public String getMap() {
+        return map;
     }
 
    public static List<Location>parsedLocationsFromJson() {

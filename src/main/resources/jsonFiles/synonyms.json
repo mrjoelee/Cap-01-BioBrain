@@ -2,19 +2,19 @@
   "synonyms": [
     {
       "word": "go",
-      "synonyms": ["move", "head"]
+      "synonyms": ["move", "head", "run", "walk"]
     },
     {
       "word": "get",
-      "synonyms" : ["take", "grab", "pick up"]
+      "synonyms" : ["take", "grab", "acquire", "obtain"]
     },
     {
       "word": "drop",
-      "synonyms": ["release", "let go"]
+      "synonyms": ["release", "let go", "leave"]
     },
     {
       "word": "look",
-      "synonyms": ["see", "check", "view"]
+      "synonyms": ["see", "check", "view", "watch"]
     }
   ]
 }

@@ -15,7 +15,6 @@ public class VerbSynonymList {
         private String word;
         private List<String> synonyms;
     }
-
     public static String getSynonym(String verb) {
 
         try (Reader reader = new InputStreamReader(Objects.requireNonNull(VerbSynonymList.class.getClassLoader().getResourceAsStream("jsonFiles/synonyms.json")))) {
