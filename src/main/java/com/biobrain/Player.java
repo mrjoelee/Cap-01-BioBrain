@@ -37,7 +37,7 @@ public class Player extends Character {
 
         return String.format("\n =========== PLAYER INFO =================\n" +
                 "\n      Your health is at %s", getHealth() +
-                "\n      Your current inventory: " + getInventory() +
+                "\n    Your current inventory: " + getInventory() +
                 "\n\n =========================================\n");
     }
 }

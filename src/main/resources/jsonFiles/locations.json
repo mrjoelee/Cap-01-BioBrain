@@ -5,7 +5,7 @@
       "east": "Sector 2 - Control Lab",
       "south": "Sector 4 - Storage"
     },
-    "description": "This is the Weapon's Chamber",
+    "description": "This is the Weapon's Chamber. A highly secured location with limited access. Be sure you have your badge to get in!",
     "items": [
       "blaster",
       "harpoon"
@@ -19,7 +19,7 @@
       "south": "Sector 5 - Lobby Area",
       "west": "Sector 1 - Weapons Chamber"
     },
-    "description": "This is the Control Lab",
+    "description": "This is the Control Lab. You can monitor the entire Space Station from here! There are over a dozen cameras, buttons for Sector access control, and controls for the alarm and comms system.",
     "items": [
       "tablet"
     ],
@@ -31,7 +31,7 @@
       "south": "Sector 6 - Train Dock",
       "west": "Sector 2 - Control Lab"
     },
-    "description": "This is the Production Room",
+    "description": "This is the Production Room. The main hub for AI body creation, beginning from metal shaping all the way to final skin grafting. Tons of robots in there, but they're inactive...or at least they should be.",
     "items": [
       "harpoon",
       "potion"
@@ -44,20 +44,20 @@
       "north": "Sector 1 - Weapons Chamber",
       "east": "Sector 5 - Lobby Area"
     },
-    "description": "This is the Storage",
+    "description": "This is the Storage. Extra tools, extra parts, it's all there.",
     "items": [
       "neuralyzer"
     ],
     "npc": "Rouge AI Robot2"
   },
   {
-    "name": "Sector 5 - Lobby Area",
+    "name": "Sector 5 - Conference Room",
     "directions": {
       "north": "Sector 2 - Control Lab",
       "west": "Sector 4 - Storage",
       "east": "Sector 6 - Train Dock"
     },
-    "description": "This is the Lobby Area",
+    "description": "This is the Conference Room where all the presentations to government agents and the director take place.",
     "items": [
       "neuralyzer"
     ],
@@ -69,7 +69,7 @@
       "north": "Sector 3 - Production Room",
       "west": "Sector 5 - Lobby Area"
     },
-    "description": "This is the Train Dock.. This is where you can escape. But in order to escape, you must defeat the Boss AI Robot.",
+    "description": "This is the Train Dock.. The only way to leave and enter the Space Station. Be careful! You must get there before the boss does!",
     "items": [],
     "npc": "Boss AI Robot"
   }
