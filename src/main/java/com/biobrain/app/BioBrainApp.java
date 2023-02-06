@@ -26,10 +26,10 @@ public class BioBrainApp {
     private boolean gameOver = false;
     private String randomDialogue = Npc.getRandomDialogue();
 
-    public void execute() throws IOException {
+    public void execute() {
         player = Player.create();
         intro();
-        Console.pause(30_000L);
+        Console.pause(25_000L);
         welcome();
         Console.pause(5000);
         askIfUserWantToPlay();
@@ -38,7 +38,7 @@ public class BioBrainApp {
     public void intro() {
         printFile(GAME_INTRO);
         Console.pause(5000);
-        Console.clear();
+
     }
 
     private void welcome() {
@@ -88,6 +88,7 @@ public class BioBrainApp {
         String locationName = currentLocation.getName();
         String mapToPrint = currentLocation.getMap();
         itemsInRoom = currentLocation.getItems();
+
         System.out.println("\n=====================================================\n");
         System.out.printf("\nYOU ARE CURRENTLY IN -> %s \n", locationName);
         Console.pause(1000);
@@ -137,7 +138,7 @@ public class BioBrainApp {
         }
     }
 
-    private void viewDirections(){
+    private void viewDirections() {
         System.out.println("\nYOU CAN CHOOSE FROM THE FOLLOWING DIRECTIONS:");
         currentLocation.getDirections().forEach((key, value) -> System.out.printf("\n-> %s to %s", key, value));
         System.out.println("\n===================================================");
@@ -222,6 +223,15 @@ public class BioBrainApp {
         currentLocation.getDirections().forEach((key, value) -> System.out.printf("\n-> %s to %s", key, value));
         System.out.println("\n===================================================");
         printLocationMap(currentLocation.getMap());
+        if (!player.getVisitedLocations().contains(currentLocation.getName())) {
+            player.getVisitedLocations().add(currentLocation.getName());
+        }
+
+        // printing the location the player have visited.. if need to print map in the future
+//        for(String location : player.getVisitedLocations()){
+//            System.out.println("Visited locations: " + location);
+//        }
+
     }
 
     private Location getLocation(String locationName) {
@@ -233,7 +243,7 @@ public class BioBrainApp {
         return null;
     }
 
-    private void printLocationMap(String mapToPrint){
+    private void printLocationMap(String mapToPrint) {
         printFile(mapToPrint);
     }
 
