@@ -1,15 +1,26 @@
 package com.biobrain;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Player extends Character {
 
     public ArrayList<String> inventory;
+    private List<String> visitedLocations;
+
 
     public Player() {
+        visitedLocations = new ArrayList<>();
         inventory = new ArrayList<String>();
     }
 
+    public void addVisitedLocation(String location){
+        visitedLocations.add(location);
+    }
+
+    public List<String> getVisitedLocations(){
+        return visitedLocations;
+    }
     public static Player create() {
         return new Player();
     }
