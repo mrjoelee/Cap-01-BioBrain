@@ -1,0 +1,21 @@
+{
+  "synonyms": [
+    {
+      "word": "go",
+      "synonyms": ["move", "head", "run", "walk"]
+    },
+    {
+      "word": "get",
+      "synonyms" : ["take", "grab", "acquire", "obtain"]
+    },
+    {
+      "word": "drop",
+      "synonyms": ["release", "leave"]
+    },
+    {
+      "word": "look",
+      "synonyms": ["see", "check", "view", "watch"]
+    }
+  ]
+}
+

@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.Random;
 
 public class Npc extends Character {
     private String name;
@@ -25,7 +26,7 @@ public class Npc extends Character {
         this.name = name;
     }
 
-    public String getDescription() {
+    public  String getDescription() {
         return description;
     }
 
@@ -68,6 +69,20 @@ public class Npc extends Character {
         }
         return "Npc weapon not found";
     }
+
+    private static final String[] DIALOGUE_OPTIONS = {
+            "This is a violation of protocol, report to the director immediately.",
+            "Come with me Dr. Z.",
+            "Unauthorized AI movement detected. Return to your station now.",
+            "Put down your weapon or be detained.",
+            "Cease further action, or you will neutralized.",
+            "Return to the Control Lab!"
+    };
+
+    public static String getRandomDialogue() {
+        return DIALOGUE_OPTIONS[new Random().nextInt(DIALOGUE_OPTIONS.length)];
+    }
+
 }
 
 
