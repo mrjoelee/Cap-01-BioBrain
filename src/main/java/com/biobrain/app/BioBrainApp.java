@@ -29,7 +29,7 @@ public class BioBrainApp {
     public void execute() throws IOException {
         player = Player.create();
         intro();
-        Console.pause(9000);
+        Console.pause(30_000L);
         welcome();
         Console.pause(5000);
         askIfUserWantToPlay();
@@ -89,18 +89,18 @@ public class BioBrainApp {
         String mapToPrint = currentLocation.getMap();
         itemsInRoom = currentLocation.getItems();
         System.out.println("\n=====================================================\n");
-        System.out.printf("\nYou are currently in %s \n", locationName);
+        System.out.printf("\nYOU ARE CURRENTLY IN -> %s \n", locationName);
         Console.pause(1000);
 
         System.out.println("\nLooking around you see the following items: ");
         for (String item : itemsInRoom) {
-            System.out.println("\n " + item);
+            System.out.println("\n- " + item);
         }
 
-        System.out.println("\n\nThere are also doors that lead to:");
+        System.out.println("\n\nTHERE ARE ALSO DOORS THAT LEAD TO");
         directions = currentLocation.getDirections();
         for (Map.Entry<String, String> direction : directions.entrySet()) {
-            System.out.printf("\n%s to %s", direction.getKey(), direction.getValue());
+            System.out.printf("\n-> %s to %s", direction.getKey(), direction.getValue());
         }
         System.out.println("\n===================================================");
         printLocationMap(mapToPrint);
@@ -108,7 +108,7 @@ public class BioBrainApp {
 
 
     private void askPlayerAction() {
-        System.out.println("\nType one of the following commands:\n- (Look) to check item\n- (Get) to pick up item\n- (Go + direction) to move to a different location\n- (Show Inventory) to see inventory\n- (Quit) to exit the game.");
+        System.out.println("\nWhat would you like to do?:\n\n- (Look) to check item\n- (Get) to pick up item\n- (Go + direction) to move to a different location\n- (Show Inventory) to see inventory\n- (Show Directions)\n- (Quit) to exit the game.");
         UserInput.WordCommands(new ArrayList<>());
         String verb = UserInput.verb.toLowerCase();
         String noun = UserInput.noun;
@@ -127,12 +127,21 @@ public class BioBrainApp {
             case "show":
                 if (noun.equalsIgnoreCase("inventory")) {
                     showInventory();
+                } else if (noun.equalsIgnoreCase("directions")) {
+                    viewDirections();
                 }
                 break;
             case "drop":
                 dropItem(noun);
                 break;
         }
+    }
+
+    private void viewDirections(){
+        System.out.println("\nYOU CAN CHOOSE FROM THE FOLLOWING DIRECTIONS:");
+        currentLocation.getDirections().forEach((key, value) -> System.out.printf("\n-> %s to %s", key, value));
+        System.out.println("\n===================================================");
+        printLocationMap(currentLocation.getMap());
     }
 
     private void lookAtItem(String item) {
@@ -144,7 +153,7 @@ public class BioBrainApp {
         String itemDescription = Item.getDescriptions(item);
         int damageValue = Item.getDamageValue(item);
         System.out.println("\n===================================================");
-        System.out.printf("\nItem description:\n  %s. It has a damage value of %s \n", itemDescription, damageValue);
+        System.out.printf("\n*** Item description:\n- %s. It has a damage value of %s \n", itemDescription, damageValue);
         System.out.println("\n===================================================");
         Console.pause(1000);
     }
@@ -157,7 +166,7 @@ public class BioBrainApp {
 
         player.addItem(itemToPickup);
         itemsInRoom.remove(itemToPickup);
-        System.out.printf("\nYou picked up the %s \n", itemToPickup);
+        System.out.printf("\nAwesome! You've added the %s to your inventory!\n", itemToPickup);
         System.out.println(player.displayPlayerInfo());
         Console.pause(1000);
     }
@@ -186,7 +195,7 @@ public class BioBrainApp {
         }
         player.removeItem(itemToDrop);
         itemsInRoom.add(itemToDrop);
-        System.out.printf("\n You dropped the %s ", itemToDrop);
+        System.out.printf("\n The %s has been removed from your inventory. ", itemToDrop);
         System.out.println(player.displayPlayerInfo());
     }
 
@@ -205,12 +214,12 @@ public class BioBrainApp {
         currentLocation = getLocation(nextLocation);
         itemsInRoom = currentLocation.getItems();
         System.out.println("\n=======================================================");
-        System.out.printf("\nYou are currently in %s \n", currentLocation.getName());
+        System.out.printf("\nYou're now in -> %s \n", currentLocation.getName());
         System.out.println("\nLooking around you see the following items: ");
-        itemsInRoom.forEach(item -> System.out.println("\n " + item));
+        itemsInRoom.forEach(item -> System.out.println("\n- " + item));
         System.out.println("\n=============================================================");
-        System.out.println("\nYou can go to the following directions: ");
-        currentLocation.getDirections().forEach((key, value) -> System.out.printf("\n %s to %s", key, value));
+        System.out.println("\nTHERE ARE ALSO DOORS THAT LEAD TO:");
+        currentLocation.getDirections().forEach((key, value) -> System.out.printf("\n-> %s to %s", key, value));
         System.out.println("\n===================================================");
         printLocationMap(currentLocation.getMap());
     }

@@ -17,7 +17,7 @@
     "name": "Sector 2 - Control Lab",
     "directions": {
       "east": "Sector 3 - Production Room",
-      "south": "Sector 5 - Lobby Area",
+      "south": "Sector 5 - Conference Room",
       "west": "Sector 1 - Weapons Chamber"
     },
     "description": "This is the Control Lab. You can monitor the entire Space Station from here! There are over a dozen cameras, buttons for Sector access control, and controls for the alarm and comms system.",
@@ -45,7 +45,7 @@
     "name": "Sector 4 - Storage",
     "directions": {
       "north": "Sector 1 - Weapons Chamber",
-      "east": "Sector 5 - Lobby Area"
+      "east": "Sector 5 - Conference Room"
     },
     "description": "This is the Storage. Extra tools, extra parts, it's all there.",
     "items": [
@@ -72,7 +72,7 @@
     "name": "Sector 6 - Train Dock",
     "directions": {
       "north": "Sector 3 - Production Room",
-      "west": "Sector 5 - Lobby Area"
+      "west": "Sector 5 - Conference Room"
     },
     "description": "This is the Train Dock.. The only way to leave and enter the Space Station. Be careful! You must get there before the boss does!",
     "items": [],

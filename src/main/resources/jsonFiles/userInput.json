@@ -12,7 +12,8 @@
     "get",
     "drop",
     "move",
-    "show"
+    "show",
+    "view"
   ],
   "objects": [
     "north",
@@ -25,6 +26,7 @@
     "tablet",
     "harpoon",
     "inventory",
-    "blaster"
+    "blaster",
+    "directions"
   ]
 }

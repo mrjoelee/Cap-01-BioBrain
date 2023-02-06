@@ -1,6 +1,5 @@
 package com.biobrain;
 
-import com.biobrain.app.BioBrainApp;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
