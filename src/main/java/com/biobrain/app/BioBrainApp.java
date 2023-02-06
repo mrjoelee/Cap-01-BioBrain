@@ -12,8 +12,10 @@ import java.util.*;
 
 public class BioBrainApp {
     private static final String GAME_INTRO = "intro/intro.txt";
+    private static final String START_GAME = "intro/startGame.txt";
     private static final String SPLASH_SCREEN = "images/welcomeRobot.txt";
     private static final String NO_BANNER = "images/dontWantToPlayBanner.txt";
+    private static final String MAIN_MAP = "images/mapMain.txt";
     private final Prompter prompter = new Prompter(new Scanner(System.in));
     private Player player;
     private String npc;
@@ -22,9 +24,7 @@ public class BioBrainApp {
     private Map<String, String> directions;
     private List<String> itemsInRoom;
     private boolean gameOver = false;
-
     private String randomDialogue = Npc.getRandomDialogue();
-
 
     public void execute() throws IOException {
         player = Player.create();
@@ -58,15 +58,16 @@ public class BioBrainApp {
     }
 
     private void game() {
-        printFile("intro/startGame.txt");
+        printFile(START_GAME);
         Console.pause(8000);
         System.out.println("                                            *** BEEP *** BEEP *** BEEP! ***\n");
         System.out.println("\n              That's the alarm! Someone must have detected that the BioBrain is missing from the Production Room!\n" +
                 "                                                    You've got to get moving!");
         Console.clear();
+        printFile(MAIN_MAP);
+        Console.pause(4000);
         currentPlayerLocation();
         if (!gameOver) {
-            printFile("images/mapBioBrain.txt");
             while (!gameOver) {
                 askPlayerAction();
             }
@@ -84,9 +85,11 @@ public class BioBrainApp {
         }
 
         currentLocation = locations.get(1);
+        String locationName = currentLocation.getName();
+        String mapToPrint = currentLocation.getMap();
         itemsInRoom = currentLocation.getItems();
         System.out.println("\n=====================================================\n");
-        System.out.printf("\nYou are currently in %s \n", currentLocation.getName());
+        System.out.printf("\nYou are currently in %s \n", locationName);
         Console.pause(1000);
 
         System.out.println("\nLooking around you see the following items: ");
@@ -100,6 +103,7 @@ public class BioBrainApp {
             System.out.printf("\n%s to %s", direction.getKey(), direction.getValue());
         }
         System.out.println("\n===================================================");
+        printLocationMap(mapToPrint);
     }
 
 
@@ -144,7 +148,6 @@ public class BioBrainApp {
         System.out.println("\n===================================================");
         Console.pause(1000);
     }
-
 
     private void getItem(String itemToPickup) {
         if (!currentLocation.getItems().contains(itemToPickup)) {
@@ -209,6 +212,7 @@ public class BioBrainApp {
         System.out.println("\nYou can go to the following directions: ");
         currentLocation.getDirections().forEach((key, value) -> System.out.printf("\n %s to %s", key, value));
         System.out.println("\n===================================================");
+        printLocationMap(currentLocation.getMap());
     }
 
     private Location getLocation(String locationName) {
@@ -220,8 +224,13 @@ public class BioBrainApp {
         return null;
     }
 
+    private void printLocationMap(String mapToPrint){
+        printFile(mapToPrint);
+    }
 
     private void printFile(String fileName) {
+        //noinspection ConstantConditions
+
         try (BufferedReader buffer = new BufferedReader(new InputStreamReader(getClass().getClassLoader().getResourceAsStream(fileName)))) {
             buffer.lines().forEach(System.out::println);
         } catch (IOException e) {

@@ -10,7 +10,8 @@
       "blaster",
       "harpoon"
     ],
-    "npc": ""
+    "npc": "",
+    "map": "images/mapS1.txt"
   },
   {
     "name": "Sector 2 - Control Lab",
@@ -23,7 +24,8 @@
     "items": [
       "tablet"
     ],
-    "npc": ""
+    "npc": "",
+    "map": "images/mapS2.txt"
   },
   {
     "name": "Sector 3 - Production Room",
@@ -36,7 +38,8 @@
       "harpoon",
       "potion"
     ],
-    "npc": "Rouge AI Robot1"
+    "npc": "Rouge AI Robot1",
+    "map": "images/mapS3.txt"
   },
   {
     "name": "Sector 4 - Storage",
@@ -48,7 +51,8 @@
     "items": [
       "neuralyzer"
     ],
-    "npc": "Rouge AI Robot2"
+    "npc": "Rouge AI Robot2",
+    "map": "images/mapS4.txt"
   },
   {
     "name": "Sector 5 - Conference Room",
@@ -61,7 +65,8 @@
     "items": [
       "neuralyzer"
     ],
-    "npc": "Rouge AI Robot3"
+    "npc": "Rouge AI Robot3",
+    "map": "images/mapS5.txt"
   },
   {
     "name": "Sector 6 - Train Dock",
@@ -71,7 +76,8 @@
     },
     "description": "This is the Train Dock.. The only way to leave and enter the Space Station. Be careful! You must get there before the boss does!",
     "items": [],
-    "npc": "Boss AI Robot"
+    "npc": "Boss AI Robot",
+    "map": "images/mapS6.txt"
   }
 ]
 
