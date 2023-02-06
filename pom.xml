@@ -60,19 +60,19 @@
             <scope>test</scope>
         </dependency>
 
-        <dependency>
-            <groupId>com.apps</groupId>
-            <artifactId>apps-util</artifactId>
-            <version>1.1</version>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>com.apps</groupId>-->
+<!--            <artifactId>apps-util</artifactId>-->
+<!--            <version>1.1</version>-->
+<!--        </dependency>-->
 
-<!--            <dependency>-->
-<!--              <groupId>app-utils</groupId>-->
-<!--              <artifactId>app-utils</artifactId>-->
-<!--              <version>1.1</version>-->
-<!--              <scope>system</scope>-->
-<!--              <systemPath>${project.basedir}/lib/app-utils-1.1.jar</systemPath>-->
-<!--            </dependency>-->
+            <dependency>
+              <groupId>app-utils</groupId>
+              <artifactId>app-utils</artifactId>
+              <version>1.1</version>
+              <scope>system</scope>
+              <systemPath>${project.basedir}/lib/app-utils-1.1.jar</systemPath>
+            </dependency>
 
         <dependency>
             <groupId>com.google.code.gson</groupId>
