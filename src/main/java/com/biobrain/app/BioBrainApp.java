@@ -29,8 +29,9 @@ public class BioBrainApp {
     public void execute() throws IOException {
         player = Player.create();
         intro();
+        Console.pause(30_000L);
         welcome();
-        Console.pause(1500);
+        Console.pause(5000);
         askIfUserWantToPlay();
     }
 
@@ -45,10 +46,10 @@ public class BioBrainApp {
     }
 
     private void askIfUserWantToPlay() {
-        System.out.println("\nWould you like to play Bio Brain? Yes or No ");
-        String input = prompter.prompt("Enter response: ", "(?i)(Yes|No)", "\nInvalid input... Please type Yes or No \n");
+        System.out.println("\n                                                Would you like to play Bio Brain?");
+        String input = prompter.prompt("                                                         Enter yes/no: ", "(?i)(Yes|No)", "\nInvalid input... Please type Yes or No \n");
         if (input.equalsIgnoreCase("yes")) {
-            System.out.println("\nLet's play!");
+            System.out.println("\n!");
             Console.clear();
             game();
         } else {
@@ -59,9 +60,9 @@ public class BioBrainApp {
     private void game() {
         printFile(START_GAME);
         Console.pause(8000);
-        System.out.println("BEEP BEEP BEEP!\n");
-        System.out.println("\nThat's the alarm! Someone must have detected that the BioBrain is missing from the Production Room!\n" +
-                "You've got to get moving!");
+        System.out.println("                                            *** BEEP *** BEEP *** BEEP! ***\n");
+        System.out.println("\n              That's the alarm! Someone must have detected that the BioBrain is missing from the Production Room!\n" +
+                "                                                    You've got to get moving!");
         Console.clear();
         printFile(MAIN_MAP);
         Console.pause(4000);
@@ -88,18 +89,18 @@ public class BioBrainApp {
         String mapToPrint = currentLocation.getMap();
         itemsInRoom = currentLocation.getItems();
         System.out.println("\n=====================================================\n");
-        System.out.printf("\nYou are currently in %s \n", locationName);
+        System.out.printf("\nYOU ARE CURRENTLY IN -> %s \n", locationName);
         Console.pause(1000);
 
-        System.out.println("\nYou see the following items: ");
+        System.out.println("\nLooking around you see the following items: ");
         for (String item : itemsInRoom) {
-            System.out.println("\n " + item);
+            System.out.println("\n- " + item);
         }
 
-        System.out.println("\n\nYou can choose to go: ");
+        System.out.println("\n\nTHERE ARE ALSO DOORS THAT LEAD TO");
         directions = currentLocation.getDirections();
         for (Map.Entry<String, String> direction : directions.entrySet()) {
-            System.out.printf("\n%s to %s", direction.getKey(), direction.getValue());
+            System.out.printf("\n-> %s to %s", direction.getKey(), direction.getValue());
         }
         System.out.println("\n===================================================");
         printLocationMap(mapToPrint);
@@ -107,7 +108,7 @@ public class BioBrainApp {
 
 
     private void askPlayerAction() {
-        System.out.println("\nType Look to check item, Get to pick up item, Go to move to a different location, Show Inventory to see inventory or Quit to exit the game");
+        System.out.println("\nWhat would you like to do?:\n\n- (Look) to check item\n- (Get) to pick up item\n- (Go + direction) to move to a different location\n- (Show Inventory) to see inventory\n- (Show Directions)\n- (Quit) to exit the game.");
         UserInput.WordCommands(new ArrayList<>());
         String verb = UserInput.verb.toLowerCase();
         String noun = UserInput.noun;
@@ -126,6 +127,8 @@ public class BioBrainApp {
             case "show":
                 if (noun.equalsIgnoreCase("inventory")) {
                     showInventory();
+                } else if (noun.equalsIgnoreCase("directions")) {
+                    viewDirections();
                 }
                 break;
             case "drop":
@@ -134,29 +137,36 @@ public class BioBrainApp {
         }
     }
 
+    private void viewDirections(){
+        System.out.println("\nYOU CAN CHOOSE FROM THE FOLLOWING DIRECTIONS:");
+        currentLocation.getDirections().forEach((key, value) -> System.out.printf("\n-> %s to %s", key, value));
+        System.out.println("\n===================================================");
+        printLocationMap(currentLocation.getMap());
+    }
+
     private void lookAtItem(String item) {
         if (!currentLocation.getItems().contains(item)) {
-            System.out.println("\nItem not found");
+            System.out.println("\nItem not found! Please try again.");
             return;
         }
 
         String itemDescription = Item.getDescriptions(item);
         int damageValue = Item.getDamageValue(item);
         System.out.println("\n===================================================");
-        System.out.printf("\nItem description:  %s it has a damage value of %s \n", itemDescription, damageValue);
+        System.out.printf("\n*** Item description:\n- %s. It has a damage value of %s \n", itemDescription, damageValue);
         System.out.println("\n===================================================");
         Console.pause(1000);
     }
 
     private void getItem(String itemToPickup) {
         if (!currentLocation.getItems().contains(itemToPickup)) {
-            System.out.println("\nItem not found");
+            System.out.println("\nItem not found! Please try again.");
             return;
         }
 
         player.addItem(itemToPickup);
         itemsInRoom.remove(itemToPickup);
-        System.out.printf("\nYou picked up %s \n", itemToPickup);
+        System.out.printf("\nAwesome! You've added the %s to your inventory!\n", itemToPickup);
         System.out.println(player.displayPlayerInfo());
         Console.pause(1000);
     }
@@ -180,12 +190,12 @@ public class BioBrainApp {
 
     private void dropItem(String itemToDrop) {
         if (!isItemInInventory(itemToDrop)) {
-            System.out.println("\nItem not found");
+            System.out.println("\nItem not found! Please try again.");
             return;
         }
         player.removeItem(itemToDrop);
         itemsInRoom.add(itemToDrop);
-        System.out.printf("\n You dropped %s ", itemToDrop);
+        System.out.printf("\n The %s has been removed from your inventory. ", itemToDrop);
         System.out.println(player.displayPlayerInfo());
     }
 
@@ -197,19 +207,19 @@ public class BioBrainApp {
     private void movePlayer(String direction) {
         String nextLocation = currentLocation.getDirections().get(direction.toLowerCase());
         if (nextLocation == null) {
-            System.out.println("\nYou can't go that way");
+            System.out.println("\nOh no! Looks like you can't go that way!");
             return;
         }
 
         currentLocation = getLocation(nextLocation);
         itemsInRoom = currentLocation.getItems();
         System.out.println("\n=======================================================");
-        System.out.printf("\nYou are currently in %s \n", currentLocation.getName());
-        System.out.println("\nYou see the following items: ");
-        itemsInRoom.forEach(item -> System.out.println("\n " + item));
+        System.out.printf("\nYou're now in -> %s \n", currentLocation.getName());
+        System.out.println("\nLooking around you see the following items: ");
+        itemsInRoom.forEach(item -> System.out.println("\n- " + item));
         System.out.println("\n=============================================================");
-        System.out.println("\nYou can go to the following directions: ");
-        currentLocation.getDirections().forEach((key, value) -> System.out.printf("\n %s to %s", key, value));
+        System.out.println("\nTHERE ARE ALSO DOORS THAT LEAD TO:");
+        currentLocation.getDirections().forEach((key, value) -> System.out.printf("\n-> %s to %s", key, value));
         System.out.println("\n===================================================");
         printLocationMap(currentLocation.getMap());
     }

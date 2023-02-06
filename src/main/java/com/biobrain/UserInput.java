@@ -1,10 +1,9 @@
 package com.biobrain;
 
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
+
 
 import java.io.*;
-import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Scanner;
 
@@ -24,7 +23,7 @@ public class UserInput {
 
 
             while (true) {
-                System.out.println("Choose a command: ");
+                System.out.println("\nType one of the commands above: ");
                 Scanner scanner = new Scanner(System.in);
                 String userInput = scanner.nextLine().trim();
 
