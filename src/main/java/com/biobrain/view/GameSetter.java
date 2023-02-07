@@ -18,5 +18,11 @@ public class GameSetter {
         window.setVisible(true);
 
         gamePanel.startGameThread();
+        displayHelpWindow(gamePanel);
+    }
+
+    static void displayHelpWindow(GamePanel parent) {
+        String help = new StringBuffer().append("READ ME").toString();
+        JOptionPane.showMessageDialog(parent, help);
     }
 }
