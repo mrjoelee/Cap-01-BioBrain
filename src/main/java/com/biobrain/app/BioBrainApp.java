@@ -29,16 +29,15 @@ public class BioBrainApp {
     public void execute() {
         player = Player.create();
         intro();
-        Console.pause(25_000L);
+        Console.pause(5000L); ///25_000L
         welcome();
-        Console.pause(5000);
+        Console.pause(1000);  // 5000
         askIfUserWantToPlay();
     }
 
     public void intro() {
         printFile(GAME_INTRO);
-        Console.pause(5000);
-
+        // 5000
     }
 
     private void welcome() {
@@ -59,7 +58,7 @@ public class BioBrainApp {
 
     private void game() {
         printFile(START_GAME);
-        Console.pause(8000);
+        Console.pause(1000); //8000
         System.out.println("                                            *** BEEP *** BEEP *** BEEP! ***\n");
         System.out.println("\n              That's the alarm! Someone must have detected that the BioBrain is missing from the Production Room!\n" +
                 "                                                    You've got to get moving!");
