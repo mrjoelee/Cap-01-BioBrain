@@ -1,4 +1,4 @@
-package com.biobrain;
+package com.biobrain.model;
 
 import java.util.ArrayList;
 import java.util.List;

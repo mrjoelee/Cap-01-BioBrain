@@ -1,10 +1,9 @@
-package com.biobrain;
+package com.biobrain.model;
 
 import com.google.gson.Gson;
 
 
 import java.io.*;
-import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;

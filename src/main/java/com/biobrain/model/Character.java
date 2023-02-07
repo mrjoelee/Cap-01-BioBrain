@@ -1,4 +1,4 @@
-package com.biobrain;
+package com.biobrain.model;
 
 public class Character {
 

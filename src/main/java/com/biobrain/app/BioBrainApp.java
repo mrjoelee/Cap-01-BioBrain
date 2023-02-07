@@ -2,7 +2,7 @@ package com.biobrain.app;
 
 import com.apps.util.Console;
 import com.apps.util.Prompter;
-import com.biobrain.*;
+import com.biobrain.model.*;
 import com.biobrain.view.View;
 
 import java.io.BufferedReader;
@@ -32,9 +32,13 @@ public class BioBrainApp {
     public void execute() {
         player = Player.create();
         intro();
+<<<<<<< HEAD
         //Console.pause(25_000L);
         welcome();
         //Console.pause(5000);
+=======
+        welcome();
+>>>>>>> 3a026d2ddd59044127026fa11c8433715079626b
         askIfUserWantToPlay();
     }
 
@@ -62,7 +66,10 @@ public class BioBrainApp {
 
     private void game() {
         printFile(START_GAME);
+<<<<<<< HEAD
 
+=======
+>>>>>>> 3a026d2ddd59044127026fa11c8433715079626b
         System.out.println("                                            *** BEEP *** BEEP *** BEEP! ***\n");
         System.out.println("\n              That's the alarm! Someone must have detected that the BioBrain is missing from the Production Room!\n" +
                 "                                                    You've got to get moving!");
