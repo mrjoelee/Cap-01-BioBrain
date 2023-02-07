@@ -1,4 +1,4 @@
-package com.biobrain;
+package com.biobrain.model;
 
 import com.google.gson.Gson;
 
