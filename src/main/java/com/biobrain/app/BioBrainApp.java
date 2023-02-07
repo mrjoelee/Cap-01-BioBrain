@@ -3,6 +3,7 @@ package com.biobrain.app;
 import com.apps.util.Console;
 import com.apps.util.Prompter;
 import com.biobrain.*;
+import com.biobrain.view.View;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -16,6 +17,7 @@ public class BioBrainApp {
     private static final String SPLASH_SCREEN = "images/welcomeRobot.txt";
     private static final String NO_BANNER = "images/dontWantToPlayBanner.txt";
     private static final String MAIN_MAP = "images/mapMain.txt";
+    private static final String PROMPT_TO_CONTINUE = "\n Press [ENTER] to continue...";
     private final Prompter prompter = new Prompter(new Scanner(System.in));
     private Player player;
     private String npc;
@@ -25,19 +27,31 @@ public class BioBrainApp {
     private List<String> itemsInRoom;
     private boolean gameOver = false;
     private String randomDialogue = Npc.getRandomDialogue();
+    public final View view = new View();
 
     public void execute() {
         player = Player.create();
         intro();
+<<<<<<< Updated upstream
         Console.pause(5000L); ///25_000L
         welcome();
         Console.pause(1000);  // 5000
+=======
+        //Console.pause(25_000L);
+        welcome();
+        //Console.pause(5000);
+>>>>>>> Stashed changes
         askIfUserWantToPlay();
     }
 
     public void intro() {
         printFile(GAME_INTRO);
+<<<<<<< Updated upstream
         // 5000
+=======
+        promptContinue();
+        Console.clear();
+>>>>>>> Stashed changes
     }
 
     private void welcome() {
@@ -58,13 +72,18 @@ public class BioBrainApp {
 
     private void game() {
         printFile(START_GAME);
+<<<<<<< Updated upstream
         Console.pause(1000); //8000
+=======
+        //Console.pause(8000);
+>>>>>>> Stashed changes
         System.out.println("                                            *** BEEP *** BEEP *** BEEP! ***\n");
         System.out.println("\n              That's the alarm! Someone must have detected that the BioBrain is missing from the Production Room!\n" +
                 "                                                    You've got to get moving!");
+        promptContinue();
         Console.clear();
         printFile(MAIN_MAP);
-        Console.pause(4000);
+        //Console.pause(4000);
         currentPlayerLocation();
         if (!gameOver) {
             while (!gameOver) {
@@ -254,5 +273,12 @@ public class BioBrainApp {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    //pauses & allows user to continue
+    private void promptContinue(){
+        System.out.println(PROMPT_TO_CONTINUE);
+        Scanner scanner = new Scanner(System.in);
+        scanner.nextLine();
     }
 }
