@@ -32,26 +32,16 @@ public class BioBrainApp {
     public void execute() {
         player = Player.create();
         intro();
-<<<<<<< Updated upstream
-        Console.pause(5000L); ///25_000L
-        welcome();
-        Console.pause(1000);  // 5000
-=======
         //Console.pause(25_000L);
         welcome();
         //Console.pause(5000);
->>>>>>> Stashed changes
         askIfUserWantToPlay();
     }
 
     public void intro() {
         printFile(GAME_INTRO);
-<<<<<<< Updated upstream
-        // 5000
-=======
         promptContinue();
         Console.clear();
->>>>>>> Stashed changes
     }
 
     private void welcome() {
@@ -72,11 +62,7 @@ public class BioBrainApp {
 
     private void game() {
         printFile(START_GAME);
-<<<<<<< Updated upstream
-        Console.pause(1000); //8000
-=======
-        //Console.pause(8000);
->>>>>>> Stashed changes
+
         System.out.println("                                            *** BEEP *** BEEP *** BEEP! ***\n");
         System.out.println("\n              That's the alarm! Someone must have detected that the BioBrain is missing from the Production Room!\n" +
                 "                                                    You've got to get moving!");
