@@ -21,6 +21,8 @@ public class GamePanel extends JPanel implements Runnable{
     final int screenHeight = tileSize * maxScreenRow;       // window height
     double FPS = 60;                                        // frames per second (how smoothly game animation runs)
 
+    String gameState = "title";
+
     KeyHandler keyHandler = new KeyHandler();               // create new instance of input manager for keyboard commands
     Thread gameThread;                                      // create a new thread for game logic
     Player player = new Player(this, keyHandler);  // create instance of Player
@@ -30,7 +32,7 @@ public class GamePanel extends JPanel implements Runnable{
     // CTOR
     public GamePanel(){
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
-        this.setBackground(Color.BLACK);
+        this.setBackground(Color.white);
         this.setDoubleBuffered(true);
         this.addKeyListener(keyHandler);
         this.setFocusable(true);
@@ -52,6 +54,7 @@ public class GamePanel extends JPanel implements Runnable{
             update();  // constantly runs the update() method, this is allowing player movement
             repaint(); // this is actually calling paintComponent each frame to update graphics
 
+
             try{
                 double remainingTime = nextDrawTime - System.nanoTime(); // subtract system time from nextDrawTime
                 remainingTime = remainingTime/1000000;                   // normalize time to 1 digit (seconds)
@@ -72,7 +75,9 @@ public class GamePanel extends JPanel implements Runnable{
     }
 
     // update() runs every frame
-    public void update(){ player.update();  /* listens for player controller for movement */ }
+    public void update(){
+        player.update();  /* listens for player controller for movement */
+    }
 
     // update graphics for player
     public void paintComponent(Graphics g){
