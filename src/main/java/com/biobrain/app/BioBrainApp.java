@@ -251,7 +251,7 @@ public class BioBrainApp {
     private void printFile(String fileName) {
         //noinspection ConstantConditions
 
-        try (BufferedReader buffer = new BufferedReader(new InputStreamReader(getClass().getClassLoader().getResourceAsStream(fileName)))) {
+        try (BufferedReader buffer = new BufferedReader(new InputStreamReader(BioBrainApp.class.getClassLoader().getResourceAsStream(fileName)))) {
             buffer.lines().forEach(System.out::println);
         } catch (IOException e) {
             e.printStackTrace();

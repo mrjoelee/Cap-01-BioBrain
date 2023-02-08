@@ -8,10 +8,14 @@ package com.biobrain.view;
  * begins game
  */
 
+import com.biobrain.app.BioBrainApp;
 import com.biobrain.util.WindowInterface;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 
 public class GameSetter implements WindowInterface {
 
@@ -32,7 +36,7 @@ public class GameSetter implements WindowInterface {
 
         gamePanel.startGameThread();                            // begin the game thread to start game loop
 
-        WindowInterface.displayPopUpWindow(gamePanel, "READ ME"); // call a pop-up window
+        WindowInterface.displayPopUpWindow(gamePanel, WindowInterface.printFile("Instructions/Instructions.txt")); // call a pop-up window
     }
 
 
