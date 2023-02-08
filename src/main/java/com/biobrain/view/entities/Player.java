@@ -8,6 +8,7 @@ package com.biobrain.view.entities;
  * contains methods to update player object graphics
  */
 
+import com.biobrain.util.FileLoader;
 import com.biobrain.view.GamePanel;
 import com.biobrain.view.KeyHandler;
 
@@ -38,20 +39,15 @@ public class Player extends Entity{
     }
 
     public void getPlayerImage(){
-        try{
             //manage sprites loaded
-            up1 = ImageIO.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("images/player_up_1.png")));
-            up2 = ImageIO.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("images/player_up_2.png")));
-            down1 = ImageIO.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("images/player_down_1.png")));
-            down2 = ImageIO.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("images/player_down_2.png")));
-            left1 = ImageIO.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("images/player_left_1.png")));
-            left2 = ImageIO.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("images/player_left_2.png")));
-            right1 = ImageIO.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("images/player_right_1.png")));
-            right2 = ImageIO.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("images/player_right_2.png")));
-        }
-        catch(IOException e){
-            e.printStackTrace();
-        }
+            up1 = FileLoader.loadBuffered("images/player_up_1.png");
+            up2 =   FileLoader.loadBuffered("images/player_up_2.png");
+            down1 = FileLoader.loadBuffered("images/player_down_1.png");
+            down2 = FileLoader.loadBuffered("images/player_down_2.png");
+            left1 = FileLoader.loadBuffered("images/player_left_1.png");
+            left2 = FileLoader.loadBuffered("images/player_left_2.png");
+            right1 =FileLoader.loadBuffered("images/player_right_1.png");
+            right2 =FileLoader.loadBuffered("images/player_right_2.png");
     }
 
     // function will be called each frame, only contains logic that needs constant updating
