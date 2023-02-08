@@ -15,6 +15,7 @@ public class Main {
     public static void main(String[] args) {
 //        BioBrainApp app = new BioBrainApp();
 //        app.execute();
+
         GameSetter.setGame(); // create new game window, start app
     }
 }
