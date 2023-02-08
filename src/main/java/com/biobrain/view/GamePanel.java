@@ -20,7 +20,6 @@ public class GamePanel extends JPanel implements Runnable {
     final int screenWidth = tileSize * maxScreenCol;        // window width
     final int screenHeight = tileSize * maxScreenRow;       // window height
     double FPS = 60;                                        // frames per second (how smoothly game animation runs)
-
     KeyHandler keyHandler = new KeyHandler(this);        // create new instance of input manager for keyboard commands
     Thread gameThread;                                       // create a new thread for game logic
     Player player = new Player(this, keyHandler);  // create instance of Player
@@ -41,7 +40,7 @@ public class GamePanel extends JPanel implements Runnable {
     // CTOR
     public GamePanel() {
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
-        this.setBackground(Color.BLACK);
+        this.setBackground(Color.white);
         this.setDoubleBuffered(true);
         this.addKeyListener(keyHandler);
         this.setFocusable(true);
@@ -87,7 +86,6 @@ public class GamePanel extends JPanel implements Runnable {
         if (gameState == playState) {
             player.update(); /* listens for player controller for movement */
         }
-
     }
 
     // update graphics for player
@@ -108,5 +106,4 @@ public class GamePanel extends JPanel implements Runnable {
     public int getTileSize() {
         return tileSize;
     }
-
 }
