@@ -11,12 +11,14 @@ package com.biobrain.view;
 import com.biobrain.util.WindowInterface;
 
 import javax.swing.*;
+import java.awt.*;
 
 public class GameSetter implements WindowInterface {
 
     // create a window of the game logic and begins play
     public static void setGame() {
-        JFrame window = new JFrame();                           // create new JFrame window
+        JFrame window = new JFrame();
+        // create new JFrame window
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);  // define what happens upon closing window
         window.setResizable(true);                              // set ability to resize display window
         window.setTitle("BioBrain");                            // set title of window to game title
