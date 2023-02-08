@@ -21,14 +21,5 @@ public interface WindowInterface {
     }
 
     //default method
-     static String printFile(String fileName) {
-        StringBuilder sb = new StringBuilder();
-        //noinspection ConstantConditions
-        try (BufferedReader buffer = new BufferedReader(new InputStreamReader(WindowInterface.class.getClassLoader().getResourceAsStream(fileName)))) {
-            buffer.lines().forEach(x-> sb.append(x).append("\n"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return sb.toString();
-    }
+
 }

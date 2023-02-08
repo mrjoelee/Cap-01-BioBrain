@@ -16,6 +16,8 @@ import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class Player extends Entity{
@@ -33,9 +35,9 @@ public class Player extends Entity{
 
     // default player configuration values
     public void setDefaultValues(){
-        xAxis = 100; // player x position
-        yAxis = 100; // player y position
-        speed = 4;   // how fast player moves through positions
+        xAxis = 0; // player x position
+        yAxis = 525; // player y position
+        speed = 2;   // how fast player moves through positions
     }
 
     public void getPlayerImage(){

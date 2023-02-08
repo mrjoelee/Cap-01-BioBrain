@@ -87,6 +87,7 @@ public class GamePanel extends JPanel implements Runnable {
             player.update(); /* listens for player controller for movement */
         }
     }
+
     // update graphics for player
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -105,5 +106,4 @@ public class GamePanel extends JPanel implements Runnable {
     public int getTileSize() {
         return tileSize;
     }
-
 }

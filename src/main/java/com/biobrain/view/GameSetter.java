@@ -9,11 +9,13 @@ package com.biobrain.view;
  */
 
 import com.biobrain.app.BioBrainApp;
+import com.biobrain.util.FileLoader;
 import com.biobrain.util.WindowInterface;
 
 import javax.swing.*;
 import java.awt.*;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
@@ -24,7 +26,7 @@ public class GameSetter implements WindowInterface {
         JFrame window = new JFrame();
         // create new JFrame window
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);  // define what happens upon closing window
-        window.setResizable(true);                              // set ability to resize display window
+        window.setResizable(false);                              // set ability to resize display window
         window.setTitle("BioBrain");                            // set title of window to game title
 
         GamePanel gamePanel = new GamePanel();                  // new instance of GamePanel (contains game logic)
@@ -36,7 +38,7 @@ public class GameSetter implements WindowInterface {
 
         gamePanel.startGameThread();                            // begin the game thread to start game loop
 
-        WindowInterface.displayPopUpWindow(gamePanel, WindowInterface.printFile("Instructions/Instructions.txt")); // call a pop-up window
+        WindowInterface.displayPopUpWindow(gamePanel, FileLoader.loadTextFile("Instructions/Instructions.txt")); // call a pop-up window
     }
 
 
