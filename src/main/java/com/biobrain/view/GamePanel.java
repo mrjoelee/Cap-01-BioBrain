@@ -22,7 +22,7 @@ public class GamePanel extends JPanel implements Runnable {
     double FPS = 60;                                        // frames per second (how smoothly game animation runs)
 
     KeyHandler keyHandler = new KeyHandler(this);        // create new instance of input manager for keyboard commands
-    Thread gameThread;                                      // create a new thread for game logic
+    Thread gameThread;                                       // create a new thread for game logic
     Player player = new Player(this, keyHandler);  // create instance of Player
 
 
