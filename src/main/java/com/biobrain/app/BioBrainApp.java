@@ -189,6 +189,11 @@ public class BioBrainApp {
 
     // use an item from your inventory
     private void useItem(String item){
+        getItem(item);
+        // todo use memory + interface + motherbooard = AI Sphere
+        // todo use tablet = hack computers
+        // todo use sphere = download biobrain
+        // todo use weapons
 
     }
 
