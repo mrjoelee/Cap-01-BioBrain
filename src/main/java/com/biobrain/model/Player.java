@@ -1,4 +1,10 @@
-package com.biobrain;
+package com.biobrain.model;
+
+/*
+ * Player | Class
+ * holds player data
+ *
+ */
 
 import java.util.ArrayList;
 import java.util.List;

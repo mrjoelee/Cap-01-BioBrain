@@ -1,6 +1,7 @@
-[
-  {
+{
+  "Sector 1 - Weapons Chamber": {
     "name": "Sector 1 - Weapons Chamber",
+    "isLocked": false,
     "directions": {
       "east": "Sector 2 - Control Lab",
       "south": "Sector 4 - Storage"
@@ -13,8 +14,9 @@
     "npc": "",
     "map": "images/mapS1.txt"
   },
-  {
+  "Sector 2 - Control Lab": {
     "name": "Sector 2 - Control Lab",
+    "isLocked": false,
     "directions": {
       "east": "Sector 3 - Production Room",
       "south": "Sector 5 - Conference Room",
@@ -27,8 +29,9 @@
     "npc": "",
     "map": "images/mapS2.txt"
   },
-  {
+  "Sector 3 - Production Room": {
     "name": "Sector 3 - Production Room",
+    "isLocked": false,
     "directions": {
       "south": "Sector 6 - Train Dock",
       "west": "Sector 2 - Control Lab"
@@ -36,26 +39,30 @@
     "description": "This is the Production Room. The main hub for AI body creation, beginning from metal shaping all the way to final skin grafting. Tons of robots in there, but they're inactive...or at least they should be.",
     "items": [
       "harpoon",
-      "potion"
+      "potion",
+      "motherboard"
     ],
     "npc": "Rouge AI Robot1",
     "map": "images/mapS3.txt"
   },
-  {
+  "Sector 4 - Storage": {
     "name": "Sector 4 - Storage",
+    "isLocked": false,
     "directions": {
       "north": "Sector 1 - Weapons Chamber",
       "east": "Sector 5 - Conference Room"
     },
     "description": "This is the Storage. Extra tools, extra parts, it's all there.",
     "items": [
-      "neuralyzer"
+      "neuralyzer",
+      "interface"
     ],
     "npc": "Rouge AI Robot2",
     "map": "images/mapS4.txt"
   },
-  {
+  "Sector 5 - Conference Room": {
     "name": "Sector 5 - Conference Room",
+    "isLocked": false,
     "directions": {
       "north": "Sector 2 - Control Lab",
       "west": "Sector 4 - Storage",
@@ -63,13 +70,15 @@
     },
     "description": "This is the Conference Room where all the presentations to government agents and the director take place.",
     "items": [
-      "neuralyzer"
+      "neuralyzer",
+      "memory"
     ],
     "npc": "Rouge AI Robot3",
     "map": "images/mapS5.txt"
   },
-  {
+  "Sector 6 - Train Dock": {
     "name": "Sector 6 - Train Dock",
+    "isLocked": true,
     "directions": {
       "north": "Sector 3 - Production Room",
       "west": "Sector 5 - Conference Room"
@@ -79,5 +88,5 @@
     "npc": "Boss AI Robot",
     "map": "images/mapS6.txt"
   }
-]
+}
 

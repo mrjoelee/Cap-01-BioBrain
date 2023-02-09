@@ -1,9 +1,11 @@
-package com.biobrain;
+package com.biobrain.model;
 
 import com.google.gson.Gson;
 
 
 import java.io.*;
+import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Scanner;
 
@@ -32,13 +34,11 @@ public class UserInput {
                     System.exit(0);
                     break;
                 }
-                String[] words = userInput.split(" ");
+                String[] words = userInput.split(" ", 2);
 
-                verb = VerbSynonymList.getSynonym(words[0]);
-                noun = words[1];
 
-                if (words.length != 2) {
-                    System.out.println("Please enter a valid command of two words\n");
+                if(words.length < 2) {
+                    System.out.println("Please enter a valid command of at least two words\n");
                 } else {
                     verb = VerbSynonymList.getSynonym(words[0]);
                     noun = words[1];

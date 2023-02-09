@@ -2,7 +2,8 @@ package com.biobrain.app;
 
 import com.apps.util.Console;
 import com.apps.util.Prompter;
-import com.biobrain.*;
+import com.biobrain.model.*;
+import com.biobrain.view.View;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -16,29 +17,31 @@ public class BioBrainApp {
     private static final String SPLASH_SCREEN = "images/welcomeRobot.txt";
     private static final String NO_BANNER = "images/dontWantToPlayBanner.txt";
     private static final String MAIN_MAP = "images/mapMain.txt";
+    private static final String PROMPT_TO_CONTINUE = "\n Press [ENTER] to continue...";
     private final Prompter prompter = new Prompter(new Scanner(System.in));
     private Player player;
     private String npc;
     private Location currentLocation;
-    private List<Location> locations;
+    private Map<String, Location> locations;
+    Map<String, Boolean> lockedLocations = new HashMap<>();
     private Map<String, String> directions;
     private List<String> itemsInRoom;
     private boolean gameOver = false;
     private String randomDialogue = Npc.getRandomDialogue();
+    public final View view = new View();
+
 
     public void execute() {
         player = Player.create();
         intro();
-        Console.pause(25_000L);
         welcome();
-        Console.pause(5000);
         askIfUserWantToPlay();
     }
 
     public void intro() {
         printFile(GAME_INTRO);
-        Console.pause(5000);
-
+        promptContinue();
+        Console.clear();
     }
 
     private void welcome() {
@@ -59,14 +62,15 @@ public class BioBrainApp {
 
     private void game() {
         printFile(START_GAME);
-        Console.pause(8000);
         System.out.println("                                            *** BEEP *** BEEP *** BEEP! ***\n");
         System.out.println("\n              That's the alarm! Someone must have detected that the BioBrain is missing from the Production Room!\n" +
                 "                                                    You've got to get moving!");
+        promptContinue();
         Console.clear();
         printFile(MAIN_MAP);
-        Console.pause(4000);
+        //Console.pause(4000);
         currentPlayerLocation();
+        lockDoors();                // sets the map of locked doors via the "isLocked" attribute from locations.json
         if (!gameOver) {
             while (!gameOver) {
                 askPlayerAction();
@@ -77,14 +81,14 @@ public class BioBrainApp {
     private void currentPlayerLocation() {
         System.out.println(player.displayPlayerInfo());
         Console.pause(1000);
-        locations = Location.parsedLocationsFromJson();
+        setLocations(Location.parsedLocationsFromJson());
 
         if (locations == null || locations.isEmpty()) {
             System.out.println("Error in getting the location");
             return;
         }
 
-        currentLocation = locations.get(1);
+        currentLocation = locations.get("Sector 2 - Control Lab");
         String locationName = currentLocation.getName();
         String mapToPrint = currentLocation.getMap();
         itemsInRoom = currentLocation.getItems();
@@ -147,16 +151,24 @@ public class BioBrainApp {
 
     private void lookAtItem(String item) {
         if (!currentLocation.getItems().contains(item)) {
-            System.out.println("\nItem not found! Please try again.");
+            System.out.printf("\n%s not found! Please try again.", item);
             return;
         }
 
         String itemDescription = Item.getDescriptions(item);
         int damageValue = Item.getDamageValue(item);
-        System.out.println("\n===================================================");
-        System.out.printf("\n*** Item description:\n- %s. It has a damage value of %s \n", itemDescription, damageValue);
-        System.out.println("\n===================================================");
-        Console.pause(1000);
+        if (damageValue > 0) {
+            System.out.println("\n===================================================");
+            System.out.printf("\n*** Weapon Description:\n- %s. It has a Damage value of %s \n", itemDescription, damageValue);
+            System.out.println("\n===================================================");
+            Console.pause(1000);
+        } else {
+            System.out.println("\n===================================================");
+            System.out.printf("\n*** Item Description:\n- %s.", itemDescription);
+            System.out.println("\n===================================================");
+            Console.pause(1000);
+        }
+
     }
 
     private void getItem(String itemToPickup) {
@@ -204,7 +216,9 @@ public class BioBrainApp {
         return player.getInventory().contains(item);
     }
 
-
+    // moves player object to new location
+    // redraws
+    // objects associated with that room on the map
     private void movePlayer(String direction) {
         String nextLocation = currentLocation.getDirections().get(direction.toLowerCase());
         if (nextLocation == null) {
@@ -212,19 +226,27 @@ public class BioBrainApp {
             return;
         }
 
-        currentLocation = getLocation(nextLocation);
-        itemsInRoom = currentLocation.getItems();
-        System.out.println("\n=======================================================");
-        System.out.printf("\nYou're now in -> %s \n", currentLocation.getName());
-        System.out.println("\nLooking around you see the following items: ");
-        itemsInRoom.forEach(item -> System.out.println("\n- " + item));
-        System.out.println("\n=============================================================");
-        System.out.println("\nTHERE ARE ALSO DOORS THAT LEAD TO:");
-        currentLocation.getDirections().forEach((key, value) -> System.out.printf("\n-> %s to %s", key, value));
-        System.out.println("\n===================================================");
-        printLocationMap(currentLocation.getMap());
-        if (!player.getVisitedLocations().contains(currentLocation.getName())) {
-            player.getVisitedLocations().add(currentLocation.getName());
+        // only move player if nextLocation is not in the map of lockedLocations
+        if (getLockedLocations().get(nextLocation) == false) {
+            currentLocation = getLocation(nextLocation);
+            itemsInRoom = currentLocation.getItems();
+            System.out.println("\n=======================================================");
+            System.out.printf("\nYou're now in -> %s \n", currentLocation.getName());
+            System.out.println("\nLooking around you see the following items: ");
+            itemsInRoom.forEach(item -> System.out.println("\n- " + item));
+            System.out.println("\n=============================================================");
+            System.out.println("\nTHERE ARE ALSO DOORS THAT LEAD TO:");
+            currentLocation.getDirections().forEach((key, value) -> System.out.printf("\n-> %s to %s", key, value));
+            System.out.println("\n===================================================");
+            printLocationMap(currentLocation.getMap());
+
+            if (!player.getVisitedLocations().contains(currentLocation.getName())) {
+                player.getVisitedLocations().add(currentLocation.getName());
+            }
+        } else {
+            System.out.println("\nThe doors to the " + nextLocation + " are LOCKED!\nYou must find a way to UNLOCK them to enter!");
+            printLocationMap(currentLocation.getMap());
+            return;
         }
 
         // printing the location the player have visited.. if need to print map in the future
@@ -234,11 +256,25 @@ public class BioBrainApp {
 
     }
 
+    // pulls data from locations.json to create a map of locked sectors that cannot be entered
+    private void lockDoors() {
+        // iterate over the locations map using a foreach on the map's entryset
+        for (Map.Entry<String, Location> entry : getLocations().entrySet()) {
+            // puts the starting status of all locked sectors into one place for easy reference/manipulation
+            getLockedLocations().put(entry.getValue().getName(), entry.getValue().getLocked());
+        }
+    }
+
+    // sets location as unlocked for future access to the location by the player
+    private void unlockADoor(String locationName) {
+        getLockedLocations().put(locationName, false);
+    }
+
+    // returns the Location object given the String locationName
     private Location getLocation(String locationName) {
-        for (Location location : locations) {
-            if (location.getName().equalsIgnoreCase(locationName)) {
-                return location;
-            }
+        // only return a value if the locations Map contains the locationName
+        if (getLocations().containsKey(locationName)) {
+            return getLocations().get(locationName);
         }
         return null;
     }
@@ -250,10 +286,36 @@ public class BioBrainApp {
     private void printFile(String fileName) {
         //noinspection ConstantConditions
 
-        try (BufferedReader buffer = new BufferedReader(new InputStreamReader(getClass().getClassLoader().getResourceAsStream(fileName)))) {
+        try (BufferedReader buffer = new BufferedReader(new InputStreamReader(BioBrainApp.class.getClassLoader().getResourceAsStream(fileName)))) {
             buffer.lines().forEach(System.out::println);
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    //pauses & allows user to continue
+    private void promptContinue() {
+        System.out.println(PROMPT_TO_CONTINUE);
+        Scanner scanner = new Scanner(System.in);
+        scanner.nextLine();
+    }
+
+    // ACCESSOR METHODS
+
+
+    public Map<String, Location> getLocations() {
+        return locations;
+    }
+
+    public void setLocations(Map<String, Location> locations) {
+        this.locations = locations;
+    }
+
+    public Map<String, Boolean> getLockedLocations() {
+        return lockedLocations;
+    }
+
+    public void setLockedLocations(Map<String, Boolean> lockedLocations) {
+        this.lockedLocations = lockedLocations;
     }
 }
