@@ -41,12 +41,6 @@ public class UserInput {
                     System.out.println("Please enter a valid command of at least two words\n");
                 } else {
                     verb = VerbSynonymList.getSynonym(words[0]);
-
-                    // todo For Debug, prints user input, DELETE when done
-                    for (Iterator<String> iter = Arrays.stream(words).iterator(); iter.hasNext(); ) {
-                        System.out.println("Printing the command array: "+ iter.next());
-                    }
-
                     noun = words[1];
 
                     if (!input.commands.contains(verb)) {

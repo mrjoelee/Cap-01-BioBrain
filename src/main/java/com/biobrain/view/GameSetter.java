@@ -40,6 +40,4 @@ public class GameSetter implements WindowInterface {
 
         WindowInterface.displayPopUpWindow(gamePanel, FileLoader.loadTextFile("Instructions/Instructions.txt")); // call a pop-up window
     }
-
-
 }
