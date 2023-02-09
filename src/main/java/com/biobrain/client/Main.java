@@ -14,7 +14,7 @@ public class Main {
 //        BioBrainApp app = new BioBrainApp();
 //        app.execute();
 
-      GameSetter.setGame(); // create new game window, start app
+        GameSetter.setGame(); // create new game window, start app
     }
 }
 
