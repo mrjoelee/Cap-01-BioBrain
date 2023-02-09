@@ -13,7 +13,8 @@
     "drop",
     "move",
     "show",
-    "view"
+    "view",
+    "create"
   ],
   "objects": [
     "north",
@@ -25,6 +26,7 @@
     "memory",
     "interface",
     "motherboard",
+    "sphere",
     "potion",
     "tablet",
     "harpoon",

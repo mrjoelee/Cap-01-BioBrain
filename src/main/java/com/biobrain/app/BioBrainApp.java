@@ -129,6 +129,9 @@ public class BioBrainApp {
             case "get":
                 getItem(noun);
                 break;
+            case "use":
+                useItem(noun);
+                break;
             case "show":
                 if (noun.equalsIgnoreCase("inventory")) {
                     showInventory();
@@ -177,17 +180,22 @@ public class BioBrainApp {
             return;
         }
 
-        player.addItem(itemToPickup);
+        player.addItem(itemToPickup, player.getInventory().get(itemToPickup));
         itemsInRoom.remove(itemToPickup);
         System.out.printf("\nAwesome! You've added the %s to your inventory!\n", itemToPickup);
         System.out.println(player.displayPlayerInfo());
         Console.pause(1000);
     }
 
+    // use an item from your inventory
+    private void useItem(String item){
+
+    }
+
 
     private void showInventory() {
         Console.pause(1500);
-        List<String> inventory = player.getInventory();
+        Map<String,Item> inventory = player.getInventory();
         if (inventory.isEmpty()) {
             System.out.println("\nYou have no items in your inventory");
             return;
@@ -195,7 +203,7 @@ public class BioBrainApp {
 
         Console.clear();
         System.out.println("\n ======================================================================");
-        System.out.println("\nYou have the following items in your inventory: " + inventory);
+        System.out.println("\nYou have the following items in your inventory: " + inventory.keySet());
         System.out.println("\n ======================================================================");
         Console.pause(1500);
     }
@@ -206,14 +214,14 @@ public class BioBrainApp {
             System.out.println("\nItem not found! Please try again.");
             return;
         }
-        player.removeItem(itemToDrop);
+        player.removeItem(itemToDrop, player.getInventory().get(itemToDrop));
         itemsInRoom.add(itemToDrop);
         System.out.printf("\n The %s has been removed from your inventory. ", itemToDrop);
         System.out.println(player.displayPlayerInfo());
     }
 
     private boolean isItemInInventory(String item) {
-        return player.getInventory().contains(item);
+        return player.getInventory().containsKey(item);
     }
 
     // moves player object to new location

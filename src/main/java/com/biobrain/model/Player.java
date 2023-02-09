@@ -7,17 +7,19 @@ package com.biobrain.model;
  */
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Player extends Character {
 
-    public ArrayList<String> inventory;
+    public Map<String,Item> inventory;
     private List<String> visitedLocations;
 
 
     public Player() {
         visitedLocations = new ArrayList<>();
-        inventory = new ArrayList<String>();
+        inventory = new HashMap<>();
     }
 
     public void addVisitedLocation(String location){
@@ -31,15 +33,13 @@ public class Player extends Character {
         return new Player();
     }
 
-    public void addItem(String item) {
-        inventory.add(item);
+    public void addItem(String itemName, Item item) {
+        inventory.put(itemName,item);
     }
 
-    public void removeItem(String item) {
-        inventory.remove(item);
-    }
+    public void removeItem(String itemName, Item item) { inventory.remove(itemName, item); }
 
-    public ArrayList<String> getInventory() {
+    public Map<String,Item> getInventory() {
         return inventory;
     }
 
@@ -54,7 +54,7 @@ public class Player extends Character {
 
         return String.format("\n =========== PLAYER INFO =================\n" +
                 "\n          Your health is at %s", getHealth() +
-                "\n    Your current inventory: " + getInventory() +
+                "\n    Your current inventory: " + getInventory().keySet() +
                 "\n\n =========================================\n");
     }
 }
