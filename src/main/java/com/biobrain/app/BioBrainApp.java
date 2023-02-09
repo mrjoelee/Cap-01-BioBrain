@@ -70,7 +70,7 @@ public class BioBrainApp {
         printFile(MAIN_MAP);
         //Console.pause(4000);
         currentPlayerLocation();
-        lockDoors();               // sets the map of locked doors via the "isLocked" attribute from locations.json
+        lockDoors();                // sets the map of locked doors via the "isLocked" attribute from locations.json
         if (!gameOver) {
             while (!gameOver) {
                 askPlayerAction();
@@ -151,16 +151,24 @@ public class BioBrainApp {
 
     private void lookAtItem(String item) {
         if (!currentLocation.getItems().contains(item)) {
-            System.out.println("\nItem not found! Please try again.");
+            System.out.printf("\n%s not found! Please try again.", item);
             return;
         }
 
         String itemDescription = Item.getDescriptions(item);
         int damageValue = Item.getDamageValue(item);
-        System.out.println("\n===================================================");
-        System.out.printf("\n*** Item description:\n- %s. It has a damage value of %s \n", itemDescription, damageValue);
-        System.out.println("\n===================================================");
-        Console.pause(1000);
+        if (damageValue > 0) {
+            System.out.println("\n===================================================");
+            System.out.printf("\n*** Weapon Description:\n- %s. It has a Damage value of %s \n", itemDescription, damageValue);
+            System.out.println("\n===================================================");
+            Console.pause(1000);
+        } else {
+            System.out.println("\n===================================================");
+            System.out.printf("\n*** Item Description:\n- %s.", itemDescription);
+            System.out.println("\n===================================================");
+            Console.pause(1000);
+        }
+
     }
 
     private void getItem(String itemToPickup) {
@@ -258,7 +266,7 @@ public class BioBrainApp {
     }
 
     // sets location as unlocked for future access to the location by the player
-    private void unlockADoor(String locationName){
+    private void unlockADoor(String locationName) {
         getLockedLocations().put(locationName, false);
     }
 
