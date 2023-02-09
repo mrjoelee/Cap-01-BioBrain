@@ -36,6 +36,8 @@ public class GameSetter implements WindowInterface {
         window.setLocationRelativeTo(null);
         window.setVisible(true);                                // make window display visible
 
+        gamePanel.setupGame();
+        gamePanel.gameState = gamePanel.titleState;             //sets the state to the title screen
         gamePanel.startGameThread();                            // begin the game thread to start game loop
 
         WindowInterface.displayPopUpWindow(gamePanel, FileLoader.loadTextFile("Instructions/Instructions.txt")); // call a pop-up window
