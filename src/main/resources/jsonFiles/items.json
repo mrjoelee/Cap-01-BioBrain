@@ -11,12 +11,27 @@
   },
   {
     "name" : "neuralyzer",
-    "description": "This is a neuralyzer, you can use this to fight the rouge robots",
-    "damage": "5"
+    "description": "This is a neuralyzer, you can use this to fight the rouge robots.",
+    "damage": 5
   },
   {
     "name" : "tablet",
-    "description": "Syncs you to main board in the Control Lab. Get camera feed, seal off sector doors, and link cable to AI for configurations",
+    "description": "Syncs you to main board in the Control Lab. Get camera feed, seal off sector doors, and link cable to AI for configurations.",
+    "damage": 0
+  },
+  {
+    "name" : "memory",
+    "description": "A 5 Petabyte memory chip used for storing the vast neural networks of quantum-machine learned consciousnesses.",
+    "damage": 0
+  },
+  {
+    "name" : "interface",
+    "description": "A USB-G Interface with SDI cable. Used for large capacity high speed data transfer.",
+    "damage": 0
+  },
+  {
+    "name" : "motherboard",
+    "description": "A M2 Pro Apple Silicon motherboard.\nAdvanced material BUS capable of fiberoptic data transfer allows for relatively quick download of massive amount if information.",
     "damage": 0
   }
 ]

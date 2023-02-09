@@ -39,7 +39,8 @@
     "description": "This is the Production Room. The main hub for AI body creation, beginning from metal shaping all the way to final skin grafting. Tons of robots in there, but they're inactive...or at least they should be.",
     "items": [
       "harpoon",
-      "potion"
+      "potion",
+      "motherboard"
     ],
     "npc": "Rouge AI Robot1",
     "map": "images/mapS3.txt"
@@ -53,7 +54,8 @@
     },
     "description": "This is the Storage. Extra tools, extra parts, it's all there.",
     "items": [
-      "neuralyzer"
+      "neuralyzer",
+      "interface"
     ],
     "npc": "Rouge AI Robot2",
     "map": "images/mapS4.txt"
@@ -68,7 +70,8 @@
     },
     "description": "This is the Conference Room where all the presentations to government agents and the director take place.",
     "items": [
-      "neuralyzer"
+      "neuralyzer",
+      "memory"
     ],
     "npc": "Rouge AI Robot3",
     "map": "images/mapS5.txt"
