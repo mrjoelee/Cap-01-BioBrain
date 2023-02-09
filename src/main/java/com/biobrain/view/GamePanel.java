@@ -11,6 +11,7 @@ import com.biobrain.view.entities.Player;
 import javax.swing.*;
 import java.awt.*;
 
+
 public class GamePanel extends JPanel implements Runnable {
     final int originalTileSize = 16;                         // define how large tiles for tile grid, 16x16 tiles
     final int scale = 3;                                    // scale graphics by this multiple
@@ -24,7 +25,6 @@ public class GamePanel extends JPanel implements Runnable {
     Thread gameThread;                                      // create a new thread for game logic
     Player player = new Player(this, keyHandler);  // create instance of Player
 
-
     public UI ui = new UI(this);                   // create new instance of User Interface
 
     //game state
@@ -32,9 +32,8 @@ public class GamePanel extends JPanel implements Runnable {
     public final int titleState = 0;
     public final int playState = 1;
 
-
     public void setupGame() {
-        gameState = titleState;
+        gameState = playState;
     }
 
     // CTOR
@@ -63,6 +62,7 @@ public class GamePanel extends JPanel implements Runnable {
             repaint(); // this is actually calling paintComponent each frame to update graphics
 
             try {
+
                 double remainingTime = nextDrawTime - System.nanoTime(); // subtract system time from nextDrawTime
                 remainingTime = remainingTime / 1000000;                   // normalize time to 1 digit (seconds)
 
@@ -92,12 +92,14 @@ public class GamePanel extends JPanel implements Runnable {
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
 
-        Graphics2D g2 = (Graphics2D) g; // defines graphics configurations
 
-        if (gameState == titleState) {
-            ui.draw(g2); // draws the Title screen
-        } else {
-            player.draw(g2); // draws configuration to player sprite
+        Graphics2D g2 = (Graphics2D) g; // defines graphics configurations
+        // draws configuration to player sprite
+
+        ui.draw(g2); // draws the Title screen
+
+        if(gameState == playState) {
+            player.draw(g2);
         }
         g2.dispose(); // dispose of old configurations, player sprite will update each frame
     }
