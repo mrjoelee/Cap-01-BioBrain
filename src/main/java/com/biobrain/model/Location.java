@@ -13,14 +13,16 @@ import java.util.Map;
 public class Location {
 
     private String name;
+    private Boolean isLocked;
     private Map<String, String> directions;
     private String description;
     private List<String> items;
     private String npc;
     private String map;
 
-    public Location(String name, Map<String, String> directions, String description, List<String> items, String npc, String map) {
+    public Location(String name, Boolean isLocked, Map<String, String> directions, String description, List<String> items, String npc, String map) {
         this.name = name;
+        this.isLocked = isLocked;
         this.directions = directions;
         this.description = description;
         this.items = items;
@@ -34,6 +36,14 @@ public class Location {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Boolean getLocked() {
+        return isLocked;
+    }
+
+    public void setLocked(Boolean locked) {
+        isLocked = locked;
     }
 
     public Map<String, String> getDirections() {
@@ -72,14 +82,14 @@ public class Location {
         return map;
     }
 
-   public static List<Location>parsedLocationsFromJson() {
+   public static Map<String,Location>parsedLocationsFromJson() {
        Gson gson = new Gson();
-       Type locationList = new TypeToken<List<Location>>() {
+       Type locationMap = new TypeToken<Map<String,Location>>() {
        }.getType();
        //noinspection ConstantConditions
        try (InputStream input = Location.class.getClassLoader().getResourceAsStream("jsonFiles/locations.json");
             BufferedReader reader = new BufferedReader(new InputStreamReader(input))) {
-           return gson.fromJson(reader, locationList);
+           return gson.fromJson(reader, locationMap);
        } catch (Exception e) {
            e.printStackTrace();
            return null;
