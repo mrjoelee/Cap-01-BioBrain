@@ -180,7 +180,7 @@ public class BioBrainApp {
             return;
         }
 
-        player.addItem(itemToPickup, player.getInventory().get(itemToPickup));
+        player.addItem(itemToPickup, Item.getAllItems().get(itemToPickup));
         itemsInRoom.remove(itemToPickup);
         System.out.printf("\nAwesome! You've added the %s to your inventory!\n", itemToPickup);
         System.out.println(player.displayPlayerInfo());
@@ -188,13 +188,24 @@ public class BioBrainApp {
     }
 
     // use an item from your inventory
-    private void useItem(String item){
-        getItem(item);
-        // todo use memory + interface + motherbooard = AI Sphere
-        // todo use tablet = hack computers
-        // todo use sphere = download biobrain
-        // todo use weapons
+    private void useItem(String usedItem){
+        if(player.getInventory().containsKey(usedItem)) {
+            Map<String, Item> inv = player.getInventory();
 
+
+            // todo use memory + interface + motherbooard = AI Sphere
+            if (usedItem.equals("memory") || usedItem.equals("interface") || usedItem.equals("motherboard")) {
+                if (inv.containsKey("memory") && inv.containsKey("interface") && inv.containsKey("motherboard")) {
+                    player.addItem("sphere", Item.getAllItems().get("sphere"));
+                    System.out.printf("\nAwesome! You've added the %s to your inventory!\n", "A.I. Transfer Sphere");
+                    System.out.println(player.displayPlayerInfo());
+                }
+            }
+
+            // todo use tablet = hack computers
+            // todo use sphere = download biobrain
+            // todo use weapons
+        }
     }
 
 
