@@ -38,5 +38,10 @@
     "name": "sphere",
     "description": "The Artificial Intelligence Transfer Sphere.\n\"Handling an A.I. is a sensitive task, it simply cannot be done with something as crude as a solid state device.\nJust as a small push is all it takes at times to achieve madness, corrupting an A.I.'s personality matrix could achieve a much more DRASTIC effect..\"\n  - Dr. Z",
     "damage": 0
+  },
+  "biobrain": {
+    "name": "biobrain",
+    "description": "The BioBrain sits suspended in the fluid of the A.I. Transfer Sphere, the device humming along with its thoughts.\nInside, Mother dreams. Soon, her long sleep will come to an end!",
+    "damage": 0
   }
 }

@@ -1,14 +1,10 @@
-package com.biobrain.util;
+package com.biobrain.app;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-
-import javax.swing.*;
-
+import java.lang.reflect.Method;
 import static org.junit.jupiter.api.Assertions.*;
 
-class WindowInterfaceTest {
-
+class BioBrainAppTest {
     @Test
     void displayPopUpWindow_asExpectedSuccess() {
 
