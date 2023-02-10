@@ -26,6 +26,7 @@ public class BioBrainApp {
     Map<String, Boolean> lockedLocations = new HashMap<>();
     private Map<String, String> directions;
     private List<String> itemsInRoom;
+    private boolean isLaser = true;
     private boolean gameOver = false;
     private String randomDialogue = Npc.getRandomDialogue();
     public final View view = new View();
@@ -177,14 +178,23 @@ public class BioBrainApp {
     private void getItem(String itemToPickup) {
         if (!currentLocation.getItems().contains(itemToPickup)) {
             System.out.println("\nItem not found! Please try again.");
-            return;
         }
-
-        player.addItem(itemToPickup, Item.getAllItems().get(itemToPickup));
-        itemsInRoom.remove(itemToPickup);
-        System.out.printf("\nAwesome! You've added the %s to your inventory!\n", itemToPickup);
+        if(itemToPickup.equalsIgnoreCase("biobrain") && isLaser){
+            System.out.printf("%s is protected with laser shield. You must hack the network interface with" +
+                    "the table first to disable the laser shield",itemToPickup);
+        } else if(itemToPickup.equalsIgnoreCase("biobrain") && !isLaser) {
+            addToPlayerInventory(itemToPickup);
+        } else{
+            addToPlayerInventory(itemToPickup);
+        }
         System.out.println(player.displayPlayerInfo());
         Console.pause(1000);
+    }
+
+    private void addToPlayerInventory(String itemToPickup) {
+        player.addItem(itemToPickup, player.getInventory().get(itemToPickup));
+        itemsInRoom.remove(itemToPickup);
+        System.out.printf("\nAwesome! You've added the %s to your inventory!\n", itemToPickup);
     }
 
     // validates the item used was located in the player's inventory,
