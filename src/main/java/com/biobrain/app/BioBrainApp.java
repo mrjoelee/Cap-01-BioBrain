@@ -187,13 +187,22 @@ public class BioBrainApp {
         Console.pause(1000);
     }
 
-    // use an item from your inventory
-    private void useItem(String usedItem){
+    // validates the item used was located in the player's inventory,
+    // if not, displays a message that the item is not in possession
+    public void validateThenUseItem(String usedItem){
         if(player.getInventory().containsKey(usedItem)) {
-            Map<String, Item> inv = player.getInventory();
+            useItem(usedItem);
+        } else {
+            System.out.printf("You're not carrying a %s to be able to use!", usedItem);
+        }
+    }
 
+    // use an item from the inventory
 
-            // todo use memory + interface + motherbooard = AI Sphere
+    private void useItem(String usedItem){
+            Map<String, Item> inv = player.getInventory();// get a reference to the inventory map
+
+            // todo use memory + interface + motherbooard = AI Sphere REVIEW LOGIC WITH TEAM
             if (usedItem.equals("memory") || usedItem.equals("interface") || usedItem.equals("motherboard")) {
                 if (inv.containsKey("memory") && inv.containsKey("interface") && inv.containsKey("motherboard")) {
                     player.addItem("sphere", Item.getAllItems().get("sphere"));
@@ -202,10 +211,21 @@ public class BioBrainApp {
                 }
             }
 
+            // todo use sphere = download biobrain REVIEW LOGIC WITH TEAM
+            // needs a check to ensure laser shield is disabled
+            else if (usedItem.equals("sphere") && currentLocation.getName().equals("Sector 1 - Weapons Chamber")){
+                player.addItem("biobrain", Item.getAllItems().get("biobrain"));
+                System.out.printf("\nAwesome! You've added the %s to your inventory!\n", "BioBrain");
+
+            }
+
             // todo use tablet = hack computers
-            // todo use sphere = download biobrain
+
             // todo use weapons
-        }
+
+
+        System.out.println(player.displayPlayerInfo()); // finally, display player info to user again
+
     }
 
 
