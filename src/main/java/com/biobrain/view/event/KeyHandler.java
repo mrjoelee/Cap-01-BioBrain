@@ -1,4 +1,6 @@
-package com.biobrain.view;
+package com.biobrain.view.event;
+
+import com.biobrain.view.panels.GamePanel;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -83,6 +85,13 @@ public class KeyHandler implements KeyListener {
             }
         }
 
+        if(gp.gameState == gp.mapState){
+            if(code == KeyEvent.VK_M){
+                gp.gameState = gp.playState;
+            }
+
+        }
+
         if(gp.gameState == gp.playState){
             if(code == KeyEvent.VK_W ||code == KeyEvent.VK_UP){
                 upPressed = true;
@@ -95,6 +104,11 @@ public class KeyHandler implements KeyListener {
             }
             if(code == KeyEvent.VK_D || code == KeyEvent.VK_RIGHT){
                 rightPressed = true;
+            }
+            //TODO SHOW USER MAP
+            if(code == KeyEvent.VK_M){
+                gp.gameState = gp.mapState;
+                System.out.println("M WAS PRESSED");
             }
         }
 

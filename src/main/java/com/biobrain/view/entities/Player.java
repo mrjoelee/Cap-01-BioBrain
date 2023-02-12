@@ -9,85 +9,100 @@ package com.biobrain.view.entities;
  */
 
 import com.biobrain.util.FileLoader;
-import com.biobrain.view.GamePanel;
-import com.biobrain.view.KeyHandler;
+import com.biobrain.view.panels.GamePanel;
+import com.biobrain.view.event.KeyHandler;
 
-import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
 
-public class Player extends Entity{
+public class Player extends Entity {
     private GamePanel gamePanel; // reference to GamePanel holding game logic
     private KeyHandler handler;  // instance of input manager for keyboard controls
+    public final int screenX;
+    public final int screenY;
 
     // CTOR
     public Player(GamePanel gamePanel, KeyHandler keyHandler) {
         this.gamePanel = gamePanel;
         this.handler = keyHandler;
+        screenX = gamePanel.screenWidth/2;
+        screenY = gamePanel.screenHeight/2;
+
+        collider = new Rectangle(8, 16, 32, 32);
+        colliderDefaultX = collider.x;
+        colliderDefaultY = collider.y;
 
         setDefaultValues(); // set default player configurations
         getPlayerImage();
     }
 
     // default player configuration values
-    public void setDefaultValues(){
-        xAxis = 0; // player x position
-        yAxis = 525; // player y position
-        speed = 2;   // how fast player moves through positions
+    public void setDefaultValues() {
+        labX = (gamePanel.getTileSize() * gamePanel.getMaxSectorCol()) /2; // player x position in lab
+        labY = (gamePanel.getTileSize() * gamePanel.getMaxSectorRow() /2); // player y position in lab
+        speed = 4;   // how fast player moves through positions
     }
 
-    public void getPlayerImage(){
-            //manage sprites loaded
-            up1 = FileLoader.loadBuffered("images/player_up_1.png");
-            up2 =   FileLoader.loadBuffered("images/player_up_2.png");
-            down1 = FileLoader.loadBuffered("images/player_down_1.png");
-            down2 = FileLoader.loadBuffered("images/player_down_2.png");
-            left1 = FileLoader.loadBuffered("images/player_left_1.png");
-            left2 = FileLoader.loadBuffered("images/player_left_2.png");
-            right1 =FileLoader.loadBuffered("images/player_right_1.png");
-            right2 =FileLoader.loadBuffered("images/player_right_2.png");
+    public void getPlayerImage() {
+        //manage sprites loaded
+        up1 = FileLoader.loadBuffered("images/player_up_1.png");
+        up2 = FileLoader.loadBuffered("images/player_up_2.png");
+        down1 = FileLoader.loadBuffered("images/player_down_1.png");
+        down2 = FileLoader.loadBuffered("images/player_down_2.png");
+        left1 = FileLoader.loadBuffered("images/player_left_1.png");
+        left2 = FileLoader.loadBuffered("images/player_left_2.png");
+        right1 = FileLoader.loadBuffered("images/player_right_1.png");
+        right2 = FileLoader.loadBuffered("images/player_right_2.png");
     }
 
     // function will be called each frame, only contains logic that needs constant updating
-    public void update(){
+    public void update() {
         playerControls(); // listens for user input each frame
     }
 
     // a list of user inputs via keyboard
-    public void playerControls(){
-        if (handler.isUpPressed()){   // if this key is pressed
-            yAxis -= speed;           // manipulate player positioning based on speed
-        }
-        if (handler.isDownPressed()){
-            yAxis += speed;
-        }
-        if (handler.isLeftPressed()){
-            xAxis -= speed;
-        }
-        if (handler.isRightPressed()) {
-            xAxis += speed;
-        }
-
-        if(handler.isUpPressed() || handler.isDownPressed() || handler.isLeftPressed() || handler.isRightPressed()) {
+    public void playerControls() {
+        if (handler.isUpPressed() || handler.isDownPressed() || handler.isLeftPressed() || handler.isRightPressed()) {
             if (handler.isUpPressed()) {
                 direction = "up";
-                yAxis -= speed;
             }
             if (handler.isDownPressed()) {
                 direction = "down";
-                yAxis += speed;
             }
             if (handler.isLeftPressed()) {
                 direction = "left";
-                xAxis -= speed;
             }
             if (handler.isRightPressed()) {
                 direction = "right";
-                xAxis += speed;
+            }
+
+            collisionOn = false;
+            //check tile checks if a specific tile has collision on (user cant walk over it)
+            //check entrance is constantly checking if the players collider hits a room entrance
+            // if player is in the sector have to check if their collider hit the room exit
+            gamePanel.collisionDetector.checkTile(this);
+            gamePanel.collisionDetector.checkEntrance(this);
+            gamePanel.collisionDetector.checkExit(this);
+            //gamePanel.eventHandler.checkEvent();
+
+            if (!collisionOn) {
+                switch (direction) {
+                    case "up":
+                        labY -= speed;
+                        break;
+
+                    case "down":
+                        labY += speed;
+                        break;
+
+                    case "left":
+                        labX -= speed;
+                        break;
+
+                    case "right":
+                        labX += speed;
+                        break;
+                }
             }
 
             counter++;
@@ -103,42 +118,46 @@ public class Player extends Entity{
     }
 
     // update player graphics
-    public void draw(Graphics2D g2){
+    public void draw(Graphics2D g2) {
         BufferedImage image = null;
-        switch(direction){
+        switch (direction) {
             case "up":
-                if(spriteSelected ==1){
+                if (spriteSelected == 1) {
                     image = up1;
                 }
-                if(spriteSelected ==2){
+                if (spriteSelected == 2) {
                     image = up2;
                 }
                 break;
             case "down":
-                if(spriteSelected ==1){
+                if (spriteSelected == 1) {
                     image = down1;
                 }
-                if(spriteSelected ==2){
+                if (spriteSelected == 2) {
                     image = down2;
                 }
                 break;
             case "left":
-                if(spriteSelected ==1){
+                if (spriteSelected == 1) {
                     image = left1;
                 }
-                if(spriteSelected ==2){
+                if (spriteSelected == 2) {
                     image = left2;
                 }
                 break;
-            case "right" :
-                if(spriteSelected ==1){
+            case "right":
+                if (spriteSelected == 1) {
                     image = right1;
                 }
-                if(spriteSelected ==2){
+                if (spriteSelected == 2) {
                     image = right2;
                 }
                 break;
         }
-        g2.drawImage(image, xAxis, yAxis, gamePanel.getTileSize(), gamePanel.getTileSize(), null);
+        if (gamePanel.currentRoom.isSector()) {
+            g2.drawImage(image, labX, labY, gamePanel.getTileSize(), gamePanel.getTileSize(), null);
+        } else {
+            g2.drawImage(image, screenX, screenY, gamePanel.getTileSize(), gamePanel.getTileSize(), null);
+        }
     }
 }

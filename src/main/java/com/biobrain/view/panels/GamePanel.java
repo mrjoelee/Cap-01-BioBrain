@@ -1,12 +1,19 @@
-package com.biobrain.view;
+package com.biobrain.view.panels;
 
 /*
  * GamePanel | Class
  * creates new thread to handle game logic
  * begins main update loop that keeps gamePanel graphics updated
  */
-
+import com.biobrain.view.event.KeyHandler;
+import com.biobrain.view.locations.LocationManager;
+import com.biobrain.view.locations.Room;
+import com.biobrain.view.event.UI;
 import com.biobrain.view.entities.Player;
+import com.biobrain.view.event.CollisionDetector;
+import com.biobrain.view.event.EventHandler;
+import com.biobrain.view.tile.Map;
+import com.biobrain.view.tile.TileHelper;
 
 import javax.swing.*;
 import java.awt.*;
@@ -16,30 +23,46 @@ public class GamePanel extends JPanel implements Runnable {
     final int originalTileSize = 16;                         // define how large tiles for tile grid, 16x16 tiles
     final int scale = 3;                                    // scale graphics by this multiple
     final int tileSize = originalTileSize * scale;          // scale tiles by 3, 48 x 48 in this case
-    final int maxScreenCol = 16;                            // define how many columns will comprise window
-    final int maxScreenRow = 12;                            // define how many rows will comprise window
-    final int screenWidth = tileSize * maxScreenCol;        // window width
-    final int screenHeight = tileSize * maxScreenRow;       // window height
+    final int maxSectorCol = 16;                            // define how many columns will comprise window
+    final int maxSectorRow = 12;                            // define how many rows will comprise window
+    public final int screenWidth = tileSize * maxSectorCol;        // window width
+    public final int screenHeight = tileSize * maxSectorRow;       // window height
     double FPS = 60;                                        // frames per second (how smoothly game animation runs)
+    public TileHelper tileHelper = new TileHelper(this);
     KeyHandler keyHandler = new KeyHandler(this);        // create new instance of input manager for keyboard commands
+    public EventHandler eventHandler = new EventHandler(this);
     Thread gameThread;                                       // create a new thread for game logic
-    Player player = new Player(this, keyHandler);  // create instance of Player
-
+    Map playerMap = new Map(this);
+    public CollisionDetector collisionDetector = new CollisionDetector(this);
+    public Player player = new Player(this, keyHandler);  // create instance of Player
+    public LocationManager locations = new LocationManager(this);
     public UI ui = new UI(this);                   // create new instance of User Interface
+
 
     //game state
     public int gameState;
     public final int titleState = 0;
     public final int playState = 1;
+    public final int mapState = 2;
+
+    //World Settings
+    public final int maxRooms = 7;
+    public Room currentRoom;
+    //col in map txt file
+    public final int maxLabCol = 60;
+    public final int maxLabRow = 30;
+    public final int labWidth = tileSize * maxLabCol;
+    public final int labHeight = tileSize * maxLabRow;
 
     public void setupGame() {
         gameState = playState;
+        currentRoom = locations.getLocations().get("sector1");
     }
 
     // CTOR
     public GamePanel() {
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
-        this.setBackground(Color.white);
+        this.setBackground(Color.black);
         this.setDoubleBuffered(true);
         this.addKeyListener(keyHandler);
         this.setFocusable(true);
@@ -91,21 +114,27 @@ public class GamePanel extends JPanel implements Runnable {
     // update graphics for player
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-
-
         Graphics2D g2 = (Graphics2D) g; // defines graphics configurations
-        // draws configuration to player sprite
-
         ui.draw(g2); // draws the Title screen
-
         if(gameState == playState) {
+            tileHelper.draw(g2);
+            currentRoom.draw(g2);
             player.draw(g2);
+        }else if(gameState == mapState){
+            playerMap.drawFullMapScreen(g2);
         }
         g2.dispose(); // dispose of old configurations, player sprite will update each frame
     }
 
-    // todo GamePanel.GetTileSize()
     public int getTileSize() {
         return tileSize;
+    }
+
+    public int getMaxSectorCol(){
+        return this.maxSectorCol;
+    }
+
+    public int getMaxSectorRow(){
+        return this.maxSectorRow;
     }
 }

@@ -1,7 +1,8 @@
-package com.biobrain.view;
+package com.biobrain.view.event;
 
 import com.biobrain.util.FileLoader;
 import com.biobrain.util.WindowInterface;
+import com.biobrain.view.panels.GamePanel;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -69,14 +70,14 @@ public class UI implements WindowInterface {
             g2.setFont(g2.getFont().deriveFont(Font.BOLD,72F));
             String text = "BIO BRAIN";
              x = getXForCenteredText(text);
-            y = gamePanel.tileSize*2;
+            y = gamePanel.getTileSize()*2;
             g2.drawString(text,x,y);
             /* --- Menu ---*/
             //New Game
             g2.setFont(g2.getFont().deriveFont(Font.BOLD,36F));
              text = "New Game";
             x = getXForCenteredText(text);
-            y += gamePanel.tileSize*8;
+            y += gamePanel.getTileSize()*8;
             g2.drawString(text,x,y);
             playerIconPos(x, y,0);
             //TODO:Load Game?
@@ -84,7 +85,7 @@ public class UI implements WindowInterface {
             //Quit
             text = "Quit";
             x = getXForCenteredText(text);
-            y += gamePanel.tileSize;
+            y += gamePanel.getTileSize();
             g2.drawString(text,x,y);
             playerIconPos(x,y,1);
         } else if (titleSubState == 1){
@@ -93,7 +94,7 @@ public class UI implements WindowInterface {
             g2.setFont(g2.getFont().deriveFont(Font.BOLD,36F));
             String text = "Instructions";
             int x = getXForCenteredText(text);
-            int y = (int) (gamePanel.tileSize*10.5);
+            int y = (int) (gamePanel.getTileSize()*10.5);
             g2.drawString(text,x,y);
 
             playerIconPos(x,y,0);
@@ -102,7 +103,7 @@ public class UI implements WindowInterface {
             g2.setFont(g2.getFont().deriveFont(Font.BOLD, 36F));
             text = "Play";
             x = getXForCenteredText(text);
-            y = (int) (gamePanel.tileSize*11.1);
+            y = (int) (gamePanel.getTileSize()*11.1);
             g2.drawString(text, x, y);
             playerIconPos(x,y,1);
             //back
@@ -110,7 +111,7 @@ public class UI implements WindowInterface {
             g2.setFont(g2.getFont().deriveFont(Font.BOLD,36F));
             text = "Back";
             x = getXForCenteredText(text);
-            y = (int) (gamePanel.tileSize*11.6);
+            y = (int) (gamePanel.getTileSize()*11.6);
             g2.drawString(text,x,y);
             playerIconPos(x,y,2);
         }
@@ -121,7 +122,7 @@ public class UI implements WindowInterface {
             g2.setFont(g2.getFont().deriveFont(Font.BOLD,36F));
             String text = "Back";
             int x = getXForCenteredText(text);
-            int y = (gamePanel.tileSize*11);
+            int y = (gamePanel.getTileSize()*11);
             g2.drawString(text,x,y);
             playerIconPos(x,y,0);
         }
@@ -131,7 +132,7 @@ public class UI implements WindowInterface {
         int playerIconWidth = playerIcon().getWidth(null);
         int playerIconHeight = playerIcon().getHeight(null);
         playerIconHeight = y - 25;
-        playerIconWidth = x - gamePanel.tileSize;
+        playerIconWidth = x - gamePanel.getTileSize();
         if (commandNum == z){
             //if want to use an image, can use drawImage
             g2.drawImage(playerIcon(),playerIconWidth,playerIconHeight,null);
