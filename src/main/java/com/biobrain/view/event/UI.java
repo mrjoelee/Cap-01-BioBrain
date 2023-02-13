@@ -19,7 +19,7 @@ public class UI implements WindowInterface {
     public int titleSubState = 0; //0: the first screen, 1: second screen
 
     //can create different color using RBG
-    public Color color = new Color(255,255,255);
+    public Color color = new Color(255, 255, 255);
 
     //CTOR
     public UI(GamePanel gamePanel){

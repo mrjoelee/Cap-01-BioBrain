@@ -15,15 +15,17 @@ public class Location {
     private String name;
     private Boolean isLocked;
     private Map<String, String> directions;
+    private Map<String,String> cage;
     private String description;
     private List<String> items;
     private String npc;
     private String map;
 
-    public Location(String name, Boolean isLocked, Map<String, String> directions, String description, List<String> items, String npc, String map) {
+    public Location(String name, Boolean isLocked,Map<String,String> cage, Map<String, String> directions, String description, List<String> items, String npc, String map) {
         this.name = name;
         this.isLocked = isLocked;
         this.directions = directions;
+        this.cage = cage;
         this.description = description;
         this.items = items;
         this.npc = npc;
@@ -52,6 +54,14 @@ public class Location {
 
     public void setDirections(Map<String, String> directions) {
         this.directions = directions;
+    }
+
+    public Map<String, String> getCage() {
+        return cage;
+    }
+
+    public void setCage(Map<String, String> cage) {
+        this.cage = cage;
     }
 
     public String getDescription() {
