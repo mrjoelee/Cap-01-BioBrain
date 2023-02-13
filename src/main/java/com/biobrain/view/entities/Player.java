@@ -16,8 +16,8 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 
 public class Player extends Entity {
-    private GamePanel gamePanel; // reference to GamePanel holding game logic
-    private KeyHandler handler;  // instance of input manager for keyboard controls
+    private final GamePanel gamePanel; // reference to GamePanel holding game logic
+    private final KeyHandler handler;  // instance of input manager for keyboard controls
     public final int screenX;
     public final int screenY;
 
@@ -39,7 +39,7 @@ public class Player extends Entity {
     // default player configuration values
     public void setDefaultValues() {
         labX = (gamePanel.getTileSize() * gamePanel.getMaxSectorCol()) /2; // player x position in lab
-        labY = (gamePanel.getTileSize() * gamePanel.getMaxSectorRow() /2); // player y position in lab
+        labY = (gamePanel.getTileSize() * gamePanel.getMaxSectorRow()) /2; // player y position in lab
         speed = 4;   // how fast player moves through positions
     }
 
@@ -159,5 +159,25 @@ public class Player extends Entity {
         } else {
             g2.drawImage(image, screenX, screenY, gamePanel.getTileSize(), gamePanel.getTileSize(), null);
         }
+    }
+
+    public BufferedImage getDirectionImage(){
+        BufferedImage directionImage = null;
+
+        switch (direction){
+            case "up":
+                directionImage = up1;
+                break;
+                case "right":
+                    directionImage = right1;
+                break;
+            case "left":
+                directionImage = left1;
+                break;
+            default:
+                directionImage = down1;
+                break;
+        }
+        return directionImage;
     }
 }

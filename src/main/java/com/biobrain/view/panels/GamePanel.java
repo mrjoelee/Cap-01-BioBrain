@@ -20,24 +20,35 @@ import java.awt.*;
 
 
 public class GamePanel extends JPanel implements Runnable {
+    //World Settings
     final int originalTileSize = 16;                         // define how large tiles for tile grid, 16x16 tiles
     final int scale = 3;                                    // scale graphics by this multiple
     final int tileSize = originalTileSize * scale;          // scale tiles by 3, 48 x 48 in this case
+    double FPS = 60;                                        // frames per second (how smoothly game animation runs)
+    public final int maxRooms = 7;
+
+    //col in map txt file
+    public final int maxLabCol = 60;
+    public final int maxLabRow = 32;
     final int maxSectorCol = 16;                            // define how many columns will comprise window
     final int maxSectorRow = 12;                            // define how many rows will comprise window
     public final int screenWidth = tileSize * maxSectorCol;        // window width
     public final int screenHeight = tileSize * maxSectorRow;       // window height
-    double FPS = 60;                                        // frames per second (how smoothly game animation runs)
-    public TileHelper tileHelper = new TileHelper(this);
-    KeyHandler keyHandler = new KeyHandler(this);        // create new instance of input manager for keyboard commands
-    public EventHandler eventHandler = new EventHandler(this);
-    Thread gameThread;                                       // create a new thread for game logic
-    Map playerMap = new Map(this);
-    public CollisionDetector collisionDetector = new CollisionDetector(this);
-    public Player player = new Player(this, keyHandler);  // create instance of Player
-    public LocationManager locations = new LocationManager(this);
-    public UI ui = new UI(this);                   // create new instance of User Interface
 
+    //Object creation
+    public KeyHandler keyHandler = new KeyHandler(this);        // create new instance of input manager for keyboard commands
+    public Player player = new Player(this, keyHandler);  // create instance of Player
+    public TileHelper tileHelper = new TileHelper(this);
+    public Room currentRoom;
+    public EventHandler eventHandler = new EventHandler(this);
+    public LocationManager locations = new LocationManager(this);
+    public Map playerMap = new Map(this);
+    public CollisionDetector collisionDetector = new CollisionDetector(this);
+    public UI ui = new UI(this);                   // create new instance of User Interface
+    private Thread gameThread;                                       // create a new thread for game logic
+
+    //game extras
+    public int mapDisplayed;
 
     //game state
     public int gameState;
@@ -45,18 +56,10 @@ public class GamePanel extends JPanel implements Runnable {
     public final int playState = 1;
     public final int mapState = 2;
 
-    //World Settings
-    public final int maxRooms = 7;
-    public Room currentRoom;
-    //col in map txt file
-    public final int maxLabCol = 60;
-    public final int maxLabRow = 30;
-    public final int labWidth = tileSize * maxLabCol;
-    public final int labHeight = tileSize * maxLabRow;
-
     public void setupGame() {
         gameState = playState;
-        currentRoom = locations.getLocations().get("sector1");
+        currentRoom = locations.getLocations().get("sector2");
+        mapDisplayed = currentRoom.getRoomCode();
     }
 
     // CTOR
@@ -120,8 +123,9 @@ public class GamePanel extends JPanel implements Runnable {
             tileHelper.draw(g2);
             currentRoom.draw(g2);
             player.draw(g2);
-        }else if(gameState == mapState){
-            playerMap.drawFullMapScreen(g2);
+        }
+        else if(gameState == mapState){
+            playerMap.setCurrentMapDisplayed(g2, mapDisplayed);
         }
         g2.dispose(); // dispose of old configurations, player sprite will update each frame
     }

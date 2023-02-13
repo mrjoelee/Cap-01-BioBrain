@@ -107,8 +107,6 @@ public class CollisionDetector {
                 for (Room room : rooms) {
                     if (room.getEntrance() != null) {
                         if (entity.collider.intersects(room.getEntrance())) {
-
-                            System.out.println(room.getEntrance());
                             gamePanel.currentRoom = room;
                             gamePanel.player.labX = room.getExit().x + 24;
                             gamePanel.player.labY = room.getExit().y - gamePanel.getTileSize();

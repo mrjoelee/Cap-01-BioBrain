@@ -56,22 +56,22 @@ public class LocationManager {
        //ROOMS
         Room lab = new Room("lab", 0, "maps/lab/labMap.txt", labTiles, false, gamePanel, gamePanel.tileHelper, null,null);
 
-        Rectangle sector1Entrance = new Rectangle(720, 576,96 , 48);
+        Rectangle sector1Entrance = new Rectangle(720, 672,96 , 48);
         Room sector1 = new Room("sector1", 1, "maps/sectorGeneric/sector.txt", sectorGenericTiles, true, gamePanel, gamePanel.tileHelper, sector1Entrance, sectorExit);
 
-        Rectangle sector2Entrance = new Rectangle(1632, 576, 96, 48);
+        Rectangle sector2Entrance = new Rectangle(1632, 672, 96, 48);
         Room sector2 = new Room("sector2", 2, "maps/sectorGeneric/sector.txt", sectorGenericTiles, true, gamePanel, gamePanel.tileHelper, sector2Entrance, sectorExit);
 
-        Rectangle sector3Entrance = new Rectangle(2544, 576, 96, 48);
+        Rectangle sector3Entrance = new Rectangle(2544, 672, 96, 48);
         Room sector3 = new Room("sector3", 3, "maps/sectorGeneric/sector.txt", sectorGenericTiles, true, gamePanel, gamePanel.tileHelper, sector3Entrance, sectorExit);
 
-        Rectangle sector4Entrance = new Rectangle(720, 1248, 96, 48);
+        Rectangle sector4Entrance = new Rectangle(720, 1344, 96, 48);
         Room sector4 = new Room("sector4", 4, "maps/sectorGeneric/sector.txt", sectorGenericTiles, true, gamePanel, gamePanel.tileHelper, sector4Entrance, sectorExit);
 
-        Rectangle sector5Entrance = new Rectangle(1632, 1248, 96, 48);
+        Rectangle sector5Entrance = new Rectangle(1632, 1344, 96, 48);
         Room sector5 = new Room("sector5", 5, "maps/sectorGeneric/sector.txt", sectorGenericTiles, true, gamePanel, gamePanel.tileHelper, sector5Entrance, sectorExit);
 
-        Rectangle sector6Entrance = new Rectangle(2544, 1248, 96, 48);
+        Rectangle sector6Entrance = new Rectangle(2544, 1344, 96, 48);
         Room sector6 = new Room("sector6", 6, "maps/sectorGeneric/sector.txt", sectorGenericTiles, true, gamePanel, gamePanel.tileHelper, sector6Entrance, sectorExit);
 
         locations.put(lab.getName(), lab);

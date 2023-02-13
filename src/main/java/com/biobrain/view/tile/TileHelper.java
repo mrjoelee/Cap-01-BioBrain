@@ -10,12 +10,10 @@ import java.io.InputStreamReader;
 
 public class TileHelper {
     GamePanel gp;
-    public Tile[] tile;
     public int[][][] mapTileNum;
 
     public TileHelper(GamePanel gp) {
         this.gp = gp;
-        tile = new Tile[10];
         mapTileNum = new int[gp.maxRooms][gp.maxLabCol][gp.maxLabRow];
     }
 
@@ -34,7 +32,7 @@ public class TileHelper {
                 String line = br.readLine();
 
                 while(col < maxCol){
-                    String numbers[] = line.split(" ");
+                    String[] numbers = line.split("\\s+");
                     int num = Integer.parseInt(numbers[col]);
 
                     mapTileNum[room.getRoomCode()][col][row] = num;
@@ -105,7 +103,11 @@ public class TileHelper {
                     labCol = 0;
                     labRow++;
                 }
+
             }
         }
+        g2.setFont(g2.getFont().deriveFont(32f));
+        g2.setColor(Color.white);
+        g2.drawString(gp.currentRoom.getName(), 20,35);
     }
 }

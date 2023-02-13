@@ -28,7 +28,7 @@ public class UI implements WindowInterface {
     }
 
     //importing font
-    private Font loadFont() {
+    public Font loadFont() {
         try {
             InputStream fontStyle = this.getClass().getResourceAsStream("/font/ThaleahFat.ttf");
             //noinspection ConstantConditions

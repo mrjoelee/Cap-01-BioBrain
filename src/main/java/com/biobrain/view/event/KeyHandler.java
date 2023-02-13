@@ -4,15 +4,15 @@ import com.biobrain.view.panels.GamePanel;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.image.Kernel;
+import java.security.Key;
 
 public class KeyHandler implements KeyListener {
-
+    GamePanel gp;
     public boolean upPressed, downPressed, leftPressed, rightPressed;
 
-
-    GamePanel gp;
     public KeyHandler(GamePanel gp){
-        this.gp=gp;
+        this.gp = gp;
     }
 
     @Override
@@ -22,9 +22,21 @@ public class KeyHandler implements KeyListener {
 
     @Override
     public void keyPressed(KeyEvent e) {
-
         int code = e.getKeyCode();
         //move the arrow on the menu
+
+        if(gp.gameState == gp.titleState){
+            titleState(code);
+        }
+        else if(gp.gameState == gp.mapState){
+            mapState(code);
+        }
+       else if(gp.gameState == gp.playState){
+            playState(code);
+        }
+    }
+
+    public void titleState(int code){
         if(gp.gameState == gp.titleState){
             //the current substate of titleScreen
             if(gp.ui.titleSubState == 0){
@@ -84,34 +96,44 @@ public class KeyHandler implements KeyListener {
                 }
             }
         }
-
-        if(gp.gameState == gp.mapState){
-            if(code == KeyEvent.VK_M){
-                gp.gameState = gp.playState;
-            }
-
+    }
+    public void playState(int code){
+        if(code == KeyEvent.VK_W ||code == KeyEvent.VK_UP){
+            upPressed = true;
         }
+        else if(code == KeyEvent.VK_S || code == KeyEvent.VK_DOWN){
+            downPressed = true;
+        }
+        else if(code == KeyEvent.VK_A || code == KeyEvent.VK_LEFT){
+            leftPressed = true;
+        }
+        else if(code == KeyEvent.VK_D || code == KeyEvent.VK_RIGHT){
+            rightPressed = true;
+        }
+        else if(code == KeyEvent.VK_M){
+            gp.mapDisplayed = gp.currentRoom.getRoomCode();
+            gp.gameState = gp.mapState;
+        }
+    }
 
-        if(gp.gameState == gp.playState){
-            if(code == KeyEvent.VK_W ||code == KeyEvent.VK_UP){
-                upPressed = true;
-            }
-            if(code == KeyEvent.VK_S || code == KeyEvent.VK_DOWN){
-                downPressed = true;
-            }
-            if(code == KeyEvent.VK_A || code == KeyEvent.VK_LEFT){
-                leftPressed = true;
-            }
-            if(code == KeyEvent.VK_D || code == KeyEvent.VK_RIGHT){
-                rightPressed = true;
-            }
-            //TODO SHOW USER MAP
-            if(code == KeyEvent.VK_M){
-                gp.gameState = gp.mapState;
-                System.out.println("M WAS PRESSED");
+    public void mapState(int code){
+        if(code == KeyEvent.VK_M){
+          gp.gameState = gp.playState;
+        }
+        else if (code == KeyEvent.VK_RIGHT || code == KeyEvent.VK_A) {
+            int mapToDisplay = gp.mapDisplayed + 1;
+
+            if(mapToDisplay < gp.maxRooms) {
+                gp.mapDisplayed = mapToDisplay;
             }
         }
+        else if (code == KeyEvent.VK_LEFT || code == KeyEvent.VK_D) {
+            int mapToDisplay = gp.mapDisplayed - 1;
 
+            if(mapToDisplay >= 0) {
+                gp.mapDisplayed = gp.mapDisplayed - 1;
+            }
+        }
     }
 
     @Override

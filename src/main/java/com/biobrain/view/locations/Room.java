@@ -14,8 +14,8 @@ public class Room {
     private final String map;
     private List<Tile> tiles;
     private final boolean isSector;
-    private GamePanel gamePanel;
-    private TileHelper tileHelper;
+    private final GamePanel gamePanel;
+    private final TileHelper tileHelper;
     private final Rectangle entrance;
     private final Rectangle exit;
 
