@@ -32,7 +32,7 @@ public class BioBrainApp {
 
 
     public void execute() {
-        player = Player.create();
+        setPlayer(Player.create());
         intro();
         welcome();
         askIfUserWantToPlay();
@@ -78,7 +78,7 @@ public class BioBrainApp {
         }
     }
 
-    private void currentPlayerLocation() {
+    public void currentPlayerLocation() {
         System.out.println(player.displayPlayerInfo());
         Console.pause(1000);
         setLocations(Location.parsedLocationsFromJson());
@@ -174,12 +174,15 @@ public class BioBrainApp {
 
     }
 
-    private void getItem(String itemToPickup) {
+    public void validateThenGetItem(String itemToPickup) {
         if (!currentLocation.getItems().contains(itemToPickup)) {
-            System.out.println("\nItem not found! Please try again.");
-            return;
+            throw new RuntimeException(new IllegalArgumentException("\nItem not found! Please try again."));
+        } else {
+            getItem(itemToPickup);
         }
+    }
 
+    private void getItem(String itemToPickup) {
         player.addItem(itemToPickup, Item.getAllItems().get(itemToPickup));
         itemsInRoom.remove(itemToPickup);
         System.out.printf("\nAwesome! You've added the %s to your inventory!\n", itemToPickup);
@@ -346,6 +349,14 @@ public class BioBrainApp {
 
     // ACCESSOR METHODS
 
+
+    public Player getPlayer() {
+        return player;
+    }
+
+    public void setPlayer(Player player) {
+        this.player = player;
+    }
 
     public Map<String, Location> getLocations() {
         return locations;
