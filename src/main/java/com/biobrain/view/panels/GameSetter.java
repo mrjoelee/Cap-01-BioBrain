@@ -1,4 +1,4 @@
-package com.biobrain.view;
+package com.biobrain.view.panels;
 
 /*
  * GameSetter | Class
@@ -8,28 +8,30 @@ package com.biobrain.view;
  * begins game
  */
 
-import com.biobrain.app.BioBrainApp;
 import com.biobrain.util.FileLoader;
 import com.biobrain.util.WindowInterface;
+import com.biobrain.view.panels.GamePanel;
 
 import javax.swing.*;
-import java.awt.*;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.awt.image.BufferedImage;
 
-public class GameSetter implements WindowInterface {
+public class GameSetter extends JFrame implements WindowInterface {
+        JFrame window;
+        GamePanel gamePanel;
 
     // create a window of the game logic and begins play
-    public static void setGame() {
-        JFrame window = new JFrame();
+
+    public GameSetter() {
+        BufferedImage icon = FileLoader.loadBuffered("images/player_down_1.png");
+        window = new JFrame();
+
         // create new JFrame window
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);  // define what happens upon closing window
         window.setResizable(false);                              // set ability to resize display window
         window.setTitle("BioBrain");                            // set title of window to game title
+        window.setIconImage(icon);
 
-        GamePanel gamePanel = new GamePanel();                  // new instance of GamePanel (contains game logic)
+        gamePanel = new GamePanel();                  // new instance of GamePanel (contains game logic)
         window.add(gamePanel);                                  // add Game Panel as window display
         window.pack();
 

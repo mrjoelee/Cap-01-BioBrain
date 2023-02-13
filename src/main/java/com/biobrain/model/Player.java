@@ -12,10 +12,8 @@ import java.util.List;
 import java.util.Map;
 
 public class Player extends Character {
-
     public Map<String,Item> inventory;
     private List<String> visitedLocations;
-
 
     public Player() {
         visitedLocations = new ArrayList<>();
