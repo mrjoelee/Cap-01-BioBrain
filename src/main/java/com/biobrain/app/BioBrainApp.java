@@ -26,6 +26,7 @@ public class BioBrainApp {
     Map<String, Boolean> lockedLocations = new HashMap<>();
     private Map<String, String> directions;
     private List<String> itemsInRoom;
+    private boolean isLaser = true;
     private boolean gameOver = false;
     private String randomDialogue = Npc.getRandomDialogue();
     public final View view = new View();
@@ -130,7 +131,7 @@ public class BioBrainApp {
                 getItem(noun);
                 break;
             case "use":
-                useItem(noun);
+                validateThenUseItem(noun);
                 break;
             case "show":
                 if (noun.equalsIgnoreCase("inventory")) {
@@ -190,10 +191,16 @@ public class BioBrainApp {
         Console.pause(1000);
     }
 
+    private void addToPlayerInventory(String itemToPickup) {
+        player.addItem(itemToPickup, player.getInventory().get(itemToPickup));
+        itemsInRoom.remove(itemToPickup);
+        System.out.printf("\nAwesome! You've added the %s to your inventory!\n", itemToPickup);
+    }
+
     // validates the item used was located in the player's inventory,
     // if not, displays a message that the item is not in possession
-    public void validateThenUseItem(String usedItem){
-        if(player.getInventory().containsKey(usedItem)) {
+    public void validateThenUseItem(String usedItem) {
+        if (player.getInventory().containsKey(usedItem)) {
             useItem(usedItem);
         } else {
             System.out.printf("You're not carrying a %s to be able to use!", usedItem);
@@ -202,39 +209,65 @@ public class BioBrainApp {
 
     // use an item from the inventory
 
-    private void useItem(String usedItem){
-            Map<String, Item> inv = player.getInventory();// get a reference to the inventory map
+    private void useItem(String usedItem) {
+        Map<String, Item> inv = player.getInventory();// get a reference to the inventory map
+        String networkLocation = locations.get("Sector 2 - Control Lab").getName(); //must be in sector 2 to hack the network interface
+        String playerLocation = currentLocation.getName(); // get the player current location
+        Set<String> itemForSphere = Set.of("memory", "interface", "motherboard"); //using set since we are checking for a certain item (faster)
+        String sphere = "A.I. Transfer Sphere";
 
-            // todo use memory + interface + motherbooard = AI Sphere REVIEW LOGIC WITH TEAM
-            if (usedItem.equals("memory") || usedItem.equals("interface") || usedItem.equals("motherboard")) {
-                if (inv.containsKey("memory") && inv.containsKey("interface") && inv.containsKey("motherboard")) {
-                    player.addItem("sphere", Item.getAllItems().get("sphere"));
-                    System.out.printf("\nAwesome! You've added the %s to your inventory!\n", "A.I. Transfer Sphere");
-                    System.out.println(player.displayPlayerInfo());
-                }
+        // todo use memory + interface + motherbooard = AI Sphere REVIEW LOGIC WITH TEAM
+        if (itemForSphere.contains(usedItem) && itemForSphere.stream().allMatch(item -> inv.containsKey(item))) {
+            player.addItem("sphere", Item.getAllItems().get("sphere"));
+
+            //once combines to a sphere, it will remove the 3 elements
+            for (String item : itemForSphere) {
+                player.removeItem(item, inv.get(item));
             }
+            System.out.printf("\nAwesome! You've added the %s to your inventory!\n", sphere);
+            System.out.println(player.displayPlayerInfo());
 
-            // todo use sphere = download biobrain REVIEW LOGIC WITH TEAM
-            // needs a check to ensure laser shield is disabled
-            else if (usedItem.equals("sphere") && currentLocation.getName().equals("Sector 1 - Weapons Chamber")){
-                player.addItem("biobrain", Item.getAllItems().get("biobrain"));
-                System.out.printf("\nAwesome! You've added the %s to your inventory!\n", "BioBrain");
+        }
+        // todo use sphere = download biobrain REVIEW LOGIC WITH TEAM
+        // needs a check to ensure laser shield is disabled
+        else if (usedItem.equalsIgnoreCase("sphere") ) {
+            handleUseSphere(playerLocation);
 
-            }
-
-            // todo use tablet = hack computers
-
-            // todo use weapons
-
-
+        } // todo use tablet = to disable laser
+        else if (usedItem.equalsIgnoreCase("tablet") && player.getInventory().containsKey(usedItem)) {
+            handleUseTablet(playerLocation, networkLocation);
+        }
+        // todo use weapons
         System.out.println(player.displayPlayerInfo()); // finally, display player info to user again
-
     }
 
+    //using sphere - checking for location and laser logic
+    private void handleUseSphere(String playerLocation) {
+        String location = "Sector 1 - Weapons Chamber";
+        if (!playerLocation.equalsIgnoreCase(location)) {
+            System.out.printf("You must use the sphere inside %s to get the biobrain", location);
+        } else if (isLaser) {
+            System.out.println("biobrain is protected with laser shield. You must hack the network interface with" +
+                    "the table first to disable the laser shield");
+        } else {
+            player.addItem("biobrain", Item.getAllItems().get("biobrain"));
+            System.out.printf("\nAwesome! You've added the %s to your inventory!\n", "BioBrain");
+        }
+    }
+
+    //using tablet - checking for location and laser logic
+    private void handleUseTablet(String playerLocation, String networkLocation) {
+        if (!playerLocation.equalsIgnoreCase(networkLocation)) {
+            System.out.printf("\nYou can use the tablet in the Network Interface location in %s", networkLocation);
+        } else {
+            System.out.println("\nYou have successfully disable the laser shield");
+            isLaser = false;
+        }
+    }
 
     private void showInventory() {
         Console.pause(1500);
-        Map<String,Item> inventory = player.getInventory();
+        Map<String, Item> inventory = player.getInventory();
         if (inventory.isEmpty()) {
             System.out.println("\nYou have no items in your inventory");
             return;
