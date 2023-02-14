@@ -6,6 +6,7 @@ package com.biobrain.client;
  * loads game window
  */
 
+import com.biobrain.app.BioBrainApp;
 import com.biobrain.view.panels.GameSetter;
 
 public class Main {

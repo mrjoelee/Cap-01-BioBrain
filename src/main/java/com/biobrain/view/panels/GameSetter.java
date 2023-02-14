@@ -48,7 +48,7 @@ public class GameSetter extends JFrame implements WindowInterface {
 
         gamePanel.startGameThread();                            // begin the game thread to start game loop
 
-        //WindowInterface.displayPopUpWindow(gamePanel, FileLoader.loadTextFile("Instructions/Instructions.txt")); // call a pop-up window
+        WindowInterface.displayPopUpWindow(gamePanel, FileLoader.loadTextFile("Instructions/Instructions.txt")); // call a pop-up window
     }
 
     public static void manageVisibility(){
