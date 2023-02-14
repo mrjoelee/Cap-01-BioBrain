@@ -2,7 +2,11 @@ package com.biobrain.view.event;
 
 import com.biobrain.util.FileLoader;
 import com.biobrain.util.WindowInterface;
+import com.biobrain.view.locations.Room;
 import com.biobrain.view.panels.GamePanel;
+import com.biobrain.view.panels.GameSetter;
+import com.biobrain.view.panels.InventoryPanel;
+import com.biobrain.view.tile.Map;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -42,14 +46,37 @@ public class UI implements WindowInterface {
 
     public void draw(Graphics2D g2){
         this.g2 = g2;
-        g2.setColor(Color.black);
+        g2.setColor(Color.white);
         g2.setFont(thaleahFont);
 
-        //title state --> other game state implementation can be put there. (pause, inventory,map,etc)??
+        //title state
         if(gamePanel.gameState == gamePanel.titleState){
             drawTitleScreen();
         }
+        //TODO: will add features such as sound, quit later on.
+        //option state
+        if(gamePanel.gameState == gamePanel.optionsState){
+            drawOption();
+        }
+        //adding inventory panel
+        if(gamePanel.gameState == gamePanel.playState){
+            GameSetter.manageVisibility();
+        }
     }
+
+
+
+    private void drawOption() {
+        g2.setColor(Color.white);
+        g2.setFont(g2.getFont().deriveFont(18F));
+        //sub window
+        int x = gamePanel.getTileSize()*4;
+        int y = gamePanel.getTileSize();
+        int width = gamePanel.getTileSize()*8;
+        int height = gamePanel.getTileSize()*10;
+        drawWindow(x,y,width,height);
+    }
+
 
     private Image playerIcon(){
         BufferedImage playerIcon = FileLoader.loadBuffered("images/player_down_1.png");
@@ -140,20 +167,20 @@ public class UI implements WindowInterface {
     }
 
     public void showInstruction() {
-        BufferedImage intro = FileLoader.loadBuffered("images/Instructions1.png");
+        BufferedImage intro = FileLoader.loadBuffered("images/Instructions.png");
         int x = 0;
         int y = 0;
-        g2.setColor(Color.black);
+        g2.setColor(Color.white);
         g2.drawImage(intro, x, y, null);
         //WindowInterface.displayPopUpWindow(gamePanel,FileLoader.loadTextFile("Instructions/Instructions.txt"));
     }
 
     private void showIntro() {
         //g2.setFont(g2.getFont().deriveFont(Font.PLAIN,10F));
-        BufferedImage intro = FileLoader.loadBuffered("images/intro1.png");
+        BufferedImage intro = FileLoader.loadBuffered("images/intro.png");
         int x = 0;
         int y = 0;
-        g2.setColor(Color.black);
+        g2.setColor(Color.white);
         g2.drawImage(intro, x, y, null);
     }
     //sets the (width)
@@ -170,4 +197,17 @@ public class UI implements WindowInterface {
 //        }
 //    }
 
+    //creates a inner window
+    public void drawWindow(int x, int y, int width, int height){
+        //creates a rectangle
+        Color windowColor = new Color(0,0,0,200);  // a is the opacity
+        g2.setColor(windowColor);
+        g2.fillRoundRect(x,y,width,height,35,35);
+
+        //border for the rectangle
+        windowColor = new Color(255,255,255,200);
+        g2.setColor(windowColor);
+        g2.setStroke(new BasicStroke(5)); //defines the width of outlines of graphics
+        g2.drawRoundRect(x+5,y+5,width-10,height-10,25,25);
+    }
 }
