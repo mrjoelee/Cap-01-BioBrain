@@ -91,8 +91,6 @@ public class EventHandler {
     }
 
     public void teleport(int map, int col, int row){
-        //gamePanel.gameState = gameState;
-        System.out.println("HELLOOOOOO");
         gamePanel.currentRoom = gamePanel.locations.getRooms().stream()
                 .filter(x -> x.getRoomCode() == map)
                 .findFirst()
