@@ -25,20 +25,97 @@ class BioBrainAppTest {
     }
 
     @Test
-    public void useItemNotinInventory_ExpectedFail() {
-//        //set up
-//        // new example item
-//        Item testItem = new Item("motherboard", "test item", 0);
-//
-//        // only the tablet should be located in the starting room
-//        // attempting to use a different item will fail
-//        testApp.validateThenGetItem("tablet");
-//        IllegalArgumentException except = assertThrows(
-//                IllegalArgumentException.class,
-//                () -> testApp.validateThenUseItem("motherboard")
-//        );
-//
-//        // act
-//        assertTrue(except.getMessage().contentEquals("You're not carrying a motherboard to be able to use!"));
+    public void getItemNotinRoom_ExpectedRuntimeException() {
+        //SET-UP
+
+        // ACT
+        // only the tablet should be located in the starting room
+        // attempting to pick up a different item will fail
+        String itemNotPresent = "cheese";
+        RuntimeException except = assertThrows(
+                RuntimeException.class,
+                () -> testApp.validateThenGetItem(itemNotPresent)
+        );
+        String expectedMessage = "java.lang.IllegalArgumentException: \n" +
+                "cheese was not found! Please try again.";
+
+        // ASSERT
+        assertTrue(except.getMessage().contentEquals(expectedMessage));
+    }
+
+    @Test
+    public void getNullItem_ExpectedRuntimeException() {
+        //SET-UP
+
+        // ACT
+        // only the tablet should be located in the starting room
+        // attempting to pick up a different item will fail
+        String itemNotPresent = null;
+        RuntimeException except = assertThrows(
+                RuntimeException.class,
+                () -> testApp.validateThenGetItem(itemNotPresent)
+        );
+        String expectedMessage = "java.lang.IllegalArgumentException: \n" +
+                "null was not found! Please try again.";
+
+        System.out.println("MESSAGE: " + except.getMessage());
+
+        // ASSERT
+        assertTrue(except.getMessage().contentEquals(expectedMessage));
+    }
+
+    @Test
+    public void getIteminRoom_ExpectedinInventory() {
+        //SET-UP
+
+        // ACT
+        // only the tablet should be located in the starting room
+        String itemPresent = "tablet";
+        // add it to inventory
+        testApp.validateThenGetItem(itemPresent);
+
+        // ASSERT
+        // does player inventory contain the given item?
+        assertTrue(testPlayer.getInventory().containsKey(itemPresent));
+    }
+
+    @Test
+    public void useItemNotinInventory_ExpectedRuntimeException() {
+        //SET-UP
+        // new example item
+        Item testItem = new Item("motherboard", "test item", 0);
+
+        // ACT
+        // only the tablet should be located in the starting room
+        // attempting to use a different item will fail
+        String itemInInventory = "tablet";
+        String itemNotInInventory = "motherboard";
+        testApp.validateThenGetItem(itemInInventory);
+        RuntimeException except = assertThrows(
+                RuntimeException.class,
+                () -> testApp.validateThenUseItem(itemNotInInventory)
+        );
+        String expectedMessage = "java.lang.IllegalArgumentException: \n" +
+                "You're not carrying a motherboard to be able to use!";
+
+        // ASSERT
+        assertTrue(except.getMessage().contentEquals(expectedMessage));
+    }
+
+    @Test
+    public void useNullItem_ExpectedRuntimeException() {
+        //SET-UP
+        String itemNotInInventory = null;
+
+        // ACT
+        RuntimeException except = assertThrows(
+                RuntimeException.class,
+                () -> testApp.validateThenUseItem(itemNotInInventory)
+        );
+        String expectedMessage = "java.lang.IllegalArgumentException: \n" +
+                "You're not carrying a null to be able to use!";
+
+        // ASSERT
+        assertTrue(except.getMessage().contentEquals(expectedMessage));
     }
 }

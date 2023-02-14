@@ -31,7 +31,7 @@ public class BioBrainApp {
     private String randomDialogue = Npc.getRandomDialogue();
     public final View view = new View();
 
-
+    // APP METHODS
     public void execute() {
         setPlayer(Player.create());
         intro();
@@ -69,7 +69,6 @@ public class BioBrainApp {
         promptContinue();
         Console.clear();
         printFile(MAIN_MAP);
-        //Console.pause(4000);
         currentPlayerLocation();
         lockDoors();                // sets the map of locked doors via the "isLocked" attribute from locations.json
         if (!gameOver) {
@@ -112,6 +111,25 @@ public class BioBrainApp {
         printLocationMap(mapToPrint);
     }
 
+    // pulls data from locations.json to create a map of locked sectors that cannot be entered
+    private void lockDoors() {
+        // create a temporary map to hold data
+        Map<String,Boolean> tempMap = new HashMap<>();
+
+        // iterate over the locations map using a foreach on the location map's entryset
+        for (Map.Entry<String, Location> entry : getLocations().entrySet()) {
+            // puts the starting status of all locked sectors into one place for easy reference/manipulation
+            tempMap.put(entry.getValue().getName(), entry.getValue().getLocked());
+        }
+
+        // set locked room map
+        setLockedLocations(tempMap);
+    }
+
+    // sets location as unlocked for future access to the location by the player
+    private void unlockADoor(String locationName) {
+        getLockedLocations().put(locationName, false);
+    }
 
     private void askPlayerAction() {
         System.out.println("\nWhat would you like to do?:\n\n- (Look) to check item\n- (Get) to pick up item\n- (Go + direction) to move to a different location\n- (Show Inventory) to see inventory\n- (Show Directions)\n- (Quit) to exit the game.");
@@ -128,7 +146,7 @@ public class BioBrainApp {
                 movePlayer(noun);
                 break;
             case "get":
-                getItem(noun);
+                validateThenGetItem(noun);
                 break;
             case "use":
                 validateThenUseItem(noun);
@@ -175,16 +193,16 @@ public class BioBrainApp {
 
     }
 
-    public void validateThenGetItem(String itemToPickup) {
+    public void validateThenGetItem(String itemToPickup) throws IllegalArgumentException{
         if (!currentLocation.getItems().contains(itemToPickup)) {
-            throw new RuntimeException(new IllegalArgumentException("\nItem not found! Please try again."));
+            throw new RuntimeException(new IllegalArgumentException("\n"+ itemToPickup +" was not found! Please try again."));
         } else {
             getItem(itemToPickup);
         }
     }
 
     private void getItem(String itemToPickup) {
-        player.addItem(itemToPickup, Item.getAllItems().get(itemToPickup));
+        addToPlayerInventory(itemToPickup);
         itemsInRoom.remove(itemToPickup);
         System.out.printf("\nAwesome! You've added the %s to your inventory!\n", itemToPickup);
         System.out.println(player.displayPlayerInfo());
@@ -199,16 +217,15 @@ public class BioBrainApp {
 
     // validates the item used was located in the player's inventory,
     // if not, displays a message that the item is not in possession
-    public void validateThenUseItem(String usedItem) {
+    public void validateThenUseItem(String usedItem) throws IllegalArgumentException{
         if (player.getInventory().containsKey(usedItem)) {
             useItem(usedItem);
         } else {
-            System.out.printf("You're not carrying a %s to be able to use!", usedItem);
+            throw new RuntimeException(new IllegalArgumentException("\nYou're not carrying a " + usedItem+ " to be able to use!"));
         }
     }
 
     // use an item from the inventory
-
     private void useItem(String usedItem) {
         Map<String, Item> inv = player.getInventory();// get a reference to the inventory map
         String networkLocation = locations.get("Sector 2 - Control Lab").getName(); //must be in sector 2 to hack the network interface
@@ -280,7 +297,6 @@ public class BioBrainApp {
         Console.pause(1500);
     }
 
-
     private void dropItem(String itemToDrop) {
         if (!isItemInInventory(itemToDrop)) {
             System.out.println("\nItem not found! Please try again.");
@@ -336,20 +352,6 @@ public class BioBrainApp {
 
     }
 
-    // pulls data from locations.json to create a map of locked sectors that cannot be entered
-    private void lockDoors() {
-        // iterate over the locations map using a foreach on the map's entryset
-        for (Map.Entry<String, Location> entry : getLocations().entrySet()) {
-            // puts the starting status of all locked sectors into one place for easy reference/manipulation
-            getLockedLocations().put(entry.getValue().getName(), entry.getValue().getLocked());
-        }
-    }
-
-    // sets location as unlocked for future access to the location by the player
-    private void unlockADoor(String locationName) {
-        getLockedLocations().put(locationName, false);
-    }
-
     // returns the Location object given the String locationName
     private Location getLocation(String locationName) {
         // only return a value if the locations Map contains the locationName
@@ -380,9 +382,8 @@ public class BioBrainApp {
         scanner.nextLine();
     }
 
+
     // ACCESSOR METHODS
-
-
     public Player getPlayer() {
         return player;
     }

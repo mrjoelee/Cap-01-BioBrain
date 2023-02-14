@@ -5,6 +5,7 @@ package com.biobrain.view.panels;
  * creates new thread to handle game logic
  * begins main update loop that keeps gamePanel graphics updated
  */
+import com.biobrain.items.ItemManager;
 import com.biobrain.view.event.KeyHandler;
 import com.biobrain.view.locations.LocationManager;
 import com.biobrain.view.locations.Room;
@@ -42,6 +43,7 @@ public class GamePanel extends JPanel implements Runnable {
     public Room currentRoom;
     public EventHandler eventHandler = new EventHandler(this);
     public LocationManager locations = new LocationManager(this);
+    public ItemManager items = new ItemManager(this);
     public Map playerMap = new Map(this);
     public CollisionDetector collisionDetector = new CollisionDetector(this);
     public UI ui = new UI(this);                   // create new instance of User Interface
@@ -121,6 +123,7 @@ public class GamePanel extends JPanel implements Runnable {
         ui.draw(g2); // draws the Title screen
         if(gameState == playState) {
             tileHelper.draw(g2);
+            items.draw(g2);
             currentRoom.draw(g2);
             player.draw(g2);
         }
@@ -130,8 +133,12 @@ public class GamePanel extends JPanel implements Runnable {
         g2.dispose(); // dispose of old configurations, player sprite will update each frame
     }
 
+    private void drawItems() {
+
+    }
+
     public int getTileSize() {
-        return tileSize;
+        return this.tileSize;
     }
 
     public int getMaxSectorCol(){
