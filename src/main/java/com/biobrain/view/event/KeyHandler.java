@@ -9,7 +9,7 @@ import java.security.Key;
 
 public class KeyHandler implements KeyListener {
     GamePanel gp;
-    public boolean upPressed, downPressed, leftPressed, rightPressed;
+    public boolean upPressed, downPressed, leftPressed, rightPressed, enterPressed;
 
     public KeyHandler(GamePanel gp){
         this.gp = gp;
@@ -33,6 +33,18 @@ public class KeyHandler implements KeyListener {
         }
        else if(gp.gameState == gp.playState){
             playState(code);
+        }
+       else if(gp.gameState == gp.optionsState){
+           optionState(code);
+        }
+    }
+
+    private void optionState(int code) {
+        if(code == KeyEvent.VK_ESCAPE){
+            gp.gameState = gp.playState;
+        }
+        if(code == KeyEvent.VK_ENTER){
+            enterPressed = true;
         }
     }
 
@@ -114,6 +126,10 @@ public class KeyHandler implements KeyListener {
             gp.mapDisplayed = gp.currentRoom.getRoomCode();
             gp.gameState = gp.mapState;
         }
+        if (code == KeyEvent.VK_ESCAPE){
+            gp.gameState = gp.optionsState;
+        }
+
     }
 
     public void mapState(int code){

@@ -5,7 +5,9 @@ package com.biobrain.view.panels;
  * creates new thread to handle game logic
  * begins main update loop that keeps gamePanel graphics updated
  */
+
 import com.biobrain.items.ItemManager;
+import com.biobrain.util.FileLoader;
 import com.biobrain.view.event.KeyHandler;
 import com.biobrain.view.locations.LocationManager;
 import com.biobrain.view.locations.Room;
@@ -18,6 +20,7 @@ import com.biobrain.view.tile.TileHelper;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.image.BufferedImage;
 
 
 public class GamePanel extends JPanel implements Runnable {
@@ -57,6 +60,8 @@ public class GamePanel extends JPanel implements Runnable {
     public final int titleState = 0;
     public final int playState = 1;
     public final int mapState = 2;
+    public final int optionsState = 3;
+    public final int pauseState = 3;
 
     public void setupGame() {
         gameState = playState;
@@ -120,7 +125,7 @@ public class GamePanel extends JPanel implements Runnable {
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g; // defines graphics configurations
-        ui.draw(g2); // draws the Title screen
+
         if(gameState == playState) {
             tileHelper.draw(g2);
             items.draw(g2);
@@ -130,6 +135,7 @@ public class GamePanel extends JPanel implements Runnable {
         else if(gameState == mapState){
             playerMap.setCurrentMapDisplayed(g2, mapDisplayed);
         }
+        ui.draw(g2); // draws the Title screen
         g2.dispose(); // dispose of old configurations, player sprite will update each frame
     }
 
