@@ -1,12 +1,11 @@
 package com.biobrain.view.tile;
 
-import com.biobrain.view.locations.Room;
+import com.biobrain.model.Location;
 import com.biobrain.view.panels.GamePanel;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.List;
-import java.util.Objects;
 
 public class Map{
     GamePanel gamePanel;
@@ -20,11 +19,12 @@ public class Map{
 
     public void createLabMap() {
         roomMaps = new BufferedImage[gamePanel.maxRooms];
-        List<Room> rooms = gamePanel.locations.getRooms();
+        List<Location> locations = gamePanel.locations.getRooms();
 
-        for (int i = 0; i < gamePanel.maxRooms; i++) {
+        for (int i = 0; i < locations.size(); i++) {
 
-            Room curr = rooms.get(i);
+            Location curr = locations.get(i);
+            List<Tile> roomTiles = gamePanel.tileSetter.getRoomTiles(gamePanel.currentRoom.getShortName());
 
             int width = curr.isSector() ?
                     gamePanel.getMaxSectorCol() * gamePanel.getTileSize() :
@@ -45,10 +45,10 @@ public class Map{
             int row = 0;
 
             while (col < maxCol && row < maxRow) {
-                int tileNum = gamePanel.tileHelper.mapTileNum[curr.getRoomCode()][col][row];
+                int tileNum = TileHelper.mapTileNum[curr.getRoomCode()][col][row];
                 int x = gamePanel.getTileSize() * col;
                 int y = gamePanel.getTileSize() * row;
-                graphics2D.drawImage(curr.getTiles().get(tileNum).image, x, y, gamePanel.getTileSize(), gamePanel.getTileSize(), null);
+                graphics2D.drawImage(roomTiles.get(tileNum).image, x, y, gamePanel.getTileSize(), gamePanel.getTileSize(), null);
 
                 col++;
 
@@ -65,9 +65,9 @@ public class Map{
     }
 
     private void drawFullMapScreen(Graphics2D g2, int roomCode){
-        g2.setColor(Color.black);
+//        g2.setColor(Color.black);
         g2.fillRect(0,0, gamePanel.screenWidth, gamePanel.screenHeight);
-        Room roomDisplayed = gamePanel.locations.getRooms()
+        Location roomDisplayed = gamePanel.locations.getRooms()
                         .stream().filter(x -> x.getRoomCode() == roomCode)
                         .findFirst().orElse(null);
 
@@ -97,7 +97,10 @@ public class Map{
             }
             g2.setFont(g2.getFont().deriveFont(32f));
             g2.setColor(Color.white);
-            g2.drawString(String.format("%s - Use arrows to look at maps.", roomDisplayed.getName()), width / 2, 550);
+            String message = String.format("%s", roomDisplayed.getName());
+            int textWidth = g2.getFontMetrics().stringWidth(message);
+            int x = (gamePanel.screenWidth/2) - (textWidth/2);
+            g2.drawString(message, x, 550);
         }
     }
 }

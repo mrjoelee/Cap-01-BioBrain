@@ -24,8 +24,8 @@ public class GameSetter extends JFrame implements WindowInterface {
     // create a window of the game logic and begins play
 
     public GameSetter() {
-        BufferedImage icon = FileLoader.loadBuffered("images/player_down_1.png");
         BufferedImage image = FileLoader.loadBuffered("images/inventory.png");
+        BufferedImage icon = FileLoader.loadBuffered("images/player/player_down_1.png");
         window = new JFrame();
 
         // create new JFrame window
@@ -38,6 +38,8 @@ public class GameSetter extends JFrame implements WindowInterface {
         inventoryPanel = new InventoryPanel(this,gamePanel); // new panel for inventory
         inventoryImg = new JLabel(new ImageIcon(image));            // label to add inventory img
         inventoryPanel.add(inventoryImg);
+        gamePanel = new GamePanel();               // new instance of GamePanel (contains game logic)
+
         window.add(gamePanel);                                  // add Game Panel as window display
         window.pack();
         window.setLocationRelativeTo(null);

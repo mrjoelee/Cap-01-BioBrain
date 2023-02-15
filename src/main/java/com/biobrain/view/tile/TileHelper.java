@@ -1,37 +1,38 @@
 package com.biobrain.view.tile;
 
+import com.biobrain.model.Location;
 import com.biobrain.view.panels.GamePanel;
-import com.biobrain.view.locations.Room;
 
 import java.awt.*;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.List;
 
 public class TileHelper {
-    GamePanel gp;
-    public int[][][] mapTileNum;
+    private static GamePanel gp;
+    public static int[][][] mapTileNum;
 
     public TileHelper(GamePanel gp) {
-        this.gp = gp;
+        TileHelper.gp = gp;
         mapTileNum = new int[gp.maxRooms][gp.maxLabCol][gp.maxLabRow];
     }
 
-    public void loadMap(Room room){
+    public static void loadMap(Location room) {
         try {
-            InputStream is = getClass().getClassLoader().getResourceAsStream(room.getMap());
+            InputStream is = TileHelper.class.getClassLoader().getResourceAsStream(room.getGuiMap());
             BufferedReader br = new BufferedReader(new InputStreamReader(is));
 
             int maxCol = room.isSector() ? gp.getMaxSectorCol() : gp.maxLabCol;
-            int maxRow = room.isSector()? gp.getMaxSectorRow() : gp.maxLabRow;
+            int maxRow = room.isSector() ? gp.getMaxSectorRow() : gp.maxLabRow;
 
-            int col =0;
+            int col = 0;
             int row = 0;
 
-            while(col < maxCol  && row < maxRow){
+            while (col < maxCol && row < maxRow) {
                 String line = br.readLine();
 
-                while(col < maxCol){
+                while (col < maxCol) {
                     String[] numbers = line.split("\\s+");
                     int num = Integer.parseInt(numbers[col]);
 
@@ -39,42 +40,40 @@ public class TileHelper {
                     col++;
                 }
 
-                if(col == maxCol){
-                    col =0;
+                if (col == maxCol) {
+                    col = 0;
                     row++;
                 }
             }
             br.close();
-        }
-        catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
+    public void draw(Graphics2D g2) {
+        List<Tile> roomTiles = gp.tileSetter.getRoomTiles(gp.currentRoom.getShortName());
 
-    public void draw(Graphics2D g2){
-
-        if(gp.currentRoom.isSector()){
-            int col =0;
-            int row =0;
+        if (gp.currentRoom.isSector()) {
+            int col = 0;
+            int row = 0;
             int x = 0;
-            int y =0;
+            int y = 0;
 
-            while(col < gp.getMaxSectorCol() && row < gp.getMaxSectorRow()){
-            int tileNum = mapTileNum[gp.currentRoom.getRoomCode()][col][row];
-                g2.drawImage(gp.currentRoom.getTiles().get(tileNum).image, x, y, gp.getTileSize(), gp.getTileSize(), null);
+            while (col < gp.getMaxSectorCol() && row < gp.getMaxSectorRow()) {
+                int tileNum = mapTileNum[gp.currentRoom.getRoomCode()][col][row];
+                g2.drawImage(roomTiles.get(tileNum).image, x, y, gp.getTileSize(), gp.getTileSize(), null);
                 col++;
                 x += gp.getTileSize();
 
-                if(col == gp.getMaxSectorCol()){
-                    col =0;
-                    x =0;
+                if (col == gp.getMaxSectorCol()) {
+                    col = 0;
+                    x = 0;
                     row++;
                     y += gp.getTileSize();
                 }
             }
-        }
-        else {
+        } else {
             int labCol = 0;
             int labRow = 0;
 
@@ -94,7 +93,7 @@ public class TileHelper {
                         labY + gp.getTileSize() > gp.player.labY - gp.player.screenY &&
                         labY - gp.getTileSize() < gp.player.labY + gp.player.screenY) {
 
-                    g2.drawImage(gp.currentRoom.getTiles().get(tileNum).image, screenX, screenY, gp.getTileSize(), gp.getTileSize(), null);
+                    g2.drawImage(roomTiles.get(tileNum).image, screenX, screenY, gp.getTileSize(), gp.getTileSize(), null);
                 }
 
                 labCol++;
@@ -106,8 +105,8 @@ public class TileHelper {
 
             }
         }
-        g2.setFont(g2.getFont().deriveFont(32f));
+        g2.setFont(g2.getFont().deriveFont(20f));
         g2.setColor(Color.white);
-        g2.drawString(gp.currentRoom.getName(), 20,35);
+        g2.drawString(gp.currentRoom.getName(), 20, 35);
     }
 }

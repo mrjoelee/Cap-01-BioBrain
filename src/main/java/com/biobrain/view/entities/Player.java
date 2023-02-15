@@ -45,14 +45,14 @@ public class Player extends Entity {
 
     public void getPlayerImage() {
         //manage sprites loaded
-        up1 = FileLoader.loadBuffered("images/player_up_1.png");
-        up2 = FileLoader.loadBuffered("images/player_up_2.png");
-        down1 = FileLoader.loadBuffered("images/player_down_1.png");
-        down2 = FileLoader.loadBuffered("images/player_down_2.png");
-        left1 = FileLoader.loadBuffered("images/player_left_1.png");
-        left2 = FileLoader.loadBuffered("images/player_left_2.png");
-        right1 = FileLoader.loadBuffered("images/player_right_1.png");
-        right2 = FileLoader.loadBuffered("images/player_right_2.png");
+        up1 = FileLoader.loadBuffered("images/player/player_up_1.png");
+        up2 = FileLoader.loadBuffered("images/player/player_up_2.png");
+        down1 = FileLoader.loadBuffered("images/player/player_down_1.png");
+        down2 = FileLoader.loadBuffered("images/player/player_down_2.png");
+        left1 = FileLoader.loadBuffered("images/player/player_left_1.png");
+        left2 = FileLoader.loadBuffered("images/player/player_left_2.png");
+        right1 = FileLoader.loadBuffered("images/player/player_right_1.png");
+        right2 = FileLoader.loadBuffered("images/player/player_right_2.png");
     }
 
     // function will be called each frame, only contains logic that needs constant updating
@@ -77,9 +77,11 @@ public class Player extends Entity {
             }
 
             collisionOn = false;
-            //check tile checks if a specific tile has collision on (user cant walk over it)
-            //check entrance is constantly checking if the players collider hits a room entrance
-            // if player is in the sector have to check if their collider hit the room exit
+
+            /* check tile checks if a specific tile has collision on (user cant walk over it)
+             * check entrance is constantly checking if the players collider hits a room entrance
+             * if player is in the sector have to check if their collider hit the room exit
+             */
             gamePanel.collisionDetector.checkTile(this);
             gamePanel.collisionDetector.checkEntrance(this);
             gamePanel.collisionDetector.checkExit(this);

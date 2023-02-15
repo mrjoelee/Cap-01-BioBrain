@@ -31,8 +31,11 @@ public class KeyHandler implements KeyListener {
             mapState(code);
         } else if (gp.gameState == gp.playState) {
             playState(code);
-        } else if (gp.gameState == gp.optionsState) {
-            optionState(code);
+        }
+       else if(gp.gameState == gp.optionsState){
+           optionState(code);
+        } else if (gp.gameState == gp.dialogueState) {
+           dialogueState(code);
         }
     }
 
@@ -40,13 +43,19 @@ public class KeyHandler implements KeyListener {
         if (code == KeyEvent.VK_ESCAPE) {
             gp.gameState = gp.playState;
         }
-        if (code == KeyEvent.VK_ENTER) {
+        else if(code == KeyEvent.VK_ENTER) {
             enterPressed = true;
         }
     }
 
-    public void titleState(int code) {
-        if (gp.gameState == gp.titleState) {
+    private void dialogueState(int code){
+        if(code == KeyEvent.VK_ENTER){
+            gp.gameState = gp.playState;
+        }
+    }
+
+    private void titleState(int code){
+        if(gp.gameState == gp.titleState){
             //the current substate of titleScreen
             if (gp.ui.titleSubState == 0) {
                 if (code == KeyEvent.VK_W || code == KeyEvent.VK_UP) {
@@ -105,8 +114,8 @@ public class KeyHandler implements KeyListener {
         }
     }
 
-    public void playState(int code) {
-        if (code == KeyEvent.VK_W || code == KeyEvent.VK_UP) {
+    private void playState(int code){
+        if(code == KeyEvent.VK_W ||code == KeyEvent.VK_UP){
             upPressed = true;
         } else if (code == KeyEvent.VK_S || code == KeyEvent.VK_DOWN) {
             downPressed = true;
@@ -124,10 +133,11 @@ public class KeyHandler implements KeyListener {
 
     }
 
-    public void mapState(int code) {
-        if (code == KeyEvent.VK_M) {
-            gp.gameState = gp.playState;
-        } else if (code == KeyEvent.VK_RIGHT || code == KeyEvent.VK_A) {
+    private void mapState(int code){
+        if(code == KeyEvent.VK_M){
+          gp.gameState = gp.playState;
+        }
+        else if (code == KeyEvent.VK_RIGHT || code == KeyEvent.VK_A) {
             int mapToDisplay = gp.mapDisplayed + 1;
 
             if (mapToDisplay < gp.maxRooms) {

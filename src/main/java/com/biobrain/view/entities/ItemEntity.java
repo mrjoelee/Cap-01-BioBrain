@@ -12,29 +12,33 @@ import com.biobrain.view.panels.GamePanel;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
-public class ItemEntity extends Entity {
-    private final GamePanel gamePanel;
-    String cookie;
+public class ItemEntity{
+    String name;
     int roomCode;
-    String imagio;
-    private final int xin;
-    private final int yin;
+    String image;
+    String description;
+    int damage;
+    private int x;
+    private int y;
     Rectangle itemCollider;
 
-    // CTOR
-    public ItemEntity(GamePanel gamePanel, String cookie, int roomCode, int xin, int yin, String imagio) {
-        this.gamePanel = gamePanel;
-        this.cookie = cookie;
+    public ItemEntity(String name, int roomCode, String image, String description, int damage, int x, int y) {
+        this.name = name;
         this.roomCode = roomCode;
-        this.imagio = imagio;
-        this.xin = xin;
-        this.yin = yin;
-        setItemImage(imagio);
+        this.image = image;
+        this.description = description;
+        this.damage = damage;
+        this.x = x;
+        this.y = y;
     }
 
-    public void setItemImage(String image) {
-        //manage sprites loaded
-        itemImage = FileLoader.loadBuffered(image);
+    // CTOR
+    public ItemEntity(String name,int roomCode, int x, int y, String image) {
+        this.name = name;
+        this.roomCode = roomCode;
+        this.image = image;
+        this.x = x;
+        this.y = y;
     }
 
     // function will be called each frame, only contains logic that needs constant updating
@@ -43,13 +47,12 @@ public class ItemEntity extends Entity {
 
     // update player graphics
     public void draw(Graphics2D g2) {
-
-        g2.drawImage(getBuffImage(), getXin(), getYin(), 48, 48, null);
+        g2.drawImage(getItemImage(), getX(), getY(), 48, 48, null);
         g2.drawRect(getItemCollider().x, getItemCollider().y, getItemCollider().width, getItemCollider().height);
     }
 
-    public String getCookie() {
-        return cookie;
+    public String getName() {
+        return name;
     }
 
     public Rectangle getItemCollider(){
@@ -60,23 +63,24 @@ public class ItemEntity extends Entity {
         this.itemCollider = collider;
     }
 
-    public int getXin() {
-        return xin;
+    public int getX() {
+        return x;
     }
 
-    public int getYin() {
-        return yin;
+    public int getY() {
+        return y;
     }
 
-    public BufferedImage getBuffImage(){
-        return this.itemImage;
-    }
 
     public String getImagePath(){
-        return imagio;
+        return image;
     }
 
     public int getRoomCode() {
         return roomCode;
+    }
+
+    public BufferedImage getItemImage(){
+        return FileLoader.loadBuffered(getImagePath());
     }
 }

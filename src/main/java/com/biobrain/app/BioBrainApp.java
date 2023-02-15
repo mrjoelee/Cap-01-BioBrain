@@ -1,14 +1,14 @@
 package com.biobrain.app;
 
-import com.apps.util.Console;
-import com.apps.util.Prompter;
 import com.biobrain.model.*;
+import com.biobrain.util.Console;
+import com.biobrain.util.Prompter;
 import com.biobrain.view.View;
+import com.biobrain.view.locations.LocationManager;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.*;
+
+import static com.biobrain.util.Printer.printFile;
 
 
 public class BioBrainApp {
@@ -18,7 +18,7 @@ public class BioBrainApp {
     private static final String NO_BANNER = "images/dontWantToPlayBanner.txt";
     private static final String MAIN_MAP = "images/mapMain.txt";
     private static final String PROMPT_TO_CONTINUE = "\n Press [ENTER] to continue...";
-    private final Prompter prompter = new Prompter(new Scanner(System.in));
+    private final Prompter prompter = new Prompter();
     private Player player;
     private String npc;
     private Location currentLocation;
@@ -29,14 +29,18 @@ public class BioBrainApp {
     private boolean isLaser = true;
     private boolean gameOver = false;
     private String randomDialogue = Npc.getRandomDialogue();
+
     public final View view = new View();
 
     // APP METHODS
     public void execute() {
         setPlayer(Player.create());
+        LocationManager locationManager = new LocationManager(false);
+        locations = locationManager.getLocations();
+        player = Player.create();
         intro();
         welcome();
-        askIfUserWantToPlay();
+       askIfUserWantToPlay();
     }
 
     public void intro() {
@@ -81,14 +85,14 @@ public class BioBrainApp {
     public void currentPlayerLocation() {
         System.out.println(player.displayPlayerInfo());
         Console.pause(1000);
-        setLocations(Location.parsedLocationsFromJson());
+        setLocations(locations);
 
         if (locations == null || locations.isEmpty()) {
             System.out.println("Error in getting the location");
             return;
         }
 
-        currentLocation = locations.get("Sector 2 - Control Lab");
+        currentLocation = locations.get("sector2");
         String locationName = currentLocation.getName();
         String mapToPrint = currentLocation.getMap();
         itemsInRoom = currentLocation.getItems();
@@ -119,7 +123,7 @@ public class BioBrainApp {
         // iterate over the locations map using a foreach on the location map's entryset
         for (Map.Entry<String, Location> entry : getLocations().entrySet()) {
             // puts the starting status of all locked sectors into one place for easy reference/manipulation
-            tempMap.put(entry.getValue().getName(), entry.getValue().getLocked());
+            tempMap.put(entry.getValue().getName(), entry.getValue().isLocked());
         }
 
         // set locked room map
@@ -323,7 +327,7 @@ public class BioBrainApp {
         }
 
         // only move player if nextLocation is not in the map of lockedLocations
-        if (getLockedLocations().get(nextLocation) == false) {
+        if (!getLockedLocations().get(nextLocation)) {
             currentLocation = getLocation(nextLocation);
             itemsInRoom = currentLocation.getItems();
             System.out.println("\n=======================================================");
@@ -346,9 +350,9 @@ public class BioBrainApp {
         }
 
         // printing the location the player have visited.. if need to print map in the future
-//        for(String location : player.getVisitedLocations()){
-//            System.out.println("Visited locations: " + location);
-//        }
+        for(String location : player.getVisitedLocations()){
+            System.out.println("Visited locations: " + location);
+        }
 
     }
 
@@ -365,15 +369,6 @@ public class BioBrainApp {
         printFile(mapToPrint);
     }
 
-    private void printFile(String fileName) {
-        //noinspection ConstantConditions
-
-        try (BufferedReader buffer = new BufferedReader(new InputStreamReader(BioBrainApp.class.getClassLoader().getResourceAsStream(fileName)))) {
-            buffer.lines().forEach(System.out::println);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
     //pauses & allows user to continue
     private void promptContinue() {
