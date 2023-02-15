@@ -35,7 +35,9 @@ public class Player extends Character {
         inventory.put(itemName,item);
     }
 
-    public void removeItem(String itemName, Item item) { inventory.remove(itemName, item); }
+    public void removeItem(String itemName, Item item) {
+        inventory.remove(itemName, item);
+    }
 
     public Map<String,Item> getInventory() {
         return inventory;

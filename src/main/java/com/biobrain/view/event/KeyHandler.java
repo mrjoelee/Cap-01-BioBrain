@@ -36,6 +36,9 @@ public class KeyHandler implements KeyListener {
         }
        else if(gp.gameState == gp.optionsState){
            optionState(code);
+        } else if (gp.gameState == gp.dialogueState) {
+           dialogueState(code);
+            
         }
     }
 
@@ -43,12 +46,18 @@ public class KeyHandler implements KeyListener {
         if(code == KeyEvent.VK_ESCAPE){
             gp.gameState = gp.playState;
         }
-        if(code == KeyEvent.VK_ENTER){
+        else if(code == KeyEvent.VK_ENTER) {
             enterPressed = true;
         }
     }
 
-    public void titleState(int code){
+
+    private void dialogueState(int code){
+        if(code == KeyEvent.VK_ENTER){
+            gp.gameState = gp.playState;
+        }
+    }
+    private void titleState(int code){
         if(gp.gameState == gp.titleState){
             //the current substate of titleScreen
             if(gp.ui.titleSubState == 0){
@@ -109,7 +118,7 @@ public class KeyHandler implements KeyListener {
             }
         }
     }
-    public void playState(int code){
+    private void playState(int code){
         if(code == KeyEvent.VK_W ||code == KeyEvent.VK_UP){
             upPressed = true;
         }
@@ -131,8 +140,7 @@ public class KeyHandler implements KeyListener {
         }
 
     }
-
-    public void mapState(int code){
+    private void mapState(int code){
         if(code == KeyEvent.VK_M){
           gp.gameState = gp.playState;
         }

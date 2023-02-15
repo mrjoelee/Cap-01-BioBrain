@@ -12,29 +12,33 @@ import com.biobrain.view.panels.GamePanel;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
-public class ItemEntity extends Entity {
-    private final GamePanel gamePanel;
+public class ItemEntity{
     String name;
     int roomCode;
     String image;
-    private final int x;
-    private final int y;
+    String description;
+    int damage;
+    private int x;
+    private int y;
     Rectangle itemCollider;
 
+    public ItemEntity(String name, int roomCode, String image, String description, int damage, int x, int y) {
+        this.name = name;
+        this.roomCode = roomCode;
+        this.image = image;
+        this.description = description;
+        this.damage = damage;
+        this.x = x;
+        this.y = y;
+    }
+
     // CTOR
-    public ItemEntity(GamePanel gamePanel, String name,int roomCode, int x, int y, String image) {
-        this.gamePanel = gamePanel;
+    public ItemEntity(String name,int roomCode, int x, int y, String image) {
         this.name = name;
         this.roomCode = roomCode;
         this.image = image;
         this.x = x;
         this.y = y;
-        setItemImage(image);
-    }
-
-    public void setItemImage(String image) {
-        //manage sprites loaded
-        itemImage = FileLoader.loadBuffered(image);
     }
 
     // function will be called each frame, only contains logic that needs constant updating
@@ -44,7 +48,7 @@ public class ItemEntity extends Entity {
     // update player graphics
     public void draw(Graphics2D g2) {
 
-        g2.drawImage(getBuffImage(), getX(), getY(), 48, 48, null);
+        g2.drawImage(getItemImage(), getX(), getY(), 48, 48, null);
         g2.drawRect(getItemCollider().x, getItemCollider().y, getItemCollider().width, getItemCollider().height);
     }
 
@@ -68,9 +72,6 @@ public class ItemEntity extends Entity {
         return y;
     }
 
-    public BufferedImage getBuffImage(){
-        return this.itemImage;
-    }
 
     public String getImagePath(){
         return image;
@@ -78,5 +79,9 @@ public class ItemEntity extends Entity {
 
     public int getRoomCode() {
         return roomCode;
+    }
+
+    public BufferedImage getItemImage(){
+        return FileLoader.loadBuffered(getImagePath());
     }
 }

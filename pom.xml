@@ -10,15 +10,15 @@
      package name, and should be written entirely in lower case, with the components separated by
      periods, and without enclosing quotes.
     -->
-    <groupId>replace.me</groupId>
+    <groupId>com.biobrain</groupId>
 
     <!--
     TODO: Replace "project" in the <artifactId> element with a spinal-case (lower-case, with dashes
      between words) version of the project name, without any quotes.
     -->
-    <artifactId>project</artifactId>
+    <artifactId>biobrain</artifactId>
 
-    <version>1.1.0-SNAPSHOT</version>
+    <version>1.0</version>
     <packaging>jar</packaging>
 
     <properties>
@@ -66,13 +66,13 @@
 <!--            <version>1.1</version>-->
 <!--        </dependency>-->
 
-            <dependency>
-              <groupId>app-utils</groupId>
-              <artifactId>app-utils</artifactId>
-              <version>1.1</version>
-              <scope>system</scope>
-              <systemPath>${project.basedir}/lib/app-utils-1.1.jar</systemPath>
-            </dependency>
+<!--            <dependency>-->
+<!--              <groupId>app-utils</groupId>-->
+<!--              <artifactId>app-utils</artifactId>-->
+<!--              <version>1.1</version>-->
+<!--              <scope>system</scope>-->
+<!--              <systemPath>${project.basedir}/lib/app-utils-1.1.jar</systemPath>-->
+<!--            </dependency>-->
 
         <dependency>
             <groupId>com.google.code.gson</groupId>
@@ -80,11 +80,6 @@
             <version>2.8.6</version>
         </dependency>
 
-<!--        <dependency>-->
-<!--            <groupId>com.google.code.gson</groupId>-->
-<!--            <artifactId>gson</artifactId>-->
-<!--            <version>2.8.6</version>-->
-<!--        </dependency>-->
         <!--
             To use JUnit4 instead of JUnit5, comment out the previous 2 dependency elements and uncomment
             the following 2 elements.
