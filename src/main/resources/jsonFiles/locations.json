@@ -1,92 +1,133 @@
-{
-  "Sector 1 - Weapons Chamber": {
-    "name": "Sector 1 - Weapons Chamber",
+[
+  {
+    "name": "Laboratory",
+    "roomCode": 0,
+    "shortName": "lab",
+    "guiMap" : "maps/lab/labMap.txt",
+    "map" : "",
+    "items" : [],
+    "isSector" : false,
     "isLocked": false,
+    "description" : "The laboratory you can get to all the sectors from here.",
+    "npc": "",
+    "directions" : {}
+  },
+  {
+    "name": "Sector 1 - Weapons Chamber",
+    "roomCode": 1,
+    "shortName": "sector1",
+    "guiMap" : "maps/sectorGeneric/sector.txt",
+    "map": "images/mapS1.txt",
+    "items": [
+      "blaster",
+      "harpoon",
+      "biobrain"
+    ],
+    "isSector" : true,
+    "isLocked": false,
+    "description": "This is the Weapon's Chamber. A highly secured location with limited access. Be sure you have your badge to get in!",
+    "npc":"",
     "directions": {
       "east": "Sector 2 - Control Lab",
       "south": "Sector 4 - Storage"
-    },
-    "description": "This is the Weapon's Chamber. A highly secured location with limited access. Be sure you have your badge to get in!",
-    "items": [
-      "blaster",
-      "harpoon"
-    ],
-    "npc": "",
-    "map": "images/mapS1.txt"
+    }
   },
-  "Sector 2 - Control Lab": {
+  {
     "name": "Sector 2 - Control Lab",
+    "roomCode": 2,
+    "shortName": "sector2",
+    "guiMap" : "maps/sectorGeneric/sector.txt",
+    "map": "images/mapS2.txt",
+    "items": [
+      "tablet"
+    ],
+    "isSector" : true,
     "isLocked": false,
+    "description": "This is the Control Lab. You can monitor the entire Space Station from here! There are over a dozen cameras, buttons for Sector access control, and controls for the alarm and comms system.",
+    "npc":"",
     "directions": {
       "east": "Sector 3 - Production Room",
       "south": "Sector 5 - Conference Room",
       "west": "Sector 1 - Weapons Chamber"
-    },
-    "description": "This is the Control Lab. You can monitor the entire Space Station from here! There are over a dozen cameras, buttons for Sector access control, and controls for the alarm and comms system.",
-    "items": [
-      "tablet"
-    ],
-    "npc": "",
-    "map": "images/mapS2.txt"
+    }
   },
-  "Sector 3 - Production Room": {
+  {
     "name": "Sector 3 - Production Room",
-    "isLocked": false,
-    "directions": {
-      "south": "Sector 6 - Train Dock",
-      "west": "Sector 2 - Control Lab"
-    },
-    "description": "This is the Production Room. The main hub for AI body creation, beginning from metal shaping all the way to final skin grafting. Tons of robots in there, but they're inactive...or at least they should be.",
+    "roomCode": 3,
+    "shortName": "sector3",
+    "guiMap" : "maps/sectorGeneric/sector.txt",
+    "map": "images/mapS3.txt",
     "items": [
       "harpoon",
       "potion",
       "motherboard"
     ],
-    "npc": "Rouge AI Robot1",
-    "map": "images/mapS3.txt"
-  },
-  "Sector 4 - Storage": {
-    "name": "Sector 4 - Storage",
+    "isSector" : true,
     "isLocked": false,
+    "description": "This is the Production Room. The main hub for AI body creation, beginning from metal shaping all the way to final skin grafting. Tons of robots in there, but they're inactive...or at least they should be.",
+    "npc": "Rouge AI Robot1",
     "directions": {
-      "north": "Sector 1 - Weapons Chamber",
-      "east": "Sector 5 - Conference Room"
-    },
-    "description": "This is the Storage. Extra tools, extra parts, it's all there.",
+      "east": "Sector 3 - Production Room",
+      "south": "Sector 5 - Conference Room",
+      "west": "Sector 1 - Weapons Chamber"
+    }
+  },
+  {
+    "name": "Sector 4 - Storage",
+    "roomCode": 4,
+    "shortName": "sector4",
+    "guiMap" : "maps/sectorGeneric/sector.txt",
+    "map": "images/mapS4.txt",
     "items": [
       "neuralyzer",
       "interface"
     ],
-    "npc": "Rouge AI Robot2",
-    "map": "images/mapS4.txt"
-  },
-  "Sector 5 - Conference Room": {
-    "name": "Sector 5 - Conference Room",
+    "isSector" : true,
     "isLocked": false,
+    "description": "This is the Storage. Extra tools, extra parts, it's all there.",
+    "npc": "Rouge AI Robot2",
     "directions": {
-      "north": "Sector 2 - Control Lab",
-      "west": "Sector 4 - Storage",
-      "east": "Sector 6 - Train Dock"
-    },
-    "description": "This is the Conference Room where all the presentations to government agents and the director take place.",
+      "north": "Sector 1 - Weapons Chamber",
+      "east": "Sector 5 - Conference Room"
+    }
+  },
+  {
+    "name": "Sector 5 - Conference Room",
+    "roomCode": 5,
+    "shortName": "sector5",
+    "guiMap" : "maps/sectorGeneric/sector.txt",
+    "map": "images/mapS5.txt",
     "items": [
       "neuralyzer",
       "memory"
     ],
+    "isSector" : true,
+    "isLocked": false,
+    "description": "This is the Conference Room where all the presentations to government agents and the director take place.",
     "npc": "Rouge AI Robot3",
-    "map": "images/mapS5.txt"
+    "directions": {
+      "north": "Sector 2 - Control Lab",
+      "west": "Sector 4 - Storage",
+      "east": "Sector 6 - Train Dock"
+    }
   },
-  "Sector 6 - Train Dock": {
+
+  {
     "name": "Sector 6 - Train Dock",
-    "isLocked": true,
+    "roomCode": 6,
+    "shortName": "sector6",
+    "guiMap" : "maps/sectorGeneric/sector.txt",
+    "map": "images/mapS6.txt",
+    "items": [],
+    "isSector" : true,
+    "isLocked": false,
+    "description": "This is the Train Dock.. The only way to leave and enter the Space Station. Be careful! You must get there before the boss does!",
+
+    "npc": "Boss AI Robot",
     "directions": {
       "north": "Sector 3 - Production Room",
       "west": "Sector 5 - Conference Room"
-    },
-    "description": "This is the Train Dock.. The only way to leave and enter the Space Station. Be careful! You must get there before the boss does!",
-    "items": [],
-    "npc": "Boss AI Robot",
-    "map": "images/mapS6.txt"
+    }
   }
-}
+]
 

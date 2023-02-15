@@ -1,33 +1,43 @@
 package com.biobrain.model;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
+import com.biobrain.view.tile.Tile;
+import com.biobrain.view.tile.TileSetter;
 
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.lang.reflect.Type;
+import java.awt.*;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class Location {
-
     private String name;
-    private Boolean isLocked;
-    private Map<String, String> directions;
-    private String description;
-    private List<String> items;
-    private String npc;
+    private int roomCode;
+    private String shortName;
+    private String guiMap;
     private String map;
+    private List<String> items;
+    private final boolean isSector;
+    private boolean isLocked;
+    private String description;
+    private String npc;
+    private Map<String, String> directions;
+    private Rectangle entrance;
+    private Rectangle exit;
 
-    public Location(String name, Boolean isLocked, Map<String, String> directions, String description, List<String> items, String npc, String map) {
+    public Location(String name, int roomCode, String shortName,String guiMap, String map, List<String> items, boolean isSector, boolean isLocked,
+                    String description, String npc, Map<String, String> directions,Rectangle entrance, Rectangle exit) {
         this.name = name;
-        this.isLocked = isLocked;
-        this.directions = directions;
-        this.description = description;
-        this.items = items;
-        this.npc = npc;
+        this.roomCode = roomCode;
+        this.shortName = shortName;
+        this.guiMap = guiMap;
         this.map = map;
+        this.items = items;
+        this.isSector = isSector;
+        this.isLocked = isLocked;
+        this.description = description;
+        this.npc = npc;
+        this.directions = directions;
+        this.entrance = entrance;
+        this.exit = exit;
     }
 
     public String getName() {
@@ -38,28 +48,36 @@ public class Location {
         this.name = name;
     }
 
-    public Boolean getLocked() {
-        return isLocked;
+    public int getRoomCode() {
+        return roomCode;
     }
 
-    public void setLocked(Boolean locked) {
-        isLocked = locked;
+    public void setRoomCode(int roomCode) {
+        this.roomCode = roomCode;
     }
 
-    public Map<String, String> getDirections() {
-        return directions;
+    public String getShortName() {
+        return shortName;
     }
 
-    public void setDirections(Map<String, String> directions) {
-        this.directions = directions;
+    public void setShortName(String shortName) {
+        this.shortName = shortName;
     }
 
-    public String getDescription() {
-        return description;
+    public String getGuiMap(){
+        return this.guiMap;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setGuiMap(String guiMap) {
+        this.guiMap = guiMap;
+    }
+
+    public String getMap() {
+        return map;
+    }
+
+    public void setMap(String map) {
+        this.map = map;
     }
 
     public List<String> getItems() {
@@ -70,6 +88,26 @@ public class Location {
         this.items = items;
     }
 
+    public boolean isSector() {
+        return isSector;
+    }
+
+    public boolean isLocked() {
+        return isLocked;
+    }
+
+    public void setLocked(boolean locked) {
+        isLocked = locked;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     public String getNpc() {
         return npc;
     }
@@ -78,22 +116,38 @@ public class Location {
         this.npc = npc;
     }
 
-    public String getMap() {
-        return map;
+    public Map<String, String> getDirections() {
+        return directions;
     }
 
-   public static Map<String,Location>parsedLocationsFromJson() {
-       Gson gson = new Gson();
-       Type locationMap = new TypeToken<Map<String,Location>>() {
-       }.getType();
-       //noinspection ConstantConditions
-       try (InputStream input = Location.class.getClassLoader().getResourceAsStream("jsonFiles/locations.json");
-            BufferedReader reader = new BufferedReader(new InputStreamReader(input))) {
-           return gson.fromJson(reader, locationMap);
-       } catch (Exception e) {
-           e.printStackTrace();
-           return null;
-       }
-   }
+    public void setDirections(Map<String, String> directions) {
+        this.directions = directions;
+    }
+
+    public Rectangle getEntrance() {
+        return entrance;
+    }
+
+    public void setEntrance(Rectangle entrance) {
+        this.entrance = entrance;
+    }
+
+    public Rectangle getExit() {
+        return exit;
+    }
+
+    public void setExit(Rectangle exit) {
+        this.exit = exit;
+    }
+
+    public void draw(Graphics2D g2){
+        if(entrance != null){
+            g2.drawRect(entrance.x, entrance.y, entrance.width, entrance.height);
+        }
+
+        if(exit != null){
+            g2.drawRect(exit.x, exit.y, exit.width, exit.height);
+        }
+    }
 }
 

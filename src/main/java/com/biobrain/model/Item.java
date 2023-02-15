@@ -1,9 +1,12 @@
 package com.biobrain.model;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.lang.reflect.Type;
+import java.util.Map;
 
 public class Item implements Inventory{
     private String name;
@@ -36,29 +39,25 @@ public class Item implements Inventory{
         this.damage = damage;
     }
 
-    public static Item[] getAllItems() {
+    public static Map<String,Item> getAllItems() {
         Gson gson = new Gson();
+        Type itemMap = new TypeToken<Map<String,Item>>() {
+        }.getType();
         InputStream inputStream = Item.class.getClassLoader().getResourceAsStream("jsonFiles/items.json");
         InputStreamReader reader = new InputStreamReader(inputStream);
-        return gson.fromJson(reader, Item[].class);
+        return gson.fromJson(reader, itemMap);
     }
 
     public static String getDescriptions(String itemName) {
-        Item[] allItems = getAllItems();
-        for (Item item : allItems) {
-            if (item.getName().equalsIgnoreCase(itemName)) {
-                return item.getDescription();
-            }
+        if(getAllItems().containsKey(itemName)){
+            return getAllItems().get(itemName).getDescription();
         }
         return "Item description not found";
     }
 
     public static int getDamageValue(String itemName) {
-        Item[] allItems = getAllItems();
-        for (Item item : allItems) {
-            if (item.getName().equalsIgnoreCase(itemName)) {
-                return item.getDamage();
-            }
+        if(getAllItems().containsKey(itemName)){
+            return getAllItems().get(itemName).getDamage();
         }
         return 0;
     }

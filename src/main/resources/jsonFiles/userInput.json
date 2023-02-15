@@ -13,7 +13,9 @@
     "drop",
     "move",
     "show",
-    "view"
+    "view",
+    "create",
+    "use"
   ],
   "objects": [
     "north",
@@ -25,11 +27,13 @@
     "memory",
     "interface",
     "motherboard",
+    "sphere",
     "potion",
     "tablet",
     "harpoon",
     "inventory",
     "blaster",
-    "directions"
+    "directions",
+    "biobrain"
   ]
 }

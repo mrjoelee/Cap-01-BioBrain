@@ -1,14 +1,14 @@
 package com.biobrain.app;
 
-import com.apps.util.Console;
-import com.apps.util.Prompter;
 import com.biobrain.model.*;
+import com.biobrain.util.Console;
+import com.biobrain.util.Prompter;
 import com.biobrain.view.View;
+import com.biobrain.view.locations.LocationManager;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.*;
+
+import static com.biobrain.util.Printer.printFile;
 
 
 public class BioBrainApp {
@@ -18,7 +18,7 @@ public class BioBrainApp {
     private static final String NO_BANNER = "images/dontWantToPlayBanner.txt";
     private static final String MAIN_MAP = "images/mapMain.txt";
     private static final String PROMPT_TO_CONTINUE = "\n Press [ENTER] to continue...";
-    private final Prompter prompter = new Prompter(new Scanner(System.in));
+    private final Prompter prompter = new Prompter();
     private Player player;
     private String npc;
     private Location currentLocation;
@@ -26,16 +26,21 @@ public class BioBrainApp {
     Map<String, Boolean> lockedLocations = new HashMap<>();
     private Map<String, String> directions;
     private List<String> itemsInRoom;
+    private boolean isLaser = true;
     private boolean gameOver = false;
     private String randomDialogue = Npc.getRandomDialogue();
+
     public final View view = new View();
 
-
+    // APP METHODS
     public void execute() {
+        setPlayer(Player.create());
+        LocationManager locationManager = new LocationManager(false);
+        locations = locationManager.getLocations();
         player = Player.create();
         intro();
         welcome();
-        askIfUserWantToPlay();
+       askIfUserWantToPlay();
     }
 
     public void intro() {
@@ -68,7 +73,6 @@ public class BioBrainApp {
         promptContinue();
         Console.clear();
         printFile(MAIN_MAP);
-        //Console.pause(4000);
         currentPlayerLocation();
         lockDoors();                // sets the map of locked doors via the "isLocked" attribute from locations.json
         if (!gameOver) {
@@ -78,17 +82,17 @@ public class BioBrainApp {
         }
     }
 
-    private void currentPlayerLocation() {
+    public void currentPlayerLocation() {
         System.out.println(player.displayPlayerInfo());
         Console.pause(1000);
-        setLocations(Location.parsedLocationsFromJson());
+        setLocations(locations);
 
         if (locations == null || locations.isEmpty()) {
             System.out.println("Error in getting the location");
             return;
         }
 
-        currentLocation = locations.get("Sector 2 - Control Lab");
+        currentLocation = locations.get("sector2");
         String locationName = currentLocation.getName();
         String mapToPrint = currentLocation.getMap();
         itemsInRoom = currentLocation.getItems();
@@ -111,6 +115,25 @@ public class BioBrainApp {
         printLocationMap(mapToPrint);
     }
 
+    // pulls data from locations.json to create a map of locked sectors that cannot be entered
+    private void lockDoors() {
+        // create a temporary map to hold data
+        Map<String,Boolean> tempMap = new HashMap<>();
+
+        // iterate over the locations map using a foreach on the location map's entryset
+        for (Map.Entry<String, Location> entry : getLocations().entrySet()) {
+            // puts the starting status of all locked sectors into one place for easy reference/manipulation
+            tempMap.put(entry.getValue().getName(), entry.getValue().isLocked());
+        }
+
+        // set locked room map
+        setLockedLocations(tempMap);
+    }
+
+    // sets location as unlocked for future access to the location by the player
+    private void unlockADoor(String locationName) {
+        getLockedLocations().put(locationName, false);
+    }
 
     private void askPlayerAction() {
         System.out.println("\nWhat would you like to do?:\n\n- (Look) to check item\n- (Get) to pick up item\n- (Go + direction) to move to a different location\n- (Show Inventory) to see inventory\n- (Show Directions)\n- (Quit) to exit the game.");
@@ -127,7 +150,10 @@ public class BioBrainApp {
                 movePlayer(noun);
                 break;
             case "get":
-                getItem(noun);
+                validateThenGetItem(noun);
+                break;
+            case "use":
+                validateThenUseItem(noun);
                 break;
             case "show":
                 if (noun.equalsIgnoreCase("inventory")) {
@@ -171,23 +197,98 @@ public class BioBrainApp {
 
     }
 
-    private void getItem(String itemToPickup) {
+    public void validateThenGetItem(String itemToPickup) throws IllegalArgumentException{
         if (!currentLocation.getItems().contains(itemToPickup)) {
-            System.out.println("\nItem not found! Please try again.");
-            return;
+            throw new RuntimeException(new IllegalArgumentException("\n"+ itemToPickup +" was not found! Please try again."));
+        } else {
+            getItem(itemToPickup);
         }
+    }
 
-        player.addItem(itemToPickup);
+    private void getItem(String itemToPickup) {
+        addToPlayerInventory(itemToPickup);
         itemsInRoom.remove(itemToPickup);
         System.out.printf("\nAwesome! You've added the %s to your inventory!\n", itemToPickup);
         System.out.println(player.displayPlayerInfo());
         Console.pause(1000);
     }
 
+    private void addToPlayerInventory(String itemToPickup) {
+        player.addItem(itemToPickup, player.getInventory().get(itemToPickup));
+        itemsInRoom.remove(itemToPickup);
+        System.out.printf("\nAwesome! You've added the %s to your inventory!\n", itemToPickup);
+    }
+
+    // validates the item used was located in the player's inventory,
+    // if not, displays a message that the item is not in possession
+    public void validateThenUseItem(String usedItem) throws IllegalArgumentException{
+        if (player.getInventory().containsKey(usedItem)) {
+            useItem(usedItem);
+        } else {
+            throw new RuntimeException(new IllegalArgumentException("\nYou're not carrying a " + usedItem+ " to be able to use!"));
+        }
+    }
+
+    // use an item from the inventory
+    private void useItem(String usedItem) {
+        Map<String, Item> inv = player.getInventory();// get a reference to the inventory map
+        String networkLocation = locations.get("Sector 2 - Control Lab").getName(); //must be in sector 2 to hack the network interface
+        String playerLocation = currentLocation.getName(); // get the player current location
+        Set<String> itemForSphere = Set.of("memory", "interface", "motherboard"); //using set since we are checking for a certain item (faster)
+        String sphere = "A.I. Transfer Sphere";
+
+        // todo use memory + interface + motherbooard = AI Sphere REVIEW LOGIC WITH TEAM
+        if (itemForSphere.contains(usedItem) && itemForSphere.stream().allMatch(item -> inv.containsKey(item))) {
+            player.addItem("sphere", Item.getAllItems().get("sphere"));
+
+            //once combines to a sphere, it will remove the 3 elements
+            for (String item : itemForSphere) {
+                player.removeItem(item, inv.get(item));
+            }
+            System.out.printf("\nAwesome! You've added the %s to your inventory!\n", sphere);
+            System.out.println(player.displayPlayerInfo());
+
+        }
+        // todo use sphere = download biobrain REVIEW LOGIC WITH TEAM
+        // needs a check to ensure laser shield is disabled
+        else if (usedItem.equalsIgnoreCase("sphere") ) {
+            handleUseSphere(playerLocation);
+
+        } // todo use tablet = to disable laser
+        else if (usedItem.equalsIgnoreCase("tablet") && player.getInventory().containsKey(usedItem)) {
+            handleUseTablet(playerLocation, networkLocation);
+        }
+        // todo use weapons
+        System.out.println(player.displayPlayerInfo()); // finally, display player info to user again
+    }
+
+    //using sphere - checking for location and laser logic
+    private void handleUseSphere(String playerLocation) {
+        String location = "Sector 1 - Weapons Chamber";
+        if (!playerLocation.equalsIgnoreCase(location)) {
+            System.out.printf("You must use the sphere inside %s to get the biobrain", location);
+        } else if (isLaser) {
+            System.out.println("biobrain is protected with laser shield. You must hack the network interface with" +
+                    "the table first to disable the laser shield");
+        } else {
+            player.addItem("biobrain", Item.getAllItems().get("biobrain"));
+            System.out.printf("\nAwesome! You've added the %s to your inventory!\n", "BioBrain");
+        }
+    }
+
+    //using tablet - checking for location and laser logic
+    private void handleUseTablet(String playerLocation, String networkLocation) {
+        if (!playerLocation.equalsIgnoreCase(networkLocation)) {
+            System.out.printf("\nYou can use the tablet in the Network Interface location in %s", networkLocation);
+        } else {
+            System.out.println("\nYou have successfully disable the laser shield");
+            isLaser = false;
+        }
+    }
 
     private void showInventory() {
         Console.pause(1500);
-        List<String> inventory = player.getInventory();
+        Map<String, Item> inventory = player.getInventory();
         if (inventory.isEmpty()) {
             System.out.println("\nYou have no items in your inventory");
             return;
@@ -195,25 +296,24 @@ public class BioBrainApp {
 
         Console.clear();
         System.out.println("\n ======================================================================");
-        System.out.println("\nYou have the following items in your inventory: " + inventory);
+        System.out.println("\nYou have the following items in your inventory: " + inventory.keySet());
         System.out.println("\n ======================================================================");
         Console.pause(1500);
     }
-
 
     private void dropItem(String itemToDrop) {
         if (!isItemInInventory(itemToDrop)) {
             System.out.println("\nItem not found! Please try again.");
             return;
         }
-        player.removeItem(itemToDrop);
+        player.removeItem(itemToDrop, player.getInventory().get(itemToDrop));
         itemsInRoom.add(itemToDrop);
         System.out.printf("\n The %s has been removed from your inventory. ", itemToDrop);
         System.out.println(player.displayPlayerInfo());
     }
 
     private boolean isItemInInventory(String item) {
-        return player.getInventory().contains(item);
+        return player.getInventory().containsKey(item);
     }
 
     // moves player object to new location
@@ -227,7 +327,7 @@ public class BioBrainApp {
         }
 
         // only move player if nextLocation is not in the map of lockedLocations
-        if (getLockedLocations().get(nextLocation) == false) {
+        if (!getLockedLocations().get(nextLocation)) {
             currentLocation = getLocation(nextLocation);
             itemsInRoom = currentLocation.getItems();
             System.out.println("\n=======================================================");
@@ -250,24 +350,10 @@ public class BioBrainApp {
         }
 
         // printing the location the player have visited.. if need to print map in the future
-//        for(String location : player.getVisitedLocations()){
-//            System.out.println("Visited locations: " + location);
-//        }
-
-    }
-
-    // pulls data from locations.json to create a map of locked sectors that cannot be entered
-    private void lockDoors() {
-        // iterate over the locations map using a foreach on the map's entryset
-        for (Map.Entry<String, Location> entry : getLocations().entrySet()) {
-            // puts the starting status of all locked sectors into one place for easy reference/manipulation
-            getLockedLocations().put(entry.getValue().getName(), entry.getValue().getLocked());
+        for(String location : player.getVisitedLocations()){
+            System.out.println("Visited locations: " + location);
         }
-    }
 
-    // sets location as unlocked for future access to the location by the player
-    private void unlockADoor(String locationName) {
-        getLockedLocations().put(locationName, false);
     }
 
     // returns the Location object given the String locationName
@@ -283,15 +369,6 @@ public class BioBrainApp {
         printFile(mapToPrint);
     }
 
-    private void printFile(String fileName) {
-        //noinspection ConstantConditions
-
-        try (BufferedReader buffer = new BufferedReader(new InputStreamReader(BioBrainApp.class.getClassLoader().getResourceAsStream(fileName)))) {
-            buffer.lines().forEach(System.out::println);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
     //pauses & allows user to continue
     private void promptContinue() {
@@ -300,8 +377,15 @@ public class BioBrainApp {
         scanner.nextLine();
     }
 
-    // ACCESSOR METHODS
 
+    // ACCESSOR METHODS
+    public Player getPlayer() {
+        return player;
+    }
+
+    public void setPlayer(Player player) {
+        this.player = player;
+    }
 
     public Map<String, Location> getLocations() {
         return locations;

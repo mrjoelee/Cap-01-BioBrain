@@ -6,11 +6,8 @@ package com.biobrain.util;
  * contains methods that loads pop-up windows as children to the gamePanel
  */
 
-import com.biobrain.view.GamePanel;
+import com.biobrain.view.panels.GamePanel;
 import javax.swing.*;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 
 public interface WindowInterface {
 
