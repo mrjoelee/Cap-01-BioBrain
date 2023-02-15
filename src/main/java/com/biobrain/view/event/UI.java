@@ -2,11 +2,8 @@ package com.biobrain.view.event;
 
 import com.biobrain.util.FileLoader;
 import com.biobrain.util.WindowInterface;
-import com.biobrain.view.locations.Room;
 import com.biobrain.view.panels.GamePanel;
 import com.biobrain.view.panels.GameSetter;
-import com.biobrain.view.panels.InventoryPanel;
-import com.biobrain.view.tile.Map;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -18,12 +15,11 @@ public class UI implements WindowInterface {
     Graphics2D g2;
     Font thaleahFont;
     public int commandNum =0;
-
     //substate - probably might be usable later.
     public int titleSubState = 0; //0: the first screen, 1: second screen
-
     //can create different color using RBG
     public Color color = new Color(255, 255, 255);
+    private String currentDialogue = "";
 
     //CTOR
     public UI(GamePanel gamePanel){
@@ -31,22 +27,11 @@ public class UI implements WindowInterface {
         thaleahFont = loadFont();
     }
 
-    //importing font
-    public Font loadFont() {
-        try {
-            InputStream fontStyle = this.getClass().getResourceAsStream("/font/ThaleahFat.ttf");
-            //noinspection ConstantConditions
-            thaleahFont = Font.createFont(Font.TRUETYPE_FONT, fontStyle);
-            return thaleahFont;
-        } catch (IOException | FontFormatException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
 
+    //importing font
     public void draw(Graphics2D g2){
         this.g2 = g2;
-        g2.setColor(Color.white);
+        g2.setColor(Color.black);
         g2.setFont(thaleahFont);
 
         //title state
@@ -62,6 +47,41 @@ public class UI implements WindowInterface {
         if(gamePanel.gameState == gamePanel.playState){
             GameSetter.manageVisibility();
         }
+        //dialogue state
+        if(gamePanel.gameState == gamePanel.dialogueState){
+            drawDialogueScreen();
+        }
+    }
+
+    private void drawDialogueScreen(){
+        int x = gamePanel.getTileSize() * 3;
+        int y = gamePanel.getTileSize() * 3;
+        int width = gamePanel.screenWidth - (gamePanel.getTileSize() * 6);
+        int height = gamePanel.getTileSize() * 2;
+
+        drawSubWindow(x,y,width,height);
+        x += gamePanel.getTileSize()/2;
+        y += gamePanel.getTileSize()/2;
+
+
+        g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 20F));
+
+        //TODO need to find a way to not use /n in strings json
+//        Font font = g2.getFont().deriveFont(Font.PLAIN, 20F);
+//        FontMetrics metrics = g2.getFontMetrics(font);
+//
+//        int stringWidth = metrics.stringWidth(currentDialogue);
+        g2.drawString(currentDialogue, x, y);
+    }
+
+    private void drawSubWindow(int x, int y, int width, int height){
+        Color opacity = new Color(0, 0, 0, 75);
+        g2.setColor(opacity);
+        g2.fillRoundRect(x, y, width, height, 35, 35);
+
+        g2.setColor(color);
+        g2.setStroke(new BasicStroke(5));
+        g2.drawRoundRect(x + 5, y + 5, width - 10, height - 10, 25, 25);
     }
 
 
@@ -79,7 +99,7 @@ public class UI implements WindowInterface {
 
 
     private Image playerIcon(){
-        BufferedImage playerIcon = FileLoader.loadBuffered("images/player_down_1.png");
+        BufferedImage playerIcon = FileLoader.loadBuffered("images/player/player_down_1.png");
         return playerIcon.getScaledInstance(25,25,0);
     }
 
@@ -189,25 +209,37 @@ public class UI implements WindowInterface {
         return gamePanel.screenWidth/2 - length/2;
     }
 
-    //TODO:maybe we can use it for later?
-    //new-line method
-//    private void drawString(Graphics g2, String text, int x, int y){
-//        for(String line : text.split("\n")){
-//            g2.drawString(line, x,y+=g2.getFontMetrics().getHeight());
-//        }
-//    }
-
     //creates a inner window
-    public void drawWindow(int x, int y, int width, int height){
+    public void drawWindow(int x, int y, int width, int height) {
         //creates a rectangle
-        Color windowColor = new Color(0,0,0,200);  // a is the opacity
+        Color windowColor = new Color(0, 0, 0, 200);  // a is the opacity
         g2.setColor(windowColor);
-        g2.fillRoundRect(x,y,width,height,35,35);
+        g2.fillRoundRect(x, y, width, height, 35, 35);
 
         //border for the rectangle
-        windowColor = new Color(255,255,255,200);
+        windowColor = new Color(255, 255, 255, 200);
         g2.setColor(windowColor);
         g2.setStroke(new BasicStroke(5)); //defines the width of outlines of graphics
-        g2.drawRoundRect(x+5,y+5,width-10,height-10,25,25);
+        g2.drawRoundRect(x + 5, y + 5, width - 10, height - 10, 25, 25);
+    }
+
+    private Font loadFont() {
+        try {
+            InputStream fontStyle = this.getClass().getResourceAsStream("/font/ThaleahFat.ttf");
+            //noinspection ConstantConditions
+            thaleahFont = Font.createFont(Font.TRUETYPE_FONT, fontStyle);
+            return thaleahFont;
+        } catch (IOException | FontFormatException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public String getCurrentDialogue() {
+        return currentDialogue;
+    }
+
+    public void setCurrentDialogue(String currentDialogue) {
+        this.currentDialogue = currentDialogue;
     }
 }

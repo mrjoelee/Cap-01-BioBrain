@@ -7,20 +7,19 @@ package com.biobrain.view.panels;
  */
 
 import com.biobrain.items.ItemManager;
-import com.biobrain.util.FileLoader;
-import com.biobrain.view.event.KeyHandler;
-import com.biobrain.view.locations.LocationManager;
-import com.biobrain.view.locations.Room;
-import com.biobrain.view.event.UI;
+import com.biobrain.model.Location;
 import com.biobrain.view.entities.Player;
 import com.biobrain.view.event.CollisionDetector;
 import com.biobrain.view.event.EventHandler;
+import com.biobrain.view.event.KeyHandler;
+import com.biobrain.view.event.UI;
+import com.biobrain.view.locations.LocationManager;
 import com.biobrain.view.tile.Map;
 import com.biobrain.view.tile.TileHelper;
+import com.biobrain.view.tile.TileSetter;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.image.BufferedImage;
 
 
 public class GamePanel extends JPanel implements Runnable {
@@ -38,22 +37,23 @@ public class GamePanel extends JPanel implements Runnable {
     final int maxSectorRow = 12;                            // define how many rows will comprise window
     public final int screenWidth = tileSize * maxSectorCol;        // window width
     public final int screenHeight = tileSize * maxSectorRow;       // window height
+    public int mapDisplayed;
 
     //Object creation
     public KeyHandler keyHandler = new KeyHandler(this);        // create new instance of input manager for keyboard commands
+
     public Player player = new Player(this, keyHandler);  // create instance of Player
+    public TileSetter tileSetter = new TileSetter();
     public TileHelper tileHelper = new TileHelper(this);
-    public Room currentRoom;
-    public EventHandler eventHandler = new EventHandler(this);
-    public LocationManager locations = new LocationManager(this);
+
+    public LocationManager locations = new LocationManager(true);
+    public Location currentRoom = locations.getLocations().get("sector2");
     public ItemManager items = new ItemManager(this);
+    //public EventHandler eventHandler = new EventHandler(this);
     public Map playerMap = new Map(this);
-    public CollisionDetector collisionDetector = new CollisionDetector(this);
+   public CollisionDetector collisionDetector = new CollisionDetector(this);
     public UI ui = new UI(this);                   // create new instance of User Interface
     private Thread gameThread;                                       // create a new thread for game logic
-
-    //game extras
-    public int mapDisplayed;
 
     //game state
     public int gameState;
@@ -61,21 +61,18 @@ public class GamePanel extends JPanel implements Runnable {
     public final int playState = 1;
     public final int mapState = 2;
     public final int optionsState = 3;
-    public final int pauseState = 3;
+    public final int dialogueState = 4;
 
-    public void setupGame() {
-        gameState = playState;
-        currentRoom = locations.getLocations().get("sector2");
-        mapDisplayed = currentRoom.getRoomCode();
-    }
-
-    // CTOR
     public GamePanel() {
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
         this.setBackground(Color.black);
         this.setDoubleBuffered(true);
         this.addKeyListener(keyHandler);
         this.setFocusable(true);
+    }
+    public void setupGame() {
+        gameState = playState;
+        mapDisplayed = currentRoom.getRoomCode();
     }
 
     // starts new thread
@@ -113,7 +110,6 @@ public class GamePanel extends JPanel implements Runnable {
             }
         }
     }
-
     // update() runs every frame
     public void update() {
         if (gameState == playState) {
@@ -126,16 +122,20 @@ public class GamePanel extends JPanel implements Runnable {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g; // defines graphics configurations
 
-        if(gameState == playState) {
+
+        if(gameState == titleState) {
+            ui.draw(g2); // draws the Title screen
+        }
+        else if (gameState == mapState) {
+            playerMap.setCurrentMapDisplayed(g2, mapDisplayed);
+        }
+        else{
             tileHelper.draw(g2);
             items.draw(g2);
             currentRoom.draw(g2);
             player.draw(g2);
+            ui.draw(g2);
         }
-        else if(gameState == mapState){
-            playerMap.setCurrentMapDisplayed(g2, mapDisplayed);
-        }
-        ui.draw(g2); // draws the Title screen
         g2.dispose(); // dispose of old configurations, player sprite will update each frame
     }
 

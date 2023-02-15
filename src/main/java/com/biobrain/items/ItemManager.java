@@ -1,5 +1,6 @@
 package com.biobrain.items;
 
+import com.biobrain.model.Item;
 import com.biobrain.model.Location;
 import com.biobrain.util.FileLoader;
 import com.biobrain.view.entities.ItemEntity;
@@ -9,62 +10,57 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.awt.*;
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
 
 public class ItemManager {
     private final Map<String, ItemEntity> items;
     public GamePanel gamePanel;
 
-    // CTOR
     public ItemManager(GamePanel gamePanel) {
         this.gamePanel = gamePanel;
         items = new HashMap<>();
-        generateItems(parseItemsFromJson());
+        parseItemsFromJson();
+        List<ItemEntity> test = parseItemsFromJson();
+
+        generateItems(test);
     }
 
-    public void generateItems(Map<String, ItemEntity> itemMap) {
-        itemMap.values().forEach((item) -> {
+    public void generateItems(List<ItemEntity> itemList) {
+        itemList.forEach((item) -> {
             Rectangle collider = new Rectangle(item.getX(), item.getY(), 48, 48);
             item.setItemCollider(collider);
-            item.setItemImage(item.getImagePath());
+//            item.setItemImage(item.getImagePath());
             items.put(item.getName(), item);
         });
     }
 
-    public static Map<String, ItemEntity> parseItemsFromJson() {
-        Gson gson = new Gson();
-        Type itemMap = new TypeToken<Map<String, ItemEntity>>() {
-        }.getType();
 
-        //noinspection ConstantConditions
-        try (InputStream input = Location.class.getClassLoader().getResourceAsStream("jsonFiles/items.json");
-             BufferedReader reader = new BufferedReader(new InputStreamReader(input))) {
-            return gson.fromJson(reader, itemMap);
-        } catch (Exception e) {
+    public static List<ItemEntity> parseItemsFromJson() {
+        Gson gson = new Gson();
+        List<ItemEntity> list = new ArrayList<>();
+        try (Reader reader = new InputStreamReader(Objects.requireNonNull(ItemManager.class.getClassLoader().getResourceAsStream("jsonFiles/items.json")))) {
+            Type itemType = new TypeToken<ArrayList<ItemEntity>>() {
+            }.getType();
+            list = gson.fromJson(reader, itemType);
+        } catch (IOException e) {
             e.printStackTrace();
-            return null;
         }
+        return list;
     }
 
     public void draw(Graphics2D g2) {
         for (ItemEntity item : items.values()) {
-            if(item.getRoomCode() == gamePanel.currentRoom.getRoomCode()){
+            if (item.getRoomCode() == gamePanel.currentRoom.getRoomCode()) {
                 item.draw(g2);
             }
         }
     }
 
-
-    // ACCESSOR METHODS
+   // ACCESSOR METHODS
     public Map<String, ItemEntity> getItems() {
         return items;
     }
-
 }
