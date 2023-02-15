@@ -1,7 +1,7 @@
 package com.biobrain.util.music;
 
 
-import javax.sound.sampled.*;
+import com.biobrain.view.panels.GamePanel;
 
 import javax.sound.sampled.*;
 import javax.swing.*;
@@ -13,14 +13,10 @@ import java.awt.event.ActionListener;
 
 public class SoundManager {
     JFrame frame;
-    JPanel panel;
+    JPanel gamePanel;
     JButton button1, button2;
     String sound_track;
     Music se = new Music();
-
-    public static void main(String args[]) {
-        new SoundManager();
-    }
 
     public class Music {
         Clip clip;
@@ -48,17 +44,10 @@ public class SoundManager {
         }
     }
 
-    public SoundManager() {
+    public SoundManager(GamePanel gamePanel) {
         sound_track = "src/main/resources/sounds/music/mainTheme.wav";
-        System.out.println(sound_track);
-        frame = new JFrame("Audio");
-        frame.setSize(700, 600);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        panel = new JPanel();
-        frame.add(panel);
-
-        frame.setVisible(true);
+        this.gamePanel = gamePanel;
 
         button1 = new JButton("Start");
         button1.setBounds(200, 240, 100, 30);
@@ -70,7 +59,7 @@ public class SoundManager {
                 se.play();
             }
         });
-        panel.add(button1);
+        this.gamePanel.add(button1);
 
         button2 = new JButton("Stop");
         button2.setBounds(400, 240, 100, 30);
@@ -86,6 +75,6 @@ public class SoundManager {
                 }
             }
         });
-        panel.add(button2);
+        this.gamePanel.add(button2);
     }
 }

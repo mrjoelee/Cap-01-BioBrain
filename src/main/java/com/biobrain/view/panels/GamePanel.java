@@ -8,6 +8,7 @@ package com.biobrain.view.panels;
 
 import com.biobrain.items.ItemManager;
 import com.biobrain.util.FileLoader;
+import com.biobrain.util.music.SoundManager;
 import com.biobrain.view.event.KeyHandler;
 import com.biobrain.view.locations.LocationManager;
 import com.biobrain.view.locations.Room;

@@ -2,6 +2,7 @@ package com.biobrain.view.event;
 
 import com.biobrain.util.FileLoader;
 import com.biobrain.util.WindowInterface;
+import com.biobrain.util.music.SoundManager;
 import com.biobrain.view.locations.Room;
 import com.biobrain.view.panels.GamePanel;
 import com.biobrain.view.panels.GameSetter;
@@ -17,6 +18,7 @@ public class UI implements WindowInterface {
     GamePanel gamePanel;
     Graphics2D g2;
     Font thaleahFont;
+    //SoundManager buttons;
     public int commandNum =0;
 
     //substate - probably might be usable later.
@@ -29,6 +31,7 @@ public class UI implements WindowInterface {
     public UI(GamePanel gamePanel){
         this.gamePanel = gamePanel;
         thaleahFont = loadFont();
+        //buttons = new SoundManager(gamePanel);
     }
 
     //importing font

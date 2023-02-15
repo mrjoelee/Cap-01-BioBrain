@@ -11,7 +11,7 @@ public class KeyHandler implements KeyListener {
     GamePanel gp;
     public boolean upPressed, downPressed, leftPressed, rightPressed, enterPressed;
 
-    public KeyHandler(GamePanel gp){
+    public KeyHandler(GamePanel gp) {
         this.gp = gp;
     }
 
@@ -25,128 +25,118 @@ public class KeyHandler implements KeyListener {
         int code = e.getKeyCode();
         //move the arrow on the menu
 
-        if(gp.gameState == gp.titleState){
+        if (gp.gameState == gp.titleState) {
             titleState(code);
-        }
-        else if(gp.gameState == gp.mapState){
+        } else if (gp.gameState == gp.mapState) {
             mapState(code);
-        }
-       else if(gp.gameState == gp.playState){
+        } else if (gp.gameState == gp.playState) {
             playState(code);
-        }
-       else if(gp.gameState == gp.optionsState){
-           optionState(code);
+        } else if (gp.gameState == gp.optionsState) {
+            optionState(code);
         }
     }
 
     private void optionState(int code) {
-        if(code == KeyEvent.VK_ESCAPE){
+        if (code == KeyEvent.VK_ESCAPE) {
             gp.gameState = gp.playState;
         }
-        if(code == KeyEvent.VK_ENTER){
+        if (code == KeyEvent.VK_ENTER) {
             enterPressed = true;
         }
     }
 
-    public void titleState(int code){
-        if(gp.gameState == gp.titleState){
+    public void titleState(int code) {
+        if (gp.gameState == gp.titleState) {
             //the current substate of titleScreen
-            if(gp.ui.titleSubState == 0){
-                if(code == KeyEvent.VK_W ||code == KeyEvent.VK_UP){
+            if (gp.ui.titleSubState == 0) {
+                if (code == KeyEvent.VK_W || code == KeyEvent.VK_UP) {
                     gp.ui.commandNum--;
-                    if(gp.ui.commandNum < 0){
+                    if (gp.ui.commandNum < 0) {
                         gp.ui.commandNum = 1;
                     }
                 }
-                if(code == KeyEvent.VK_S || code == KeyEvent.VK_DOWN){
+                if (code == KeyEvent.VK_S || code == KeyEvent.VK_DOWN) {
                     gp.ui.commandNum++;
-                    if(gp.ui.commandNum > 1){
+                    if (gp.ui.commandNum > 1) {
                         gp.ui.commandNum = 0;
                     }
                 }
-                if(code == KeyEvent.VK_ENTER){
+                if (code == KeyEvent.VK_ENTER) {
                     //new game - changing the gameState transition into the player.update();
-                    if(gp.ui.commandNum == 0){
+                    if (gp.ui.commandNum == 0) {
                         gp.ui.titleSubState = 1;
                     }
                     //quit game
-                    if(gp.ui.commandNum == 1){
+                    if (gp.ui.commandNum == 1) {
                         System.exit(0);
                     }
                 }
-            }
-            else if(gp.ui.titleSubState == 1){
-                if(code == KeyEvent.VK_W ||code == KeyEvent.VK_UP){
+            } else if (gp.ui.titleSubState == 1) {
+                if (code == KeyEvent.VK_W || code == KeyEvent.VK_UP) {
                     gp.ui.commandNum--;
-                    if(gp.ui.commandNum < 0){
+                    if (gp.ui.commandNum < 0) {
                         gp.ui.commandNum = 2;
                     }
                 }
-                if(code == KeyEvent.VK_S || code == KeyEvent.VK_DOWN){
+                if (code == KeyEvent.VK_S || code == KeyEvent.VK_DOWN) {
                     gp.ui.commandNum++;
-                    if(gp.ui.commandNum > 2){
+                    if (gp.ui.commandNum > 2) {
                         gp.ui.commandNum = 0;
                     }
                 }
-                if(code == KeyEvent.VK_ENTER){
-                    if(gp.ui.commandNum == 0){
+                if (code == KeyEvent.VK_ENTER) {
+                    if (gp.ui.commandNum == 0) {
                         gp.ui.titleSubState = 2;
                     }
-                    if(gp.ui.commandNum == 1){
-                        gp.gameState=gp.playState;
+                    if (gp.ui.commandNum == 1) {
+                        gp.gameState = gp.playState;
                     }
-                    if(gp.ui.commandNum == 2){
-                        gp.ui.titleSubState =0;
+                    if (gp.ui.commandNum == 2) {
+                        gp.ui.titleSubState = 0;
                     }
                 }
-            }
-            else if(gp.ui.titleSubState == 2){
-                if(code == KeyEvent.VK_ENTER){
-                    if(gp.ui.commandNum == 0){
-                        gp.ui.titleSubState =1;
+            } else if (gp.ui.titleSubState == 2) {
+                if (code == KeyEvent.VK_ENTER) {
+                    if (gp.ui.commandNum == 0) {
+                        gp.ui.titleSubState = 1;
                     }
                 }
             }
         }
     }
-    public void playState(int code){
-        if(code == KeyEvent.VK_W ||code == KeyEvent.VK_UP){
+
+    public void playState(int code) {
+        if (code == KeyEvent.VK_W || code == KeyEvent.VK_UP) {
             upPressed = true;
-        }
-        else if(code == KeyEvent.VK_S || code == KeyEvent.VK_DOWN){
+        } else if (code == KeyEvent.VK_S || code == KeyEvent.VK_DOWN) {
             downPressed = true;
-        }
-        else if(code == KeyEvent.VK_A || code == KeyEvent.VK_LEFT){
+        } else if (code == KeyEvent.VK_A || code == KeyEvent.VK_LEFT) {
             leftPressed = true;
-        }
-        else if(code == KeyEvent.VK_D || code == KeyEvent.VK_RIGHT){
+        } else if (code == KeyEvent.VK_D || code == KeyEvent.VK_RIGHT) {
             rightPressed = true;
-        }
-        else if(code == KeyEvent.VK_M){
+        } else if (code == KeyEvent.VK_M) {
             gp.mapDisplayed = gp.currentRoom.getRoomCode();
             gp.gameState = gp.mapState;
         }
-        if (code == KeyEvent.VK_ESCAPE){
+        if (code == KeyEvent.VK_ESCAPE) {
             gp.gameState = gp.optionsState;
         }
 
     }
 
-    public void mapState(int code){
-        if(code == KeyEvent.VK_M){
-          gp.gameState = gp.playState;
-        }
-        else if (code == KeyEvent.VK_RIGHT || code == KeyEvent.VK_A) {
+    public void mapState(int code) {
+        if (code == KeyEvent.VK_M) {
+            gp.gameState = gp.playState;
+        } else if (code == KeyEvent.VK_RIGHT || code == KeyEvent.VK_A) {
             int mapToDisplay = gp.mapDisplayed + 1;
 
-            if(mapToDisplay < gp.maxRooms) {
+            if (mapToDisplay < gp.maxRooms) {
                 gp.mapDisplayed = mapToDisplay;
             }
-        }
-        else if (code == KeyEvent.VK_LEFT || code == KeyEvent.VK_D) {
+        } else if (code == KeyEvent.VK_LEFT || code == KeyEvent.VK_D) {
             int mapToDisplay = gp.mapDisplayed - 1;
 
-            if(mapToDisplay >= 0) {
+            if (mapToDisplay >= 0) {
                 gp.mapDisplayed = gp.mapDisplayed - 1;
             }
         }
@@ -155,16 +145,16 @@ public class KeyHandler implements KeyListener {
     @Override
     public void keyReleased(KeyEvent e) {
         int code = e.getKeyCode();
-        if(code == KeyEvent.VK_W || code == KeyEvent.VK_UP){
+        if (code == KeyEvent.VK_W || code == KeyEvent.VK_UP) {
             upPressed = false;
         }
-        if(code == KeyEvent.VK_S || code == KeyEvent.VK_DOWN){
+        if (code == KeyEvent.VK_S || code == KeyEvent.VK_DOWN) {
             downPressed = false;
         }
-        if(code == KeyEvent.VK_A || code == KeyEvent.VK_LEFT){
+        if (code == KeyEvent.VK_A || code == KeyEvent.VK_LEFT) {
             leftPressed = false;
         }
-        if(code == KeyEvent.VK_D || code == KeyEvent.VK_RIGHT){
+        if (code == KeyEvent.VK_D || code == KeyEvent.VK_RIGHT) {
             rightPressed = false;
         }
     }

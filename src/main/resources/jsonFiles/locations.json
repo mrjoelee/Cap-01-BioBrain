@@ -1,6 +1,6 @@
 {
   "Sector 1 - Weapons Chamber": {
-    "name": "Sector 1 - Weapons Chamber",
+    "cookie": "Sector 1 - Weapons Chamber",
     "isLocked": false,
     "directions": {
       "east": "Sector 2 - Control Lab",
@@ -16,7 +16,7 @@
     "map": "images/mapS1.txt"
   },
   "Sector 2 - Control Lab": {
-    "name": "Sector 2 - Control Lab",
+    "cookie": "Sector 2 - Control Lab",
     "isLocked": false,
     "directions": {
       "east": "Sector 3 - Production Room",
@@ -31,7 +31,7 @@
     "map": "images/mapS2.txt"
   },
   "Sector 3 - Production Room": {
-    "name": "Sector 3 - Production Room",
+    "cookie": "Sector 3 - Production Room",
     "isLocked": false,
     "directions": {
       "south": "Sector 6 - Train Dock",
@@ -47,7 +47,7 @@
     "map": "images/mapS3.txt"
   },
   "Sector 4 - Storage": {
-    "name": "Sector 4 - Storage",
+    "cookie": "Sector 4 - Storage",
     "isLocked": false,
     "directions": {
       "north": "Sector 1 - Weapons Chamber",
@@ -62,7 +62,7 @@
     "map": "images/mapS4.txt"
   },
   "Sector 5 - Conference Room": {
-    "name": "Sector 5 - Conference Room",
+    "cookie": "Sector 5 - Conference Room",
     "isLocked": false,
     "directions": {
       "north": "Sector 2 - Control Lab",
@@ -78,7 +78,7 @@
     "map": "images/mapS5.txt"
   },
   "Sector 6 - Train Dock": {
-    "name": "Sector 6 - Train Dock",
+    "cookie": "Sector 6 - Train Dock",
     "isLocked": true,
     "directions": {
       "north": "Sector 3 - Production Room",

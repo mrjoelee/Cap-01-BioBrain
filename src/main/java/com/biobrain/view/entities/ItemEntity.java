@@ -14,22 +14,22 @@ import java.awt.image.BufferedImage;
 
 public class ItemEntity extends Entity {
     private final GamePanel gamePanel;
-    String name;
+    String cookie;
     int roomCode;
-    String image;
-    private final int x;
-    private final int y;
+    String imagio;
+    private final int xin;
+    private final int yin;
     Rectangle itemCollider;
 
     // CTOR
-    public ItemEntity(GamePanel gamePanel, String name,int roomCode, int x, int y, String image) {
+    public ItemEntity(GamePanel gamePanel, String cookie, int roomCode, int xin, int yin, String imagio) {
         this.gamePanel = gamePanel;
-        this.name = name;
+        this.cookie = cookie;
         this.roomCode = roomCode;
-        this.image = image;
-        this.x = x;
-        this.y = y;
-        setItemImage(image);
+        this.imagio = imagio;
+        this.xin = xin;
+        this.yin = yin;
+        setItemImage(imagio);
     }
 
     public void setItemImage(String image) {
@@ -44,12 +44,12 @@ public class ItemEntity extends Entity {
     // update player graphics
     public void draw(Graphics2D g2) {
 
-        g2.drawImage(getBuffImage(), getX(), getY(), 48, 48, null);
+        g2.drawImage(getBuffImage(), getXin(), getYin(), 48, 48, null);
         g2.drawRect(getItemCollider().x, getItemCollider().y, getItemCollider().width, getItemCollider().height);
     }
 
-    public String getName() {
-        return name;
+    public String getCookie() {
+        return cookie;
     }
 
     public Rectangle getItemCollider(){
@@ -60,12 +60,12 @@ public class ItemEntity extends Entity {
         this.itemCollider = collider;
     }
 
-    public int getX() {
-        return x;
+    public int getXin() {
+        return xin;
     }
 
-    public int getY() {
-        return y;
+    public int getYin() {
+        return yin;
     }
 
     public BufferedImage getBuffImage(){
@@ -73,7 +73,7 @@ public class ItemEntity extends Entity {
     }
 
     public String getImagePath(){
-        return image;
+        return imagio;
     }
 
     public int getRoomCode() {
