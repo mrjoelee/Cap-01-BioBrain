@@ -140,6 +140,13 @@ public class Location {
         this.exit = exit;
     }
 
+    public String getLockedMessage(){
+        String message = "";
+        if(isLocked()) {
+            message = String.format("%s seems to be locked. You need to find a way to unlock it", getShortName());
+        }
+        return message;
+    }
     public void draw(Graphics2D g2){
         if(entrance != null){
             g2.drawRect(entrance.x, entrance.y, entrance.width, entrance.height);

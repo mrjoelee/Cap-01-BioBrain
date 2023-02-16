@@ -8,11 +8,15 @@ import com.biobrain.view.panels.GamePanel;
 import com.biobrain.view.panels.GameSetter;
 
 import java.awt.*;
+import java.awt.font.FontRenderContext;
+import java.awt.font.LineBreakMeasurer;
+import java.awt.font.TextAttribute;
+import java.awt.font.TextLayout;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
+import java.text.AttributedCharacterIterator;
+import java.text.AttributedString;
 
 public class UI implements WindowInterface {
     GamePanel gamePanel;
@@ -59,31 +63,46 @@ public class UI implements WindowInterface {
         if (gamePanel.gameState == gamePanel.dialogueState) {
             drawDialogueScreen();
         }
+        if(gamePanel.gameState == gamePanel.dialoguePlay){
+            drawDialogueScreen();
+        }
     }
 
-    private void drawDialogueScreen() {
-        int x = gamePanel.getTileSize() * 3;
-        int y = gamePanel.getTileSize() * 3;
-        int width = gamePanel.screenWidth - (gamePanel.getTileSize() * 6);
-        int height = gamePanel.getTileSize() * 2;
+    private void drawDialogueScreen(){
+        if(!currentDialogue.isEmpty()) {
+            int x = gamePanel.getTileSize() * 3;
+            int y = gamePanel.getTileSize() * 3;
+            int width = gamePanel.screenWidth - (gamePanel.getTileSize() * 6);
+            int height;
 
-        drawSubWindow(x, y, width, height);
-        x += gamePanel.getTileSize() / 2;
-        y += gamePanel.getTileSize() / 2;
+            // Create a TextLayout object for the current dialogue
+            AttributedString attributedString = new AttributedString(currentDialogue);
+            Font font = thaleahFont.deriveFont(20F);
+            attributedString.addAttribute(TextAttribute.FONT, font);
+            AttributedCharacterIterator paragraph = attributedString.getIterator();
+            FontRenderContext frc = g2.getFontRenderContext();
+            LineBreakMeasurer lineMeasurer = new LineBreakMeasurer(paragraph, frc);
+            float drawPosY = 0;
+            int numLines = 0;
 
+            while (lineMeasurer.getPosition() < paragraph.getEndIndex()) {
+                TextLayout layout = lineMeasurer.nextLayout(width - gamePanel.getTileSize());
+                numLines++;
+                drawPosY += layout.getAscent() + layout.getDescent() + layout.getLeading();
+            }
+            // Adjust the height of the rectangle based on the number of lines required to display the text
+            height = (int) (numLines * (drawPosY / numLines)) + gamePanel.getTileSize();
 
-        g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 20F));
+            drawSubWindow(x, y, width, height);
+            x += gamePanel.getTileSize() / 2;
+            y += gamePanel.getTileSize() / 2;
 
-        //TODO need to find a way to not use /n in strings json
-//        Font font = g2.getFont().deriveFont(Font.PLAIN, 20F);
-//        FontMetrics metrics = g2.getFontMetrics(font);
-//
-//        int stringWidth = metrics.stringWidth(currentDialogue);
-        g2.drawString(currentDialogue, x, y);
+            printCurrentDialogue(width, x, y);
+        }
     }
 
-    private void drawSubWindow(int x, int y, int width, int height) {
-        Color opacity = new Color(0, 0, 0, 75);
+    private void drawSubWindow(int x, int y, int width, int height){
+        Color opacity = new Color(0, 0, 0, 150);
         g2.setColor(opacity);
         g2.fillRoundRect(x, y, width, height, 35, 35);
 
@@ -91,8 +110,34 @@ public class UI implements WindowInterface {
         g2.setStroke(new BasicStroke(5));
         g2.drawRoundRect(x + 5, y + 5, width - 10, height - 10, 25, 25);
     }
+    private void printCurrentDialogue(int width, int x, int y){
+        int widthInBox = width - (gamePanel.getTileSize());
+        Font font = thaleahFont.deriveFont(20F);
+        AttributedString attributedString = new AttributedString(currentDialogue);
+        attributedString.addAttribute(TextAttribute.FONT, font);
+        AttributedCharacterIterator paragraph = attributedString.getIterator();
+        int paragraphStart = paragraph.getBeginIndex();
+        int paragraphEnd = paragraph.getEndIndex();
 
-    // draws option menu window
+        FontRenderContext frc = g2.getFontRenderContext();
+        LineBreakMeasurer lineMeasurer = new LineBreakMeasurer(paragraph, frc);
+
+        float drawPosY = y;
+        lineMeasurer.setPosition(paragraphStart);
+
+        while (lineMeasurer.getPosition() < paragraphEnd) {
+            TextLayout layout = lineMeasurer.nextLayout(widthInBox);
+
+            float drawPosX = layout.isLeftToRight()
+                    ? x : widthInBox - layout.getAdvance();
+
+            drawPosY += layout.getAscent();
+
+            layout.draw(g2, drawPosX, drawPosY);
+
+            drawPosY += layout.getDescent() + layout.getLeading();
+        }
+    }
     private void drawOption() {
         g2.setColor(Color.white);
         g2.setFont(g2.getFont().deriveFont(18F));
@@ -233,13 +278,12 @@ public class UI implements WindowInterface {
         }
     }
 
-    private Image playerIcon() {
+    private Image playerIcon(){
         BufferedImage playerIcon = FileLoader.loadBuffered("images/player/player_down_1.png");
         return playerIcon.getScaledInstance(25, 25, 0);
     }
 
     private void drawTitleScreen() {
-
         //checking titleScreen substate
         if (titleSubState == 0) {
             //Title Name
@@ -339,9 +383,9 @@ public class UI implements WindowInterface {
     }
 
     //sets the (width)
-    public int getXForCenteredText(String text) {
-        int length = (int) g2.getFontMetrics().getStringBounds(text, g2).getWidth();
-        return gamePanel.screenWidth / 2 - length / 2;
+    public int getXForCenteredText(String text){
+        int length =(int)g2.getFontMetrics().getStringBounds(text,g2).getWidth();
+        return gamePanel.screenWidth/2 - length/2;
     }
 
     //creates a inner window
@@ -378,7 +422,6 @@ public class UI implements WindowInterface {
         this.currentDialogue = currentDialogue;
     }
 
-
     // ACCESSOR METHODS
     // OptionsSubState dictates condition of options menu
     public int getOptionsSubState() {
@@ -387,5 +430,8 @@ public class UI implements WindowInterface {
 
     public void setOptionsSubState(int optionsSubState) {
         this.optionsSubState = optionsSubState;
+    }
+    public Font getFont(){
+        return thaleahFont;
     }
 }

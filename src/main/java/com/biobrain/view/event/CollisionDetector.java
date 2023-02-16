@@ -92,7 +92,7 @@ public class CollisionDetector {
                     gamePanel.player.labX = previous.getEntrance().x + 24; // get the entrance of the room add 24 so player exits in middle
                     gamePanel.player.labY = previous.getEntrance().y + gamePanel.getTileSize();
                     gamePanel.ui.setCurrentDialogue(lab.getDescription());
-                    gamePanel.gameState = gamePanel.dialogueState;
+                    gamePanel.gameState = gamePanel.dialoguePlay;
                     }
                 }
         }
@@ -105,24 +105,25 @@ public class CollisionDetector {
         entity.collider.y = entity.labY + entity.collider.y;
         List<Location> locations = gamePanel.locations.getRooms();
 
-        switch (entity.direction) {
-            case "up":
-            case "down":
-            case "left":
-            case "right":
-                entity.collider.x += entity.speed;
-                for (Location room : locations) {
-                    if (room.getEntrance() != null) {
-                        if (entity.collider.intersects(room.getEntrance())) {
+        if (entity.direction.equals("up")) {
+            entity.collider.x += entity.speed;
+            for (Location room : locations) {
+                if (room.getEntrance() != null) {
+                    if (entity.collider.intersects(room.getEntrance())) {
+                        if (!room.isLocked()) {
                             gamePanel.currentRoom = room;
                             gamePanel.player.labX = room.getExit().x + 24;
                             gamePanel.player.labY = room.getExit().y - gamePanel.getTileSize();
                             gamePanel.ui.setCurrentDialogue(room.getDescription());
-                            gamePanel.gameState = gamePanel.dialogueState;
+                            gamePanel.gameState = gamePanel.dialoguePlay;
                             break;
+                        } else {
+                            gamePanel.ui.setCurrentDialogue(room.getLockedMessage());
+                            gamePanel.gameState = gamePanel.dialogueState;
                         }
                     }
                 }
+            }
         }
         entity.collider.x = entity.colliderDefaultX;
         entity.collider.y = entity.colliderDefaultY;

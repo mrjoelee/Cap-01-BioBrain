@@ -24,17 +24,23 @@ public class KeyHandler implements KeyListener {
     public void keyPressed(KeyEvent e) {
         int code = e.getKeyCode();
         //move the arrow on the menu
-        if (gp.gameState == gp.titleState) {
+       if (gp.gameState == gp.titleState) {
             titleState(code);
-        } else if (gp.gameState == gp.mapState) {
+        }
+        else if (gp.gameState == gp.mapState) {
             mapState(code);
-        } else if (gp.gameState == gp.playState) {
+        }
+        else if (gp.gameState == gp.playState) {
             playState(code);
         }
-       else if(gp.gameState == gp.optionsState){
-           optionState(code);
-        } else if (gp.gameState == gp.dialogueState) {
-           dialogueState(code);
+        else if (gp.gameState == gp.optionsState) {
+            optionState(code);
+        }
+        else if (gp.gameState == gp.dialogueState) {
+            dialogueState(code);
+        }
+        else if (gp.gameState == gp.dialoguePlay) {
+            playState(code);
         }
     }
 
@@ -127,88 +133,85 @@ public class KeyHandler implements KeyListener {
     }
 
     // allows user to skip past dialogue boxes and descriptions
-    private void dialogueState(int code){
-        if(code == KeyEvent.VK_ENTER){
+    private void dialogueState(int code) {
+        if (code == KeyEvent.VK_W || code == KeyEvent.VK_UP
+                || code == KeyEvent.VK_S || code == KeyEvent.VK_DOWN
+                || code == KeyEvent.VK_A || code == KeyEvent.VK_LEFT
+                || code == KeyEvent.VK_D || code == KeyEvent.VK_RIGHT) {
             gp.gameState = gp.playState;
+            playState(code);
+        }
+        else if (code == KeyEvent.VK_ENTER) {
+            enterPressed = true;
         }
     }
 
     // main title menu controls
+
     private void titleState(int code){
         if(gp.gameState == gp.titleState){
             //the current substate of titleScreen
-            if (gp.ui.titleSubState == 0) {
-                if (code == KeyEvent.VK_W || code == KeyEvent.VK_UP) {
-                    gp.playSfx("menuNavigationSound");     // play menu navigation sound
+            if(gp.ui.titleSubState == 0){
+                if(code == KeyEvent.VK_W ||code == KeyEvent.VK_UP){
                     gp.ui.commandNum--;
-                    if (gp.ui.commandNum < 0) {
+                    if(gp.ui.commandNum < 0){
                         gp.ui.commandNum = 1;
                     }
                 }
-                if (code == KeyEvent.VK_S || code == KeyEvent.VK_DOWN) {
-                    gp.playSfx("menuNavigationSound");     // play menu navigation sound
+                if(code == KeyEvent.VK_S || code == KeyEvent.VK_DOWN){
                     gp.ui.commandNum++;
-                    if (gp.ui.commandNum > 1) {
+                    if(gp.ui.commandNum > 1){
                         gp.ui.commandNum = 0;
                     }
                 }
-                if (code == KeyEvent.VK_ENTER) {
+                if(code == KeyEvent.VK_ENTER){
                     //new game - changing the gameState transition into the player.update();
-                    gp.playSfx("menuSelectSound");        // play menu selection sound
-                    if (gp.ui.commandNum == 0) {
+                    if(gp.ui.commandNum == 0){
                         gp.ui.titleSubState = 1;
                     }
                     //quit game
-                    if (gp.ui.commandNum == 1) {
+                    if(gp.ui.commandNum == 1){
                         System.exit(0);
                     }
                 }
-            } else if (gp.ui.titleSubState == 1) {
-                if (code == KeyEvent.VK_W || code == KeyEvent.VK_UP) {
-                    gp.playSfx("menuNavigationSound");     // play menu navigation sound
+            }
+            else if(gp.ui.titleSubState == 1){
+                if(code == KeyEvent.VK_W ||code == KeyEvent.VK_UP){
                     gp.ui.commandNum--;
-                    if (gp.ui.commandNum < 0) {
-
+                    if(gp.ui.commandNum < 0){
                         gp.ui.commandNum = 2;
                     }
                 }
-                if (code == KeyEvent.VK_S || code == KeyEvent.VK_DOWN) {
-                    gp.playSfx("menuNavigationSound");     // play menu navigation sound
+                if(code == KeyEvent.VK_S || code == KeyEvent.VK_DOWN){
                     gp.ui.commandNum++;
-                    if (gp.ui.commandNum > 2) {
+                    if(gp.ui.commandNum > 2){
                         gp.ui.commandNum = 0;
                     }
                 }
-                if (code == KeyEvent.VK_ENTER) {
-                    if (gp.ui.commandNum == 0) {
-                        gp.playSfx("menuSelectSound");     // play menu navigation sound
+                if(code == KeyEvent.VK_ENTER){
+                    if(gp.ui.commandNum == 0){
                         gp.ui.titleSubState = 2;
                     }
-                    if (gp.ui.commandNum == 1) {
-                        gp.stopMusic();                          // stop menu music
-                        gp.ui.commandNum = 0;                    // reset commandNum for cursor selection
-                        gp.playSfx("menuSelectPlaySound");     // play new game selection sound
-                        gp.playMusic("mainGameTheme");         // begin gameplay theme music
-                        gp.gameState = gp.playState;
+                    if(gp.ui.commandNum == 1){
+                        gp.gameState=gp.playState;
                     }
-                    if (gp.ui.commandNum == 2) {
-                        gp.playSfx("menuSelectSound");     // play menu navigation sound
-                        gp.ui.titleSubState = 0;
+                    if(gp.ui.commandNum == 2){
+                        gp.ui.titleSubState =0;
                     }
                 }
-            } else if (gp.ui.titleSubState == 2) {
-                if (code == KeyEvent.VK_ENTER) {
-                    if (gp.ui.commandNum == 0) {
-                        gp.ui.titleSubState = 1;
+            }
+            else if(gp.ui.titleSubState == 2){
+                if(code == KeyEvent.VK_ENTER){
+                    if(gp.ui.commandNum == 0){
+                        gp.ui.titleSubState =1;
                     }
                 }
             }
         }
     }
 
-    // controls for gameplay
-    private void playState(int code){
-        if(code == KeyEvent.VK_W ||code == KeyEvent.VK_UP){
+    private void playState(int code) {
+        if (code == KeyEvent.VK_W || code == KeyEvent.VK_UP) {
             upPressed = true;
         } else if (code == KeyEvent.VK_S || code == KeyEvent.VK_DOWN) {
             downPressed = true;
@@ -220,24 +223,23 @@ public class KeyHandler implements KeyListener {
             gp.mapDisplayed = gp.currentRoom.getRoomCode();
             gp.gameState = gp.mapState;
         }
-        if (code == KeyEvent.VK_ESCAPE) {
+        else if (code == KeyEvent.VK_ESCAPE) {
             gp.gameState = gp.optionsState;
         }
-
     }
 
-    // controls while on map screen
-    private void mapState(int code){
-        if(code == KeyEvent.VK_M){
-          gp.gameState = gp.playState;
+
+    private void mapState(int code) {
+        if (code == KeyEvent.VK_M) {
+            gp.gameState = gp.playState;
         }
         else if (code == KeyEvent.VK_RIGHT || code == KeyEvent.VK_A) {
             int mapToDisplay = gp.mapDisplayed + 1;
-
             if (mapToDisplay < gp.maxRooms) {
                 gp.mapDisplayed = mapToDisplay;
             }
-        } else if (code == KeyEvent.VK_LEFT || code == KeyEvent.VK_D) {
+        }
+        else if (code == KeyEvent.VK_LEFT || code == KeyEvent.VK_D) {
             int mapToDisplay = gp.mapDisplayed - 1;
 
             if (mapToDisplay >= 0) {
@@ -245,7 +247,6 @@ public class KeyHandler implements KeyListener {
             }
         }
     }
-
 
     // ACCESSOR METHODS
     public boolean isUpPressed() {

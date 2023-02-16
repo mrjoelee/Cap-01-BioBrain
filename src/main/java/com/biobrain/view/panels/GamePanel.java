@@ -57,7 +57,6 @@ public class GamePanel extends JPanel implements Runnable {
    public CollisionDetector collisionDetector = new CollisionDetector(this);
     public UI ui = new UI(this);                   // create new instance of User Interface
     private Thread gameThread;                                       // create a new thread for game logic
-
     //game state
     public int gameState;
     public final int titleState = 0;
@@ -65,6 +64,8 @@ public class GamePanel extends JPanel implements Runnable {
     public final int mapState = 2;
     public final int optionsState = 3;
     public final int dialogueState = 4;
+    public final int dialoguePlay = 5;
+    public int switchStateCounter = 300;
 
     public GamePanel() {
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
@@ -119,7 +120,7 @@ public class GamePanel extends JPanel implements Runnable {
     }
     // update() runs every frame
     public void update() {
-        if (gameState == playState) {
+        if (gameState == playState || gameState == dialoguePlay) {
             player.update(); /* listens for player controller for movement */
         }
     }
@@ -129,14 +130,28 @@ public class GamePanel extends JPanel implements Runnable {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g; // defines graphics configurations
 
-
         if(gameState == titleState) {
             ui.draw(g2); // draws the Title screen
         }
         else if (gameState == mapState) {
             playerMap.setCurrentMapDisplayed(g2, mapDisplayed);
         }
-        else{
+        else if (gameState == dialoguePlay) {
+            if (switchStateCounter > 0) {
+                tileHelper.draw(g2);
+                items.draw(g2);
+                currentRoom.draw(g2);
+                player.draw(g2);
+                ui.draw(g2);
+                switchStateCounter--;
+            }
+            else{
+                switchStateCounter = 300;
+                gameState = playState;
+            }
+
+
+        } else{
             tileHelper.draw(g2);
             items.draw(g2);
             currentRoom.draw(g2);

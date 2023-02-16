@@ -24,7 +24,7 @@ public class Map{
         for (int i = 0; i < locations.size(); i++) {
 
             Location curr = locations.get(i);
-            List<Tile> roomTiles = gamePanel.tileSetter.getRoomTiles(gamePanel.currentRoom.getShortName());
+            List<Tile> roomTiles = gamePanel.tileSetter.getRoomTiles(curr.getShortName());
 
             int width = curr.isSector() ?
                     gamePanel.getMaxSectorCol() * gamePanel.getTileSize() :
