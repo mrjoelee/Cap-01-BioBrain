@@ -5,76 +5,88 @@ import com.biobrain.view.panels.GamePanel;
 
 import javax.sound.sampled.*;
 import javax.swing.*;
-import java.awt.*;
-import java.io.File;
 import java.io.IOException;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 
 public class SoundManager {
-    JFrame frame;
-    JPanel gamePanel;
+    GamePanel gamePanel;
     JButton button1, button2;
-    String sound_track;
-    Music se = new Music();
+    Clip clip;
+    Map<String,URL> soundsURL = new HashMap();
+    FloatControl fc;
+    private int volumeScale = 3;
+    float volume;
 
-    public class Music {
-        Clip clip;
-        AudioInputStream sound;
+    public SoundManager(GamePanel gamePanel) {
+        soundsURL.put("mainMenuTheme", getClass().getResource("/sounds/music/mainMenuTheme.wav"));
+        soundsURL.put("mainGameTheme", getClass().getResource("/sounds/music/mainTheme.wav"));
+        soundsURL.put("menuNavigationSound", getClass().getResource("/sounds/sfx/menuNavigationSound.wav"));
+        soundsURL.put("menuSelectPlaySound", getClass().getResource("/sounds/sfx/menuSelectPlaySound.wav"));
+        soundsURL.put("menuSelectSound", getClass().getResource("/sounds/sfx/menuSelectSound.wav"));
 
-        public void setFile(String soundFileName) {
-            try {
-                File file = new File(soundFileName);
-                sound = AudioSystem.getAudioInputStream(file);
-                clip = AudioSystem.getClip();
-                clip.open(sound);
-            } catch (Exception e) {
+        this.gamePanel = gamePanel;
+    }
 
-            }
-        }
-
-        public void play() {
-            clip.start();
-        }
-
-        public void stop() throws IOException {
-            sound.close();
-            clip.close();
-            clip.stop();
+    public void setFile(String name) {
+        try {
+            AudioInputStream audioInput = AudioSystem.getAudioInputStream(soundsURL.get(name));
+            clip = AudioSystem.getClip();
+            clip.open(audioInput);
+            fc = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+            checkVolume();
+        } catch (IOException | UnsupportedAudioFileException | LineUnavailableException err) {
+            throw new RuntimeException(err);
         }
     }
 
-    public SoundManager(GamePanel gamePanel) {
-        sound_track = "src/main/resources/sounds/music/mainTheme.wav";
+    public void play() {
+        clip.start();
+    }
 
-        this.gamePanel = gamePanel;
+    public void loop() {
+        clip.loop(Clip.LOOP_CONTINUOUSLY);
+    }
 
-        button1 = new JButton("Start");
-        button1.setBounds(200, 240, 100, 30);
-        button1.setBackground(Color.WHITE);
-        button1.setFocusPainted(false);
-        button1.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent event) {
-                se.setFile(sound_track);
-                se.play();
-            }
-        });
-        this.gamePanel.add(button1);
+    public void stop() {
+        clip.stop();
+    }
 
-        button2 = new JButton("Stop");
-        button2.setBounds(400, 240, 100, 30);
-        button2.setBackground(Color.WHITE);
-        button2.setFocusPainted(true);
-        button2.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent event) {
-                se.setFile(null);
-                try {
-                    se.stop();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-        this.gamePanel.add(button2);
+    // checks to see which level volume is set to then assigns float value to the FloatControl
+    public void checkVolume(){
+        switch(volumeScale){
+            case 0:
+                volume = -80f;
+                break;
+            case 1:
+                volume = -20f;
+                break;
+            case 2:
+                volume = -12f;
+                break;
+            case 3:
+                volume = -5f;
+                break;
+            case 4:
+                volume = 1f;
+                break;
+            case 5:
+                volume = 6f;
+                break;
+        }
+
+        fc.setValue(volume); // assigns current volume level to FloatControl
+    }
+
+
+    // ACCESSOR METHODS
+
+    public int getVolumeScale() {
+        return volumeScale;
+    }
+
+    public void setVolumeScale(int volumeScale) {
+        this.volumeScale = volumeScale;
     }
 }

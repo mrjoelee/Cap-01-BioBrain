@@ -8,6 +8,7 @@ package com.biobrain.view.panels;
 
 import com.biobrain.items.ItemManager;
 import com.biobrain.model.Location;
+import com.biobrain.util.music.SoundManager;
 import com.biobrain.view.entities.Player;
 import com.biobrain.view.event.CollisionDetector;
 import com.biobrain.view.event.EventHandler;
@@ -45,6 +46,8 @@ public class GamePanel extends JPanel implements Runnable {
     public Player player = new Player(this, keyHandler);  // create instance of Player
     public TileSetter tileSetter = new TileSetter();
     public TileHelper tileHelper = new TileHelper(this);
+    private SoundManager sfx;                                      // instance of SoundManager used for SFX
+    private SoundManager music;                                      // instance of SoundManager used for music
 
     public LocationManager locations = new LocationManager(true);
     public Location currentRoom = locations.getLocations().get("sector2");
@@ -69,10 +72,14 @@ public class GamePanel extends JPanel implements Runnable {
         this.setDoubleBuffered(true);
         this.addKeyListener(keyHandler);
         this.setFocusable(true);
+        setSfx(new SoundManager(this));
+        setMusic(new SoundManager(this));
     }
     public void setupGame() {
         gameState = playState;
         mapDisplayed = currentRoom.getRoomCode();
+
+        playMusic("mainMenuTheme"); // plays main menu theme from soundsURL map inside SoundManager
     }
 
     // starts new thread
@@ -143,8 +150,48 @@ public class GamePanel extends JPanel implements Runnable {
 
     }
 
+    // plays music on a loop, made for looped music and sounds
+    public void playMusic(String name){
+        music.setFile(name);
+        music.play();
+        music.loop();
+    }
+
+    // stop soundManager from playing music
+    public void stopMusic(){
+        music.stop();
+    }
+
+    // sound effects only play once without a loop
+    public void playSfx(String name){
+        sfx.setFile(name);
+        sfx.play();
+    }
+
+
+    // ACCESSOR METHODS
     public int getTileSize() {
         return this.tileSize;
+    }
+
+    public KeyHandler getKeyHandler() {
+        return keyHandler;
+    }
+
+    public SoundManager getSfx() {
+        return sfx;
+    }
+
+    public void setSfx(SoundManager sound) {
+        this.sfx = sound;
+    }
+
+    public SoundManager getMusic() {
+        return music;
+    }
+
+    public void setMusic(SoundManager sound) {
+        this.music = sound;
     }
 
     public int getMaxSectorCol(){
