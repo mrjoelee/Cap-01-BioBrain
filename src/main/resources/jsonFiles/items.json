@@ -24,7 +24,7 @@
     "description": "This is a neuralyzer, you can use this to fight the rouge robots",
     "damage": 5,
     "x": 600,
-    "y": 336
+    "y": 200
   },
   {
     "name": "tablet",
@@ -32,8 +32,8 @@
     "description": "Syncs you to main board in the Control Lab. Get camera feed, seal off sector doors, and link cable to AI for configurations",
     "damage": 0,
     "roomCode": 2,
-    "x": 576,
-    "y": 450
+    "x": 300,
+    "y": 300
   },
   {
     "name": "memory",
