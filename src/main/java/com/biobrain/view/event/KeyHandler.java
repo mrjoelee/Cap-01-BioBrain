@@ -1,5 +1,11 @@
 package com.biobrain.view.event;
 
+/*
+ * KeyHandler | Class implements KeyListener
+ * defines all user controls for each state of play
+ * tracks basic logic for menus and selections
+ */
+
 import com.biobrain.view.panels.GamePanel;
 
 import java.awt.event.KeyEvent;
@@ -11,15 +17,18 @@ public class KeyHandler implements KeyListener {
     GamePanel gp;
     public boolean upPressed, downPressed, leftPressed, rightPressed, enterPressed;
 
+    // CTOR
     public KeyHandler(GamePanel gp) {
         this.gp = gp;
     }
 
+
+    // CLASS METHODS
+    // interface methods that listen for user input on keyboard
     @Override
     public void keyTyped(KeyEvent e) {
 
     }
-
     @Override
     public void keyPressed(KeyEvent e) {
         int code = e.getKeyCode();
@@ -38,7 +47,6 @@ public class KeyHandler implements KeyListener {
             playState(code);
         }
     }
-
     @Override
     public void keyReleased(KeyEvent e) {
         int code = e.getKeyCode();
@@ -61,29 +69,35 @@ public class KeyHandler implements KeyListener {
 
     // controls while options menu is open
     private void optionState(int code) {
+        // if you press enter in the options menu return to the gameplay state
         if (code == KeyEvent.VK_ESCAPE) {
             gp.gameState = gp.playState;
         }
 
+        // enter makes selections
         if (code == KeyEvent.VK_ENTER) {
             gp.getKeyHandler().setEnterPressed(true);
         }
 
         int maxCommandNum = 0;  // resets cursor when moving cursor past the bottom option
 
+        // switch statement checks to see if options menu is in a sub menu or not
         switch (gp.ui.getOptionsSubState()) {
             case 0:
-                maxCommandNum = 4;
+                maxCommandNum = 3; // change the max selections available in the current menu
                 break;
             case 2:
                 maxCommandNum = 1;
                 break;
         }
 
+        // MENU NAVIGATION CONTROLS
+
+        // press up/down arrows or W/A keys to navigate up and down
         if (code == KeyEvent.VK_W || code == KeyEvent.VK_UP) {
-            gp.ui.commandNum--;
-            gp.playSfx("menuNavigationSound");
-            if (gp.ui.commandNum < 0) {
+            gp.ui.commandNum--;                      // decrement the current selection
+            gp.playSfx("menuNavigationSound"); // play a sound effect
+            if (gp.ui.commandNum < 0) {              // if we get to the end of the menu, wrap back around
                 gp.ui.commandNum = maxCommandNum;
             }
         }
@@ -94,15 +108,21 @@ public class KeyHandler implements KeyListener {
                 gp.ui.commandNum = 0;
             }
         }
+
+        // press left/right arrows or A/D keys to adjust sliders
         if (code == KeyEvent.VK_A || code == KeyEvent.VK_LEFT) {
+            // if we are in top options menu (not in a sub menu)
             if (gp.ui.getOptionsSubState() == 0) {
-                if (gp.ui.commandNum == 1 && gp.getMusic().getVolumeScale() > 0) {
-                    int temp = gp.getMusic().getVolumeScale() - 1;
-                    gp.getMusic().setVolumeScale(temp);
-                    gp.getMusic().checkVolume();
-                    gp.playSfx("menuNavigationSound");
+                // if volume is not 0, adjust sliders to the left to lower volume
+                // both statements the same, top statement is for music manager, bottom statement for sfx manager
+
+                if (gp.ui.commandNum == 0 && gp.getMusic().getVolumeScale() > 0) {
+                    int temp = gp.getMusic().getVolumeScale() - 1; // get reference to volume scale and reduce it
+                    gp.getMusic().setVolumeScale(temp);            // adjusts volume scale in SoundManager
+                    gp.getMusic().checkVolume();                   // resets volume level according to volumeScale
+                    gp.playSfx("menuNavigationSound");       // play sound effect
                 }
-                if (gp.ui.commandNum == 2 && gp.getSfx().getVolumeScale() > 0) {
+                if (gp.ui.commandNum == 1 && gp.getSfx().getVolumeScale() > 0) {
                     int temp = gp.getSfx().getVolumeScale() - 1;
                     gp.getSfx().setVolumeScale(temp);
                     gp.getSfx().checkVolume();
@@ -110,15 +130,17 @@ public class KeyHandler implements KeyListener {
                 }
             }
         }
+        // same as statements above except
+        // if volume is set to maximum, adjust sliders to the right to raise volume
         if (code == KeyEvent.VK_D || code == KeyEvent.VK_RIGHT) {
             if (gp.ui.getOptionsSubState() == 0) {
-                if (gp.ui.commandNum == 1 && gp.getMusic().getVolumeScale() < 5) {
+                if (gp.ui.commandNum == 0 && gp.getMusic().getVolumeScale() < 5) {
                     int temp = gp.getMusic().getVolumeScale() + 1;
                     gp.getMusic().setVolumeScale(temp);
                     gp.getMusic().checkVolume();
                     gp.playSfx("menuNavigationSound");
                 }
-                if (gp.ui.commandNum == 2 && gp.getSfx().getVolumeScale() < 5) {
+                if (gp.ui.commandNum == 1 && gp.getSfx().getVolumeScale() < 5) {
                     int temp = gp.getSfx().getVolumeScale() + 1;
                     gp.getSfx().setVolumeScale(temp);
                     gp.playSfx("menuNavigationSound");
@@ -245,6 +267,7 @@ public class KeyHandler implements KeyListener {
             }
         }
     }
+
 
     // ACCESSOR METHODS
     public boolean isUpPressed() {

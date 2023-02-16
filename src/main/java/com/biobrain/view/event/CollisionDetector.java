@@ -1,26 +1,33 @@
 package com.biobrain.view.event;
 
+/*
+ * CollisionDetector | Class
+ * defines all collision interactions between the player
+ * creates dialogue description boxes for collided with objects
+ * checks for player entering/exiting rooms
+ */
+
 import com.biobrain.model.Location;
-import com.biobrain.objects.ObjectManager;
-import com.biobrain.view.entities.Player;
 import com.biobrain.view.entities.SuperObject;
 import com.biobrain.view.panels.GamePanel;
 import com.biobrain.view.entities.Entity;
 import com.biobrain.view.tile.Tile;
 import com.biobrain.view.tile.TileHelper;
-
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
-
 
 public class CollisionDetector {
     GamePanel gamePanel;
 
+    // CTOR
     public CollisionDetector(GamePanel gamePanel) {
         this.gamePanel = gamePanel;
     }
 
+
+    // CLASS METHODS
+
+    // check if game environment object is colliding with player
     public void checkObject(Entity entity) {
         List<SuperObject> objects = gamePanel.object.getObjects().stream().filter(x -> x.getRoomCode() == gamePanel.currentRoom.getRoomCode()).collect(Collectors.toList());
         for (SuperObject obj : objects) {
@@ -51,6 +58,7 @@ public class CollisionDetector {
         }
     }
 
+    // creates a dialogue box describing a collided object
     private void objectCollisionAndDialogue(Entity entity, SuperObject obj) {
         if (entity.collider.intersects(obj.getObjectCollider())) {
             if (obj.collision) {
@@ -63,6 +71,7 @@ public class CollisionDetector {
         }
     }
 
+    // check if tile object is colliding with player
     public void checkTile(Entity entity) {
         int entityLeft = entity.labX + entity.collider.x;
         int entityRight = entity.labX + entity.collider.x + entity.collider.width;
@@ -121,6 +130,7 @@ public class CollisionDetector {
         }
     }
 
+    // check if exit object is colliding with player
     public void checkExit(Entity entity) {
         entity.collider.x = entity.labX + entity.collider.x;
         entity.collider.y = entity.labY + entity.collider.y;
@@ -147,6 +157,7 @@ public class CollisionDetector {
         entity.collider.y = entity.colliderDefaultY;
     }
 
+    // check if entrance object is colliding with player
     public void checkEntrance(Entity entity) {
         entity.collider.x = entity.labX + entity.collider.x;
         entity.collider.y = entity.labY + entity.collider.y;
