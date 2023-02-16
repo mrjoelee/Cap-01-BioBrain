@@ -14,9 +14,12 @@ public class SuperObject {
     private int y;
     private int width;
     private int height;
-    Rectangle itemCollider;
+    public int defaultX;
+    public int defaultY;
+    public boolean collision;
+    Rectangle objectCollider;
 
-    public SuperObject(String name, int roomCode, String image, String description, int x, int y, int width, int height, Rectangle itemCollider) {
+    public SuperObject(String name, int roomCode, String image, String description, int x, int y, int width, int height, Rectangle objectCollider, boolean collision) {
         this.name = name;
         this.roomCode = roomCode;
         this.image = image;
@@ -25,7 +28,8 @@ public class SuperObject {
         this.y = y;
         this.width = width;
         this.height = height;
-        this.itemCollider = itemCollider;
+        this.objectCollider = objectCollider;
+        this.collision = collision;
     }
 
     public String getName() {
@@ -48,6 +52,10 @@ public class SuperObject {
         this.image = image;
     }
 
+    public void setCollision(boolean collision) {
+        this.collision = collision;
+    }
+
     public String getDescription() {
         return description;
     }
@@ -64,6 +72,14 @@ public class SuperObject {
         return y;
     }
 
+    public void setDefaultX(int defaultX) {
+        this.defaultX = defaultX;
+    }
+
+    public void setDefaultY(int defaultY) {
+        this.defaultY = defaultY;
+    }
+
     public int getWidth() {
         return width;
     }
@@ -72,14 +88,14 @@ public class SuperObject {
         return height;
     }
 
-    public Rectangle getItemCollider() {
-        return itemCollider;
+    public Rectangle getObjectCollider() {
+        return objectCollider;
     }
 
-    public void setItemCollider(Rectangle itemCollider) {
-        this.itemCollider = itemCollider;
+    public void setObjectCollider(Rectangle objectCollider) {
+        this.objectCollider = objectCollider;
     }
-    public BufferedImage getItemImage(){
+    public BufferedImage getObjectImage(){
         return FileLoader.loadBuffered(getImagePath());
     }
     public String getImagePath(){
@@ -88,9 +104,9 @@ public class SuperObject {
 
     public void draw(Graphics2D g2) {
 
-        g2.drawImage(getItemImage(), getX()*2, getY()*2, (int) (getWidth()*1.5), getHeight()*3, null);
-        g2.drawRect(getItemCollider().x, getItemCollider().y, getItemCollider().width, getItemCollider().height);
+        g2.drawImage(getObjectImage(), getX()*2, getY()*2, (int) (getWidth()*1.5), getHeight()*3, null);
+        g2.setStroke(new BasicStroke(3));
+        g2.setColor(new Color(0,0,0,0));
+        g2.drawRect(getObjectCollider().x, getObjectCollider().y, getObjectCollider().width, getObjectCollider().height);
     }
-
-
 }

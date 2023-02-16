@@ -85,6 +85,7 @@ public class Player extends Entity {
             gamePanel.collisionDetector.checkTile(this);
             gamePanel.collisionDetector.checkEntrance(this);
             gamePanel.collisionDetector.checkExit(this);
+            gamePanel.collisionDetector.checkObject(this);
             //gamePanel.eventHandler.checkEvent();
 
             if (!collisionOn) {
