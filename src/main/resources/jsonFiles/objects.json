@@ -175,7 +175,7 @@
     "image": "images/objects/screenLab1.png",
     "description": "One and done with humans, might take a few rounds with a robot",
     "x": 155,
-    "y": 120,
+    "y": 180,
     "width": 100,
     "height": 30
   },

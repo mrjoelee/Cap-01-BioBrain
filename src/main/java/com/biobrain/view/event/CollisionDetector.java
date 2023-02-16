@@ -1,18 +1,51 @@
 package com.biobrain.view.event;
 
 import com.biobrain.model.Location;
+import com.biobrain.objects.ObjectManager;
+import com.biobrain.view.entities.Player;
+import com.biobrain.view.entities.SuperObject;
 import com.biobrain.view.panels.GamePanel;
 import com.biobrain.view.entities.Entity;
 import com.biobrain.view.tile.Tile;
 import com.biobrain.view.tile.TileHelper;
 
 import java.util.List;
+import java.util.Map;
+
 
 public class CollisionDetector {
     GamePanel gamePanel;
-
     public CollisionDetector(GamePanel gamePanel) {
         this.gamePanel = gamePanel;
+    }
+
+    public void checkObject(Entity entity) {
+        for (SuperObject entry : gamePanel.object.getObjects()) {
+
+            entity.collider.x = gamePanel.player.labX + entity.collider.x;
+            entity.collider.y = gamePanel.player.labY + entity.collider.x;
+
+//                entry.getObjectCollider().x = entry.getX() + entry.getObjectCollider().x;
+//                entry.getObjectCollider().y = entry.getY() + entry.getObjectCollider().y;
+            if (gamePanel.currentRoom.getRoomCode() == entry.getRoomCode()) {
+                switch (entity.direction) {
+                    case "up":
+                    case "down":
+                    case "left":
+                    case "right":
+                        entity.collider.x += entity.speed;
+                        if (entity.collider.intersects(entry.getObjectCollider())) {
+                            System.out.println("collided");
+                            if (entry.collision) {
+                                entity.collisionOn = true;
+                            }
+                        }
+                        break;
+                }
+                entity.collider.x = entity.colliderDefaultX;
+                entity.collider.y = entity.colliderDefaultY;
+            }
+        }
     }
 
     public void checkTile(Entity entity) {
@@ -85,14 +118,14 @@ public class CollisionDetector {
             case "left":
             case "right":
                 entity.collider.x += entity.speed;
-                if(gamePanel.currentRoom.getExit() != null) {
+                if (gamePanel.currentRoom.getExit() != null) {
                     if (entity.collider.intersects(gamePanel.currentRoom.getExit())) {
-                    Location lab = gamePanel.locations.getLocations().get("lab");
-                    gamePanel.currentRoom = lab;
-                    gamePanel.player.labX = previous.getEntrance().x + 24; // get the entrance of the room add 24 so player exits in middle
-                    gamePanel.player.labY = previous.getEntrance().y + gamePanel.getTileSize();
-                    gamePanel.ui.setCurrentDialogue(lab.getDescription());
-                    gamePanel.gameState = gamePanel.dialoguePlay;
+                        Location lab = gamePanel.locations.getLocations().get("lab");
+                        gamePanel.currentRoom = lab;
+                        gamePanel.player.labX = previous.getEntrance().x + 24; // get the entrance of the room add 24 so player exits in middle
+                        gamePanel.player.labY = previous.getEntrance().y + gamePanel.getTileSize();
+                        gamePanel.ui.setCurrentDialogue(lab.getDescription());
+                        gamePanel.gameState = gamePanel.dialoguePlay;
                     }
                 }
         }

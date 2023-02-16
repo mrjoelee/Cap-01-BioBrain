@@ -17,12 +17,15 @@ import java.util.*;
 import java.util.List;
 
 public class ObjectManager {
-    private final Map<String, SuperObject> object;
+    public Map<String, SuperObject> object;
     public GamePanel gamePanel;
+    private final List<SuperObject> objects;
+
 
     public ObjectManager(GamePanel gamePanel){
         this.gamePanel=gamePanel;
         object = new HashMap<>();
+        objects = new ArrayList<>();
         generateObjects();
     }
 
@@ -30,11 +33,12 @@ public class ObjectManager {
         List<SuperObject> objectsList = JSONParser.parseObjectFromJson();
         for(SuperObject obj : objectsList){
             Rectangle collider = new Rectangle(obj.getX()*2, obj.getY()*2, (int) (obj.getWidth()*1.5), obj.getHeight()*3);
-            obj.setItemCollider(collider);
+            obj.setObjectCollider(collider);
+            obj.setCollision(true);
             object.put(obj.getName(),obj);
+            objects.add(obj);
         }
     }
-
 
     public void draw(Graphics2D g2) {
         for (SuperObject obj : object.values()) {
@@ -44,4 +48,7 @@ public class ObjectManager {
         }
     }
 
+    public List<SuperObject> getObjects(){
+        return objects;
+    }
 }
