@@ -1,18 +1,66 @@
 package com.biobrain.view.event;
 
 import com.biobrain.model.Location;
+import com.biobrain.objects.ObjectManager;
+import com.biobrain.view.entities.Player;
+import com.biobrain.view.entities.SuperObject;
 import com.biobrain.view.panels.GamePanel;
 import com.biobrain.view.entities.Entity;
 import com.biobrain.view.tile.Tile;
 import com.biobrain.view.tile.TileHelper;
 
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
 
 public class CollisionDetector {
     GamePanel gamePanel;
 
     public CollisionDetector(GamePanel gamePanel) {
         this.gamePanel = gamePanel;
+    }
+
+    public void checkObject(Entity entity) {
+        List<SuperObject> objects = gamePanel.object.getObjects().stream().filter(x -> x.getRoomCode() == gamePanel.currentRoom.getRoomCode()).collect(Collectors.toList());
+        for (SuperObject obj : objects) {
+            entity.collider.x = entity.labX + entity.collider.x;
+            entity.collider.y = entity.labY + entity.collider.y;
+
+            switch (entity.direction) {
+                case "up":
+                    entity.collider.y -= entity.speed;
+                    objectCollisionAndDialogue(entity, obj);
+                    break;
+                case "down":
+                    entity.collider.y += entity.speed;
+                    objectCollisionAndDialogue(entity, obj);
+                    break;
+
+                case "left":
+                    entity.collider.x -= entity.speed;
+                    objectCollisionAndDialogue(entity, obj);
+                    break;
+                case "right":
+                    entity.collider.x += entity.speed;
+                    objectCollisionAndDialogue(entity, obj);
+                    break;
+            }
+            entity.collider.x = entity.colliderDefaultX;
+            entity.collider.y = entity.colliderDefaultY;
+        }
+    }
+
+    private void objectCollisionAndDialogue(Entity entity, SuperObject obj) {
+        if (entity.collider.intersects(obj.getObjectCollider())) {
+            if (obj.collision) {
+                entity.collisionOn = true;
+                if(!obj.getDescription().isEmpty()){
+                    gamePanel.ui.setCurrentDialogue(obj.getDescription());
+                    gamePanel.gameState = gamePanel.dialogueState;
+                }
+            }
+        }
     }
 
     public void checkTile(Entity entity) {
@@ -71,7 +119,6 @@ public class CollisionDetector {
                 }
                 break;
         }
-
     }
 
     public void checkExit(Entity entity) {
@@ -85,14 +132,14 @@ public class CollisionDetector {
             case "left":
             case "right":
                 entity.collider.x += entity.speed;
-                if(gamePanel.currentRoom.getExit() != null) {
+                if (gamePanel.currentRoom.getExit() != null) {
                     if (entity.collider.intersects(gamePanel.currentRoom.getExit())) {
-                    Location lab = gamePanel.locations.getLocations().get("lab");
-                    gamePanel.currentRoom = lab;
-                    gamePanel.player.labX = previous.getEntrance().x + 24; // get the entrance of the room add 24 so player exits in middle
-                    gamePanel.player.labY = previous.getEntrance().y + gamePanel.getTileSize();
-                    gamePanel.ui.setCurrentDialogue(lab.getDescription());
-                    gamePanel.gameState = gamePanel.dialoguePlay;
+                        Location lab = gamePanel.locations.getLocations().get("lab");
+                        gamePanel.currentRoom = lab;
+                        gamePanel.player.labX = previous.getEntrance().x + 24; // get the entrance of the room add 24 so player exits in middle
+                        gamePanel.player.labY = previous.getEntrance().y + gamePanel.getTileSize();
+                        gamePanel.ui.setCurrentDialogue(lab.getDescription());
+                        gamePanel.gameState = gamePanel.dialoguePlay;
                     }
                 }
         }

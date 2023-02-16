@@ -11,6 +11,7 @@ import com.biobrain.model.Location;
 import com.biobrain.util.music.SoundManager;
 import com.biobrain.objects.ObjectManager;
 import com.biobrain.view.entities.Player;
+import com.biobrain.view.entities.SuperObject;
 import com.biobrain.view.event.CollisionDetector;
 import com.biobrain.view.event.EventHandler;
 import com.biobrain.view.event.KeyHandler;
@@ -22,6 +23,8 @@ import com.biobrain.view.tile.TileSetter;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 
 public class GamePanel extends JPanel implements Runnable {
