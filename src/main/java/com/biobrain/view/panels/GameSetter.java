@@ -37,7 +37,7 @@ public class GameSetter extends JFrame implements WindowInterface {
         gamePanel = new GamePanel();                            // new instance of GamePanel (contains game logic)
         inventoryPanel = new InventoryPanel(this,gamePanel); // new panel for inventory
         inventoryImg = new JLabel(new ImageIcon(image));            // label to add inventory img
-        inventoryPanel.add(inventoryPanel);
+        inventoryPanel.add(inventoryImg);
         gamePanel = new GamePanel();               // new instance of GamePanel (contains game logic)
 
         window.add(gamePanel);                                  // add Game Panel as window display
