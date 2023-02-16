@@ -30,41 +30,36 @@ public class CollisionDetector {
             switch (entity.direction) {
                 case "up":
                     entity.collider.y -= entity.speed;
-                    if (entity.collider.intersects(obj.getObjectCollider())) {
-                        if (obj.collision) {
-                            entity.collisionOn = true;
-                        }
-                    }
+                    objectCollisionAndDialogue(entity, obj);
                     break;
                 case "down":
                     entity.collider.y += entity.speed;
-                    if (entity.collider.intersects(obj.getObjectCollider())) {
-                        if (obj.collision) {
-                            entity.collisionOn = true;
-                        }
-                    }
+                    objectCollisionAndDialogue(entity, obj);
                     break;
 
                 case "left":
                     entity.collider.x -= entity.speed;
-                    if (entity.collider.intersects(obj.getObjectCollider())) {
-                        if (obj.collision) {
-                            entity.collisionOn = true;
-                        }
-                    }
+                    objectCollisionAndDialogue(entity, obj);
                     break;
                 case "right":
                     entity.collider.x += entity.speed;
-
-                    if (entity.collider.intersects(obj.getObjectCollider())) {
-                        if (obj.collision) {
-                            entity.collisionOn = true;
-                        }
-                    }
+                    objectCollisionAndDialogue(entity, obj);
                     break;
             }
             entity.collider.x = entity.colliderDefaultX;
             entity.collider.y = entity.colliderDefaultY;
+        }
+    }
+
+    private void objectCollisionAndDialogue(Entity entity, SuperObject obj) {
+        if (entity.collider.intersects(obj.getObjectCollider())) {
+            if (obj.collision) {
+                entity.collisionOn = true;
+                if(!obj.getDescription().isEmpty()){
+                    gamePanel.ui.setCurrentDialogue(obj.getDescription());
+                    gamePanel.gameState = gamePanel.dialogueState;
+                }
+            }
         }
     }
 

@@ -105,8 +105,8 @@ public class SuperObject {
     public void draw(Graphics2D g2) {
 
         g2.drawImage(getObjectImage(), getX()*2, getY()*2, (int) (getWidth()*1.5), getHeight()*3, null);
-        //g2.setStroke(new BasicStroke(3));
-        //g2.setColor(new Color(0,0,0,0));
+        g2.setStroke(new BasicStroke(3));
+        g2.setColor(new Color(0,0,0,0));
         g2.drawRect(getObjectCollider().x, getObjectCollider().y, getObjectCollider().width, getObjectCollider().height);
     }
 }
