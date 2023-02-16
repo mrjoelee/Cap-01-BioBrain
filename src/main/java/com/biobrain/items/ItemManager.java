@@ -5,7 +5,6 @@ import com.biobrain.model.Location;
 import com.biobrain.util.FileLoader;
 import com.biobrain.view.entities.ItemEntity;
 import com.biobrain.view.panels.GamePanel;
-import com.biobrain.view.tile.Tile;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -38,12 +37,14 @@ public class ItemManager {
     }
 
 
+
     public static List<ItemEntity> parseItemsFromJson() {
         Gson gson = new Gson();
         List<ItemEntity> list = new ArrayList<>();
         try (Reader reader = new InputStreamReader(Objects.requireNonNull(ItemManager.class.getClassLoader().getResourceAsStream("jsonFiles/items.json")))) {
             Type itemType = new TypeToken<ArrayList<ItemEntity>>() {
             }.getType();
+
             list = gson.fromJson(reader, itemType);
         } catch (IOException e) {
             e.printStackTrace();

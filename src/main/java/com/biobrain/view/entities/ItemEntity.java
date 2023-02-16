@@ -47,7 +47,6 @@ public class ItemEntity{
 
     // update player graphics
     public void draw(Graphics2D g2) {
-
         g2.drawImage(getItemImage(), getX(), getY(), 48, 48, null);
         g2.drawRect(getItemCollider().x, getItemCollider().y, getItemCollider().width, getItemCollider().height);
     }
