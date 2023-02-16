@@ -23,8 +23,6 @@ public class CollisionDetector {
 
     public void checkObject(Entity entity) {
         List<SuperObject> objects = gamePanel.object.getObjects().stream().filter(x -> x.getRoomCode() == gamePanel.currentRoom.getRoomCode()).collect(Collectors.toList());
-
-
         for (SuperObject obj : objects) {
             entity.collider.x = entity.labX + entity.collider.x;
             entity.collider.y = entity.labY + entity.collider.y;
