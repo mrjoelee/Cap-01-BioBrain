@@ -4,6 +4,7 @@ package com.biobrain.client;
  * Main | Game Client
  * main game client
  * loads game window
+ * gives user choice of play for text game or 2d version
  */
 
 import com.biobrain.app.BioBrainApp;
