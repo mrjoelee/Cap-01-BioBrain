@@ -19,6 +19,7 @@ import com.biobrain.view.locations.LocationManager;
 import com.biobrain.view.tile.Map;
 import com.biobrain.view.tile.TileHelper;
 import com.biobrain.view.tile.TileSetter;
+import com.sun.tools.javac.Main;
 
 import javax.swing.*;
 import java.awt.*;
@@ -56,9 +57,11 @@ public class GamePanel extends JPanel implements Runnable {
     public ObjectManager object = new ObjectManager(this);
     //public EventHandler eventHandler = new EventHandler(this);
     public Map playerMap = new Map(this);
-   public CollisionDetector collisionDetector = new CollisionDetector(this);
+    public CollisionDetector collisionDetector = new CollisionDetector(this);
     public UI ui = new UI(this);                   // create new instance of User Interface
     private Thread gameThread;                                       // create a new thread for game logic
+    private Boolean isFullScreen = false;                            // toggle for full screen in options menu
+
     //game state
     public int gameState;
     public final int titleState = 0;
@@ -170,6 +173,16 @@ public class GamePanel extends JPanel implements Runnable {
 
     }
 
+    // sets game window to full screen
+//    public void makeFullScreen(){
+//        // grabs a reference to the local screen device
+//        GraphicsEnvironment graphEnv = GraphicsEnvironment.getLocalGraphicsEnvironment();
+//        GraphicsDevice screenDevice = graphEnv.getDefaultScreenDevice();
+//
+//        // set full screen to device
+//        screenDevice.setFullScreenWindow();
+//    }
+
     // plays music on a loop, made for looped music and sounds
     public void playMusic(String name){
         music.setFile(name);
@@ -220,5 +233,13 @@ public class GamePanel extends JPanel implements Runnable {
 
     public int getMaxSectorRow(){
         return this.maxSectorRow;
+    }
+
+    public Boolean getFullScreen() {
+        return isFullScreen;
+    }
+
+    public void setFullScreen(Boolean fullScreen) {
+        isFullScreen = fullScreen;
     }
 }

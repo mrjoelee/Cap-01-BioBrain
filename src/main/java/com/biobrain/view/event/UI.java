@@ -63,13 +63,13 @@ public class UI implements WindowInterface {
         if (gamePanel.gameState == gamePanel.dialogueState) {
             drawDialogueScreen();
         }
-        if(gamePanel.gameState == gamePanel.dialoguePlay){
+        if (gamePanel.gameState == gamePanel.dialoguePlay) {
             drawDialogueScreen();
         }
     }
 
-    private void drawDialogueScreen(){
-        if(!currentDialogue.isEmpty()) {
+    private void drawDialogueScreen() {
+        if (!currentDialogue.isEmpty()) {
             int x = gamePanel.getTileSize() * 3;
             int y = gamePanel.getTileSize() * 3;
             int width = gamePanel.screenWidth - (gamePanel.getTileSize() * 6);
@@ -101,7 +101,7 @@ public class UI implements WindowInterface {
         }
     }
 
-    private void drawSubWindow(int x, int y, int width, int height){
+    private void drawSubWindow(int x, int y, int width, int height) {
         Color opacity = new Color(0, 0, 0, 150);
         g2.setColor(opacity);
         g2.fillRoundRect(x, y, width, height, 35, 35);
@@ -110,7 +110,8 @@ public class UI implements WindowInterface {
         g2.setStroke(new BasicStroke(5));
         g2.drawRoundRect(x + 5, y + 5, width - 10, height - 10, 25, 25);
     }
-    private void printCurrentDialogue(int width, int x, int y){
+
+    private void printCurrentDialogue(int width, int x, int y) {
         int widthInBox = width - (gamePanel.getTileSize());
         Font font = thaleahFont.deriveFont(20F);
         AttributedString attributedString = new AttributedString(currentDialogue);
@@ -138,6 +139,7 @@ public class UI implements WindowInterface {
             drawPosY += layout.getDescent() + layout.getLeading();
         }
     }
+
     private void drawOption() {
         g2.setColor(Color.white);
         g2.setFont(g2.getFont().deriveFont(18F));
@@ -151,12 +153,14 @@ public class UI implements WindowInterface {
         // Switch governs which parts of the option menu to draw depending on substate
         switch (optionsSubState) {
             case 0:
-                optionTop(x, y);             // draw main options window
+                optionTop(x, y);                          // draw main options window
                 break;
             case 2:
-                optionEndGameConfirm(x, y);  // draw confirmation window for quitting game
+                optionEndGameConfirm(x, y);               // draw confirmation window for quitting game
                 break;
         }
+
+        gamePanel.getKeyHandler().setEnterPressed(false); // let KeyHandler know enter was released
     }
 
     // draws the 'top' of the main options menu, will add substates if necessary
@@ -179,6 +183,13 @@ public class UI implements WindowInterface {
 
         if (commandNum == 0) {                             // draws cursor next to FUll Screen
             g2.drawString(">", textX - 25, textY); // draws given string as text with txtX/textY values
+            if (gamePanel.getKeyHandler().isEnterPressed()) {
+                if (gamePanel.getFullScreen() == false) {
+                    gamePanel.setFullScreen(true);
+                } else if (gamePanel.getFullScreen() == true) {
+                    gamePanel.setFullScreen(false);
+                }
+            }
         }
 
         // Music Settings
@@ -216,7 +227,7 @@ public class UI implements WindowInterface {
 
         if (commandNum == 4) {                                     // draws cursor next to Back
             g2.drawString(">", textX - 25, textY);          // draws given string as text with txtX/textY values
-            if(gamePanel.getKeyHandler().isEnterPressed()){
+            if (gamePanel.getKeyHandler().isEnterPressed()) {
                 gamePanel.gameState = gamePanel.playState;        // return to playstate
                 commandNum = 0;                                   // reset commandNum for option slection
                 gamePanel.getKeyHandler().setEnterPressed(false); // reset enterPressed to false so enter is not held
@@ -228,6 +239,9 @@ public class UI implements WindowInterface {
         textY = frameY + gamePanel.getTileSize() * 2 + 24;                // position box next to "Full Screen" text
         g2.setStroke(new BasicStroke(3));                           // change stroke for drawing Rects
         g2.drawRect(textX, textY, 24, 24);                    // draw a box
+        if(gamePanel.getFullScreen() == true){
+            g2.fillRect(textX, textY, 24, 24);
+        }
 
         // Music Volume Box
         textY += gamePanel.getTileSize();                                 // position box next to "Music" text
@@ -278,7 +292,7 @@ public class UI implements WindowInterface {
         }
     }
 
-    private Image playerIcon(){
+    private Image playerIcon() {
         BufferedImage playerIcon = FileLoader.loadBuffered("images/player/player_down_1.png");
         return playerIcon.getScaledInstance(25, 25, 0);
     }
@@ -383,9 +397,9 @@ public class UI implements WindowInterface {
     }
 
     //sets the (width)
-    public int getXForCenteredText(String text){
-        int length =(int)g2.getFontMetrics().getStringBounds(text,g2).getWidth();
-        return gamePanel.screenWidth/2 - length/2;
+    public int getXForCenteredText(String text) {
+        int length = (int) g2.getFontMetrics().getStringBounds(text, g2).getWidth();
+        return gamePanel.screenWidth / 2 - length / 2;
     }
 
     //creates a inner window
@@ -431,7 +445,8 @@ public class UI implements WindowInterface {
     public void setOptionsSubState(int optionsSubState) {
         this.optionsSubState = optionsSubState;
     }
-    public Font getFont(){
+
+    public Font getFont() {
         return thaleahFont;
     }
 }
