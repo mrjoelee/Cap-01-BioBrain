@@ -35,6 +35,8 @@ public class ObjectManager {
             Rectangle collider = new Rectangle(obj.getX()*2, obj.getY()*2, (int) (obj.getWidth()*1.5), obj.getHeight()*3);
             obj.setObjectCollider(collider);
             obj.setCollision(true);
+            obj.setDefaultX(obj.getX()*2);
+            obj.setDefaultY(obj.getY()*2);
             object.put(obj.getName(),obj);
             objects.add(obj);
         }

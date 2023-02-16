@@ -14,8 +14,8 @@ public class SuperObject {
     private int y;
     private int width;
     private int height;
-    public int defaultX = 0;
-    public int defaultY = 0;
+    public int defaultX;
+    public int defaultY;
     public boolean collision;
     Rectangle objectCollider;
 
@@ -70,6 +70,14 @@ public class SuperObject {
 
     public int getY() {
         return y;
+    }
+
+    public void setDefaultX(int defaultX) {
+        this.defaultX = defaultX;
+    }
+
+    public void setDefaultY(int defaultY) {
+        this.defaultY = defaultY;
     }
 
     public int getWidth() {

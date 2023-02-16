@@ -11,40 +11,62 @@ import com.biobrain.view.tile.TileHelper;
 
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 
 public class CollisionDetector {
     GamePanel gamePanel;
+
     public CollisionDetector(GamePanel gamePanel) {
         this.gamePanel = gamePanel;
     }
 
     public void checkObject(Entity entity) {
-        for (SuperObject entry : gamePanel.object.getObjects()) {
+        List<SuperObject> objects = gamePanel.object.getObjects().stream().filter(x -> x.getRoomCode() == gamePanel.currentRoom.getRoomCode()).collect(Collectors.toList());
 
-            entity.collider.x = gamePanel.player.labX + entity.collider.x;
-            entity.collider.y = gamePanel.player.labY + entity.collider.x;
 
-//                entry.getObjectCollider().x = entry.getX() + entry.getObjectCollider().x;
-//                entry.getObjectCollider().y = entry.getY() + entry.getObjectCollider().y;
-            if (gamePanel.currentRoom.getRoomCode() == entry.getRoomCode()) {
-                switch (entity.direction) {
-                    case "up":
-                    case "down":
-                    case "left":
-                    case "right":
-                        entity.collider.x += entity.speed;
-                        if (entity.collider.intersects(entry.getObjectCollider())) {
-                            System.out.println("collided");
-                            if (entry.collision) {
-                                entity.collisionOn = true;
-                            }
+        for (SuperObject obj : objects) {
+            entity.collider.x = entity.labX + entity.collider.x;
+            entity.collider.y = entity.labY + entity.collider.y;
+
+            switch (entity.direction) {
+                case "up":
+                    entity.collider.y -= entity.speed;
+                    if (entity.collider.intersects(obj.getObjectCollider())) {
+                        if (obj.collision) {
+                            entity.collisionOn = true;
                         }
-                        break;
-                }
-                entity.collider.x = entity.colliderDefaultX;
-                entity.collider.y = entity.colliderDefaultY;
+                    }
+                    break;
+                case "down":
+                    entity.collider.y += entity.speed;
+                    if (entity.collider.intersects(obj.getObjectCollider())) {
+                        if (obj.collision) {
+                            entity.collisionOn = true;
+                        }
+                    }
+                    break;
+
+                case "left":
+                    entity.collider.x -= entity.speed;
+                    if (entity.collider.intersects(obj.getObjectCollider())) {
+                        if (obj.collision) {
+                            entity.collisionOn = true;
+                        }
+                    }
+                    break;
+                case "right":
+                    entity.collider.x += entity.speed;
+
+                    if (entity.collider.intersects(obj.getObjectCollider())) {
+                        if (obj.collision) {
+                            entity.collisionOn = true;
+                        }
+                    }
+                    break;
             }
+            entity.collider.x = entity.colliderDefaultX;
+            entity.collider.y = entity.colliderDefaultY;
         }
     }
 
@@ -104,7 +126,6 @@ public class CollisionDetector {
                 }
                 break;
         }
-
     }
 
     public void checkExit(Entity entity) {

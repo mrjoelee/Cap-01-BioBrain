@@ -132,16 +132,17 @@ public class KeyHandler implements KeyListener {
         if (code == KeyEvent.VK_W || code == KeyEvent.VK_UP
                 || code == KeyEvent.VK_S || code == KeyEvent.VK_DOWN
                 || code == KeyEvent.VK_A || code == KeyEvent.VK_LEFT
-                || code == KeyEvent.VK_D || code == KeyEvent.VK_RIGHT) {
+                || code == KeyEvent.VK_D || code == KeyEvent.VK_RIGHT)
+        {
             gp.gameState = gp.playState;
             playState(code);
-        } else if (code == KeyEvent.VK_ENTER) {
+        }
+        else if (code == KeyEvent.VK_ENTER) {
             enterPressed = true;
         }
     }
 
     // main title menu controls
-
     private void titleState(int code) {
         if (gp.gameState == gp.titleState) {        //the current substate of titleScreen
             if (gp.ui.titleSubState == 0) {
@@ -209,7 +210,6 @@ public class KeyHandler implements KeyListener {
             }
         }
     }
-
 
     private void playState(int code) {
         if (code == KeyEvent.VK_W || code == KeyEvent.VK_UP) {
