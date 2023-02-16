@@ -71,7 +71,6 @@ public class ItemEntity{
         return y;
     }
 
-
     public String getImagePath(){
         return image;
     }

@@ -9,6 +9,7 @@ package com.biobrain.view.panels;
 import com.biobrain.items.ItemManager;
 import com.biobrain.model.Location;
 import com.biobrain.util.music.SoundManager;
+import com.biobrain.objects.ObjectManager;
 import com.biobrain.view.entities.Player;
 import com.biobrain.view.event.CollisionDetector;
 import com.biobrain.view.event.EventHandler;
@@ -52,6 +53,7 @@ public class GamePanel extends JPanel implements Runnable {
     public LocationManager locations = new LocationManager(true);
     public Location currentRoom = locations.getLocations().get("sector2");
     public ItemManager items = new ItemManager(this);
+    public ObjectManager object = new ObjectManager(this);
     //public EventHandler eventHandler = new EventHandler(this);
     public Map playerMap = new Map(this);
    public CollisionDetector collisionDetector = new CollisionDetector(this);
@@ -130,6 +132,7 @@ public class GamePanel extends JPanel implements Runnable {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g; // defines graphics configurations
 
+
         if(gameState == titleState) {
             ui.draw(g2); // draws the Title screen
         }
@@ -140,6 +143,7 @@ public class GamePanel extends JPanel implements Runnable {
             if (switchStateCounter > 0) {
                 tileHelper.draw(g2);
                 items.draw(g2);
+                object.draw(g2);
                 currentRoom.draw(g2);
                 player.draw(g2);
                 ui.draw(g2);
@@ -154,6 +158,7 @@ public class GamePanel extends JPanel implements Runnable {
         } else{
             tileHelper.draw(g2);
             items.draw(g2);
+            object.draw(g2);
             currentRoom.draw(g2);
             player.draw(g2);
             ui.draw(g2);
