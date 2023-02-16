@@ -1,0 +1,813 @@
+[
+  {
+    "name": "capsule1_1",
+    "roomCode": 1,
+    "image": "images/objects/capsule1.png",
+    "description": "One and done with humans, might take a few rounds with a robot",
+    "x": 20,
+    "y": 30,
+    "width": 65,
+    "height": 50
+  },
+  {
+    "name": "capsule1_2",
+    "roomCode": 1,
+    "image": "images/objects/capsule_liquid.png",
+    "description": "One and done with humans, might take a few rounds with a robot",
+    "x": 75,
+    "y": 30,
+    "width": 65,
+    "height": 50
+  },
+  {
+    "name": "capsule1_3",
+    "roomCode": 1,
+    "image": "images/objects/capsule1.png",
+    "description": "One and done with humans, might take a few rounds with a robot",
+    "x": 140,
+    "y": 30,
+    "width": 65,
+    "height": 50
+  },
+  {
+    "name": "capsule1_4",
+    "roomCode": 1,
+    "image": "images/objects/capsule_liquid.png",
+    "description": "One and done with humans, might take a few rounds with a robot",
+    "x": 195,
+    "y": 30,
+    "width": 65,
+    "height": 50
+  },
+  {
+    "name": "capsule1_5",
+    "roomCode": 1,
+    "image": "images/objects/capsule1.png",
+    "description": "One and done with humans, might take a few rounds with a robot",
+    "x": 265,
+    "y": 30,
+    "width": 65,
+    "height": 50
+  },
+  {
+    "name": "capsule1_6",
+    "roomCode": 1,
+    "image": "images/objects/capsule_liquid.png",
+    "description": "One and done with humans, might take a few rounds with a robot",
+    "x": 320,
+    "y": 30,
+    "width": 65,
+    "height": 50
+  },
+  {
+    "name": "screenLab1_1",
+    "roomCode": 1,
+    "image": "images/objects/screenLab.png",
+    "description": "One and done with humans, might take a few rounds with a robot",
+    "x": 10,
+    "y": 120,
+    "width": 100,
+    "height": 30
+  },
+  {
+    "name": "screenLab1_2",
+    "roomCode": 1,
+    "image": "images/objects/screenLab.png",
+    "description": "One and done with humans, might take a few rounds with a robot",
+    "x": 155,
+    "y": 120,
+    "width": 100,
+    "height": 30
+  },
+  {
+    "name": "computer1_1",
+    "roomCode": 1,
+    "image": "images/objects/computer.png",
+    "description": "One and done with humans, might take a few rounds with a robot",
+    "x": 10,
+    "y": 160,
+    "width": 120,
+    "height": 40
+  },
+  {
+    "name": "computer1_2",
+    "roomCode": 1,
+    "image": "images/objects/computer.png",
+    "description": "One and done with humans, might take a few rounds with a robot",
+    "x": 155,
+    "y": 160,
+    "width": 120,
+    "height": 40
+  },
+  {
+    "name": "capsule2_1",
+    "roomCode": 2,
+    "image": "images/objects/capsule1.png",
+    "description": "One and done with humans, might take a few rounds with a robot",
+    "x": 20,
+    "y": 30,
+    "width": 65,
+    "height": 50
+  },
+  {
+    "name": "capsule2_2",
+    "roomCode": 2,
+    "image": "images/objects/empty_capsule.png",
+    "description": "One and done with humans, might take a few rounds with a robot",
+    "x": 75,
+    "y": 30,
+    "width": 65,
+    "height": 50
+  },
+  {
+    "name": "capsule2_3",
+    "roomCode": 2,
+    "image": "images/objects/capsule1.png",
+    "description": "One and done with humans, might take a few rounds with a robot",
+    "x": 140,
+    "y": 30,
+    "width": 65,
+    "height": 50
+  },
+  {
+    "name": "capsule2_4",
+    "roomCode": 2,
+    "image": "images/objects/empty_capsule.png",
+    "description": "One and done with humans, might take a few rounds with a robot",
+    "x": 195,
+    "y": 30,
+    "width": 65,
+    "height": 50
+  },
+  {
+    "name": "capsule2_5",
+    "roomCode": 2,
+    "image": "images/objects/capsule1.png",
+    "description": "One and done with humans, might take a few rounds with a robot",
+    "x": 265,
+    "y": 30,
+    "width": 65,
+    "height": 50
+  },
+  {
+    "name": "capsule2_6",
+    "roomCode": 2,
+    "image": "images/objects/empty_capsule.png",
+    "description": "One and done with humans, might take a few rounds with a robot",
+    "x": 320,
+    "y": 30,
+    "width": 65,
+    "height": 50
+  },
+  {
+    "name": "screenLab2_1",
+    "roomCode": 2,
+    "image": "images/objects/screenLab.png",
+    "description": "One and done with humans, might take a few rounds with a robot",
+    "x": 10,
+    "y": 120,
+    "width": 100,
+    "height": 30
+  },
+  {
+    "name": "screenLab2_2",
+    "roomCode": 2,
+    "image": "images/objects/screenLab1.png",
+    "description": "One and done with humans, might take a few rounds with a robot",
+    "x": 155,
+    "y": 120,
+    "width": 100,
+    "height": 30
+  },
+  {
+    "name": "screenLab2_3",
+    "roomCode": 2,
+    "image": "images/objects/screenLab.png",
+    "description": "One and done with humans, might take a few rounds with a robot",
+    "x": 300,
+    "y": 120,
+    "width": 100,
+    "height": 30
+  },
+  {
+    "name": "computer2_1",
+    "roomCode": 2,
+    "image": "images/objects/computer.png",
+    "description": "One and done with humans, might take a few rounds with a robot",
+    "x": 10,
+    "y": 160,
+    "width": 120,
+    "height": 40
+  },
+  {
+    "name": "computer2_2",
+    "roomCode": 2,
+    "image": "images/objects/computer.png",
+    "description": "One and done with humans, might take a few rounds with a robot",
+    "x": 290,
+    "y": 160,
+    "width": 120,
+    "height": 40
+  },
+  {
+    "name": "capsule3_1",
+    "roomCode": 3,
+    "image": "images/objects/capsule1.png",
+    "description": "One and done with humans, might take a few rounds with a robot",
+    "x": 20,
+    "y": 30,
+    "width": 65,
+    "height": 50
+  },
+  {
+    "name": "capsule3_2",
+    "roomCode": 3,
+    "image": "images/objects/empty_capsule.png",
+    "description": "One and done with humans, might take a few rounds with a robot",
+    "x": 75,
+    "y": 30,
+    "width": 65,
+    "height": 50
+  },
+  {
+    "name": "capsule3_3",
+    "roomCode": 3,
+    "image": "images/objects/capsule1.png",
+    "description": "One and done with humans, might take a few rounds with a robot",
+    "x": 140,
+    "y": 30,
+    "width": 65,
+    "height": 50
+  },
+  {
+    "name": "capsule3_4",
+    "roomCode": 3,
+    "image": "images/objects/empty_capsule.png",
+    "description": "One and done with humans, might take a few rounds with a robot",
+    "x": 195,
+    "y": 30,
+    "width": 65,
+    "height": 50
+  },
+  {
+    "name": "capsule3_5",
+    "roomCode": 3,
+    "image": "images/objects/capsule1.png",
+    "description": "One and done with humans, might take a few rounds with a robot",
+    "x": 265,
+    "y": 30,
+    "width": 65,
+    "height": 50
+  },
+  {
+    "name": "capsule3_6",
+    "roomCode": 3,
+    "image": "images/objects/empty_capsule.png",
+    "description": "One and done with humans, might take a few rounds with a robot",
+    "x": 320,
+    "y": 30,
+    "width": 65,
+    "height": 50
+  },
+  {
+    "name": "screenLab3_7",
+    "roomCode": 3,
+    "image": "images/objects/screenLab1.png",
+    "description": "One and done with humans, might take a few rounds with a robot",
+    "x": 155,
+    "y": 120,
+    "width": 100,
+    "height": 30
+  },
+  {
+    "name": "computer3_8",
+    "roomCode": 3,
+    "image": "images/objects/blackComputer.png",
+    "description": "One and done with humans, might take a few rounds with a robot",
+    "x": 140,
+    "y": 170,
+    "width": 60,
+    "height": 30
+  },
+  {
+    "name": "computer3_9",
+    "roomCode": 3,
+    "image": "images/objects/blackComputer.png",
+    "description": "One and done with humans, might take a few rounds with a robot",
+    "x": 190,
+    "y": 170,
+    "width": 60,
+    "height": 30
+  },
+  {
+    "name": "greenMonitor3_10",
+    "roomCode": 3,
+    "image": "images/objects/greenMonitor.png",
+    "description": "One and done with humans, might take a few rounds with a robot",
+    "x": 10,
+    "y": 120,
+    "width": 100,
+    "height": 30
+  },
+  {
+    "name": "greenMonitor3_11",
+    "roomCode": 3,
+    "image": "images/objects/greenMonitor.png",
+    "description": "One and done with humans, might take a few rounds with a robot",
+    "x": 300,
+    "y": 120,
+    "width": 100,
+    "height": 30
+  },
+  {
+    "name": "blackMonitor4_1",
+    "roomCode": 4,
+    "image": "images/objects/blackMonitor.png",
+    "description": "One and done with humans, might take a few rounds with a robot",
+    "x": 10,
+    "y": 50,
+    "width": 100,
+    "height": 30
+  },
+  {
+    "name": "blackComputer4_2",
+    "roomCode": 4,
+    "image": "images/objects/blackComputer.png",
+    "description": "One and done with humans, might take a few rounds with a robot",
+    "x": 90,
+    "y": 50,
+    "width": 60,
+    "height": 30
+  },
+  {
+    "name": "box4_3",
+    "roomCode": 4,
+    "image": "images/objects/openBox.png",
+    "description": "One and done with humans, might take a few rounds with a robot",
+    "x": 245,
+    "y": 50,
+    "width": 70,
+    "height": 25
+  },
+  {
+    "name": "box4_4",
+    "roomCode": 4,
+    "image": "images/objects/closedBox.png",
+    "description": "One and done with humans, might take a few rounds with a robot",
+    "x": 195,
+    "y": 50,
+    "width": 70,
+    "height": 25
+  },
+  {
+    "name": "box4_5",
+    "roomCode": 4,
+    "image": "images/objects/openBox.png",
+    "description": "One and done with humans, might take a few rounds with a robot",
+    "x": 140,
+    "y": 50,
+    "width": 70,
+    "height": 25
+  },
+  {
+    "name": "box4_6",
+    "roomCode": 4,
+    "image": "images/objects/closedBox.png",
+    "description": "One and done with humans, might take a few rounds with a robot",
+    "x": 300,
+    "y": 50,
+    "width": 75,
+    "height": 25
+  },
+  {
+    "name": "emptyCapsule4_7",
+    "roomCode": 4,
+    "image": "images/objects/empty_capsule.png",
+    "description": "One and done with humans, might take a few rounds with a robot",
+    "x": 75,
+    "y": 120,
+    "width": 65,
+    "height": 50
+  },
+  {
+    "name": "emptyCapsule4_8",
+    "roomCode": 4,
+    "image": "images/objects/empty_capsule.png",
+    "description": "One and done with humans, might take a few rounds with a robot",
+    "x": 140,
+    "y": 120,
+    "width": 65,
+    "height": 50
+  },
+  {
+    "name": "emptyCapsule_4_9",
+    "roomCode": 4,
+    "image": "images/objects/empty_capsule.png",
+    "description": "One and done with humans, might take a few rounds with a robot",
+    "x": 200,
+    "y": 120,
+    "width": 65,
+    "height": 50
+  },
+  {
+    "name": "box4_10",
+    "roomCode": 4,
+    "image": "images/objects/closedBox.png",
+    "description": "One and done with humans, might take a few rounds with a robot",
+    "x": 120,
+    "y": 240,
+    "width": 70,
+    "height": 25
+  },
+  {
+    "name": "box4_11",
+    "roomCode": 4,
+    "image": "images/objects/openBox.png",
+    "description": "One and done with humans, might take a few rounds with a robot",
+    "x": 175,
+    "y": 240,
+    "width": 70,
+    "height": 25
+  },
+  {
+    "name": "box4_12",
+    "roomCode": 4,
+    "image": "images/objects/closedBox.png",
+    "description": "One and done with humans, might take a few rounds with a robot",
+    "x": 10,
+    "y": 240,
+    "width":70,
+    "height":25
+  },
+  {
+    "name": "box4_13",
+    "roomCode": 4,
+    "image": "images/objects/openBox.png",
+    "description": "One and done with humans, might take a few rounds with a robot",
+    "x": 65,
+    "y": 240,
+    "width": 70,
+    "height": 25
+  },
+  {
+    "name": "screenLab4_3",
+    "roomCode": 4,
+    "image": "images/objects/screenLab1.png",
+    "description": "One and done with humans, might take a few rounds with a robot",
+    "x": 300,
+    "y": 120,
+    "width": 100,
+    "height": 30
+  },
+  {
+    "name": "greenMonitor5_2",
+    "roomCode": 5,
+    "image": "images/objects/greenMonitor.png",
+    "description": "One and done with humans, might take a few rounds with a robot",
+    "x": 80,
+    "y": 70,
+    "width": 200,
+    "height": 30
+  },
+  {
+    "name": "chair_5_1",
+    "roomCode": 5,
+    "image": "images/objects/chair.png",
+    "description": "One and done with humans, might take a few rounds with a robot",
+    "x": 250,
+    "y": 140,
+    "width": 32,
+    "height": 20
+  },
+  {
+    "name": "chair_5_2",
+    "roomCode": 5,
+    "image": "images/objects/chair.png",
+    "description": "One and done with humans, might take a few rounds with a robot",
+    "x": 220,
+    "y": 140,
+    "width": 32,
+    "height": 20
+  },
+  {
+    "name": "chair_5_3",
+    "roomCode": 5,
+    "image": "images/objects/chair.png",
+    "description": "One and done with humans, might take a few rounds with a robot",
+    "x": 190,
+    "y": 140,
+    "width": 32,
+    "height": 20
+  },
+  {
+    "name": "chair_5_4",
+    "roomCode": 5,
+    "image": "images/objects/chair.png",
+    "description": "One and done with humans, might take a few rounds with a robot",
+    "x": 160,
+    "y": 140,
+    "width": 32,
+    "height": 20
+  },
+  {
+    "name": "chair_5_5",
+    "roomCode": 5,
+    "image": "images/objects/chair.png",
+    "description": "One and done with humans, might take a few rounds with a robot",
+    "x": 130,
+    "y": 140,
+    "width": 32,
+    "height": 20
+  },
+  {
+    "name": "chair_5_6",
+    "roomCode": 5,
+    "image": "images/objects/chair.png",
+    "description": "One and done with humans, might take a few rounds with a robot",
+    "x": 100,
+    "y": 140,
+    "width": 32,
+    "height": 20
+  },
+  {
+    "name": "chair_5_7",
+    "roomCode": 5,
+    "image": "images/objects/chair.png",
+    "description": "One and done with humans, might take a few rounds with a robot",
+    "x": 70,
+    "y": 140,
+    "width": 32,
+    "height": 20
+  },
+  {
+    "name": "chair_5_8",
+    "roomCode": 5,
+    "image": "images/objects/chair.png",
+    "description": "One and done with humans, might take a few rounds with a robot",
+    "x": 40,
+    "y": 140,
+    "width": 32,
+    "height": 20
+  },
+  {
+    "name": "chair_5_9",
+    "roomCode": 5,
+    "image": "images/objects/chair.png",
+    "description": "One and done with humans, might take a few rounds with a robot",
+    "x": 250,
+    "y": 180,
+    "width": 32,
+    "height": 20
+  },
+  {
+    "name": "chair_5_10",
+    "roomCode": 5,
+    "image": "images/objects/chair.png",
+    "description": "One and done with humans, might take a few rounds with a robot",
+    "x": 220,
+    "y": 180,
+    "width": 32,
+    "height": 20
+  },
+  {
+    "name": "chair_5_11",
+    "roomCode": 5,
+    "image": "images/objects/chair.png",
+    "description": "One and done with humans, might take a few rounds with a robot",
+    "x": 190,
+    "y": 180,
+    "width": 32,
+    "height": 20
+  },
+  {
+    "name": "chair_5_12",
+    "roomCode": 5,
+    "image": "images/objects/chair.png",
+    "description": "One and done with humans, might take a few rounds with a robot",
+    "x": 160,
+    "y": 180,
+    "width": 32,
+    "height": 20
+  },
+  {
+    "name": "chair_5_13",
+    "roomCode": 5,
+    "image": "images/objects/chair.png",
+    "description": "One and done with humans, might take a few rounds with a robot",
+    "x": 130,
+    "y": 180,
+    "width": 32,
+    "height": 20
+  },
+  {
+    "name": "chair_5_14",
+    "roomCode": 5,
+    "image": "images/objects/chair.png",
+    "description": "One and done with humans, might take a few rounds with a robot",
+    "x": 100,
+    "y": 180,
+    "width": 32,
+    "height": 20
+  },
+  {
+    "name": "chair_5_15",
+    "roomCode": 5,
+    "image": "images/objects/chair.png",
+    "description": "One and done with humans, might take a few rounds with a robot",
+    "x": 70,
+    "y": 180,
+    "width": 32,
+    "height": 20
+  },
+  {
+    "name": "chair_5_16",
+    "roomCode": 5,
+    "image": "images/objects/chair.png",
+    "description": "One and done with humans, might take a few rounds with a robot",
+    "x": 40,
+    "y": 180,
+    "width": 32,
+    "height": 20
+  },
+  {
+    "name": "blackMonitor5_4",
+    "roomCode": 5,
+    "image": "images/objects/reverseMonitor.png",
+    "description": "One and done with humans, might take a few rounds with a robot",
+    "x": 150,
+    "y": 240,
+    "width": 70,
+    "height": 25
+  },
+  {
+    "name": "blackMonitor5_5",
+    "roomCode": 5,
+    "image": "images/objects/reverseMonitor.png",
+    "description": "One and done with humans, might take a few rounds with a robot",
+    "x": 205,
+    "y": 240,
+    "width": 70,
+    "height": 25
+  },
+  {
+    "name": "blackMonitor5_6",
+    "roomCode": 5,
+    "image": "images/objects/reverseMonitor.png",
+    "description": "One and done with humans, might take a few rounds with a robot",
+    "x": 40,
+    "y": 240,
+    "width":70,
+    "height":25
+  },
+  {
+    "name": "blackMonitor5_7",
+    "roomCode": 5,
+    "image": "images/objects/reverseMonitor.png",
+    "description": "One and done with humans, might take a few rounds with a robot",
+    "x": 95,
+    "y": 240,
+    "width": 70,
+    "height": 25
+  },
+  {
+    "name": "boss6_1",
+    "roomCode": 6,
+    "image": "images/objects/boss.png",
+    "description": "One and done with humans, might take a few rounds with a robot",
+    "x": 170,
+    "y": 90,
+    "width": 75,
+    "height": 65
+  },
+  {
+    "name": "capsule6_1",
+    "roomCode": 6,
+    "image": "images/objects/capsule1.png",
+    "description": "One and done with humans, might take a few rounds with a robot",
+    "x": 10,
+    "y": 30,
+    "width": 65,
+    "height": 50
+  },
+  {
+    "name": "capsule6_2",
+    "roomCode": 6,
+    "image": "images/objects/capsule1.png",
+    "description": "One and done with humans, might take a few rounds with a robot",
+    "x": 60,
+    "y": 30,
+    "width": 65,
+    "height": 50
+  },
+  {
+    "name": "capsule6_3",
+    "roomCode": 6,
+    "image": "images/objects/capsule1.png",
+    "description": "One and done with humans, might take a few rounds with a robot",
+    "x": 110,
+    "y": 30,
+    "width": 65,
+    "height": 50
+  },
+  {
+    "name": "trainDockDoor6_4",
+    "roomCode": 6,
+    "image": "images/objects/trainDockDoor.png",
+    "description": "One and done with humans, might take a few rounds with a robot",
+    "x": 170,
+    "y": 0,
+    "width": 65,
+    "height": 40
+  },
+  {
+    "name": "capsule6_5",
+    "roomCode": 6,
+    "image": "images/objects/capsule1.png",
+    "description": "One and done with humans, might take a few rounds with a robot",
+    "x": 230,
+    "y": 30,
+    "width": 65,
+    "height": 50
+  },
+  {
+    "name": "capsule6_6",
+    "roomCode": 6,
+    "image": "images/objects/capsule1.png",
+    "description": "One and done with humans, might take a few rounds with a robot",
+    "x": 280,
+    "y": 30,
+    "width": 65,
+    "height": 50
+  },
+  {
+    "name": "capsule6_7",
+    "roomCode": 6,
+    "image": "images/objects/capsule1.png",
+    "description": "One and done with humans, might take a few rounds with a robot",
+    "x": 330,
+    "y": 30,
+    "width": 65,
+    "height": 50
+  },
+  {
+    "name": "capsule6_8",
+    "roomCode": 6,
+    "image": "images/objects/capsule1.png",
+    "description": "One and done with humans, might take a few rounds with a robot",
+    "x": 330,
+    "y": 70,
+    "width": 65,
+    "height": 50
+  },
+  {
+    "name": "capsule6_9",
+    "roomCode": 6,
+    "image": "images/objects/capsule1.png",
+    "description": "One and done with humans, might take a few rounds with a robot",
+    "x": 330,
+    "y": 110,
+    "width": 65,
+    "height": 50
+  },
+  {
+    "name": "capsule6_10",
+    "roomCode": 6,
+    "image": "images/objects/capsule1.png",
+    "description": "One and done with humans, might take a few rounds with a robot",
+    "x": 330,
+    "y": 150,
+    "width": 65,
+    "height": 50
+  },
+  {
+    "name": "capsule6_11",
+    "roomCode": 6,
+    "image": "images/objects/capsule1.png",
+    "description": "One and done with humans, might take a few rounds with a robot",
+    "x": 10,
+    "y": 70,
+    "width": 65,
+    "height": 50
+  },
+  {
+    "name": "capsule6_12",
+    "roomCode": 6,
+    "image": "images/objects/capsule1.png",
+    "description": "One and done with humans, might take a few rounds with a robot",
+    "x": 10,
+    "y": 110,
+    "width": 65,
+    "height": 50
+  },
+  {
+    "name": "capsule6_14",
+    "roomCode": 6,
+    "image": "images/objects/capsule1.png",
+    "description": "One and done with humans, might take a few rounds with a robot",
+    "x": 10,
+    "y": 150,
+    "width": 65,
+    "height": 50
+  }
+
+]
