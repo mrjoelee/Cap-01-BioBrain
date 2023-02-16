@@ -18,8 +18,8 @@ import java.awt.image.BufferedImage;
 public class Player extends Entity {
     private final GamePanel gamePanel; // reference to GamePanel holding game logic
     private final KeyHandler handler;  // instance of input manager for keyboard controls
-    public final int screenX;
-    public final int screenY;
+    public final int screenX;          // x coordinate
+    public final int screenY;          // y coordinate
 
     // CTOR
     public Player(GamePanel gamePanel, KeyHandler keyHandler) {
@@ -36,6 +36,8 @@ public class Player extends Entity {
         getPlayerImage();
     }
 
+
+    // CLASS METHODS
     // default player configuration values
     public void setDefaultValues() {
         labX = (gamePanel.getTileSize() * gamePanel.getMaxSectorCol()) /2; // player x position in lab

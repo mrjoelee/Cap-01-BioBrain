@@ -1,12 +1,16 @@
 package com.biobrain.view.event;
 
-import com.biobrain.client.Main;
+/*
+ * UI | Class implements WindowInterface
+ * defines all graphics settings for each playstate
+ * redraws all game assets depending on current state of play
+ * draws windows for dialogues and menus
+ */
+
 import com.biobrain.util.FileLoader;
 import com.biobrain.util.WindowInterface;
-import com.biobrain.util.music.SoundManager;
 import com.biobrain.view.panels.GamePanel;
 import com.biobrain.view.panels.GameSetter;
-
 import java.awt.*;
 import java.awt.font.FontRenderContext;
 import java.awt.font.LineBreakMeasurer;
@@ -40,7 +44,10 @@ public class UI implements WindowInterface {
         thaleahFont = loadFont();
     }
 
-    //importing font
+
+    // CLASS METHODS
+
+    // draws the current playstate
     public void draw(Graphics2D g2) {
         this.g2 = g2;
         g2.setColor(Color.black);
@@ -140,6 +147,8 @@ public class UI implements WindowInterface {
         }
     }
 
+
+    // draws option menu elements
     private void drawOption() {
         g2.setColor(Color.white);
         g2.setFont(g2.getFont().deriveFont(18F));
@@ -176,27 +185,12 @@ public class UI implements WindowInterface {
         textY = frameY + gamePanel.getTileSize(); // give text a position at the top of the window
         g2.drawString(text, textX, textY);        // draw text with given config
 
-        // Full Screen On/Off - pertains to Full Screen option text
-        textX = frameX + gamePanel.getTileSize();        // position text to the left side of the window
-        textY += gamePanel.getTileSize() * 2;            // give text a position two tiles below the title text
-        g2.drawString("Full Screen", textX, textY);  // draws given string as text with txtX/textY values
-
-        if (commandNum == 0) {                             // draws cursor next to FUll Screen
-            g2.drawString(">", textX - 25, textY); // draws given string as text with txtX/textY values
-            if (gamePanel.getKeyHandler().isEnterPressed()) {
-                if (gamePanel.getFullScreen() == false) {
-                    gamePanel.setFullScreen(true);
-                } else if (gamePanel.getFullScreen() == true) {
-                    gamePanel.setFullScreen(false);
-                }
-            }
-        }
-
         // Music Settings
-        textY += gamePanel.getTileSize();               // give text a position 1 tile below the above text
+        textX = frameX + gamePanel.getTileSize();        // position text to the left side of the window
+        textY += gamePanel.getTileSize() * 2;               // give text a position 1 tile below the above text
         g2.drawString("Music", textX, textY);       // draws given string as text with txtX/textY values
 
-        if (commandNum == 1) {                            // draws cursor next to Music
+        if (commandNum == 0) {                            // draws cursor next to Music
             g2.drawString(">", textX - 25, textY);// draws given string as text with txtX/textY values
         }
 
@@ -204,7 +198,7 @@ public class UI implements WindowInterface {
         textY += gamePanel.getTileSize();                // give text a position 1 tile below the above text
         g2.drawString("Sound Effects", textX, textY);// draws given string as text with txtX/textY values
 
-        if (commandNum == 2) {                             // draws cursor next to Sound Effects
+        if (commandNum == 1) {                             // draws cursor next to Sound Effects
             g2.drawString(">", textX - 25, textY);  // draws given string as text with txtX/textY values
         }
 
@@ -212,7 +206,7 @@ public class UI implements WindowInterface {
         textY += gamePanel.getTileSize();                          // give text a position 1 tile below the above text
         g2.drawString("Quit Game", textX, textY);              // draws given string as text with txtX/textY values
 
-        if (commandNum == 3) {                                     // draws cursor next to Quit
+        if (commandNum == 2) {                                     // draws cursor next to Quit
             g2.drawString(">", textX - 25, textY);          // draws given string as text with txtX/textY values
             if (gamePanel.getKeyHandler().isEnterPressed()) {
                 setOptionsSubState(2);                            // set substate to quit game window
@@ -225,7 +219,7 @@ public class UI implements WindowInterface {
         textY += gamePanel.getTileSize() * 2;                      // give text a position 1 tile below the above text
         g2.drawString("Back", textX, textY);                   // draws given string as text with txtX/textY values
 
-        if (commandNum == 4) {                                     // draws cursor next to Back
+        if (commandNum == 3) {                                     // draws cursor next to Back
             g2.drawString(">", textX - 25, textY);          // draws given string as text with txtX/textY values
             if (gamePanel.getKeyHandler().isEnterPressed()) {
                 gamePanel.gameState = gamePanel.playState;        // return to playstate
@@ -234,17 +228,9 @@ public class UI implements WindowInterface {
             }
         }
 
-        // Full Screen Check Box
-        textX = frameX + gamePanel.getTileSize() * 4;                     // give box a position 4 tiles to the right
-        textY = frameY + gamePanel.getTileSize() * 2 + 24;                // position box next to "Full Screen" text
-        g2.setStroke(new BasicStroke(3));                           // change stroke for drawing Rects
-        g2.drawRect(textX, textY, 24, 24);                    // draw a box
-        if(gamePanel.getFullScreen() == true){
-            g2.fillRect(textX, textY, 24, 24);
-        }
-
         // Music Volume Box
-        textY += gamePanel.getTileSize();                                 // position box next to "Music" text
+        textX = frameX + gamePanel.getTileSize() * 4;                     // give box a position 4 tiles to the right
+        textY = frameY + gamePanel.getTileSize() * 2 + 24;                // position box next to "Music" text
         g2.drawRect(textX, textY, 120, 24);                   // draw rectangle
         int volumeBarWidth = 24 * gamePanel.getMusic().getVolumeScale();  // adjusts value of width of volume bar
         g2.fillRect(textX, textY, volumeBarWidth, 24);              // adjusts width of music volume bar in box
@@ -446,7 +432,7 @@ public class UI implements WindowInterface {
         this.optionsSubState = optionsSubState;
     }
 
-    public Font getFont() {
+    public Font getFont(){
         return thaleahFont;
     }
 }

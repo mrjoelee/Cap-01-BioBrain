@@ -11,61 +11,52 @@ import com.biobrain.model.Location;
 import com.biobrain.util.music.SoundManager;
 import com.biobrain.objects.ObjectManager;
 import com.biobrain.view.entities.Player;
-import com.biobrain.view.entities.SuperObject;
 import com.biobrain.view.event.CollisionDetector;
-import com.biobrain.view.event.EventHandler;
 import com.biobrain.view.event.KeyHandler;
 import com.biobrain.view.event.UI;
 import com.biobrain.view.locations.LocationManager;
 import com.biobrain.view.tile.Map;
 import com.biobrain.view.tile.TileHelper;
 import com.biobrain.view.tile.TileSetter;
-import com.sun.tools.javac.Main;
-
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
 
 public class GamePanel extends JPanel implements Runnable {
-    //World Settings
+    // TILE MAP Settings
     final int originalTileSize = 16;                         // define how large tiles for tile grid, 16x16 tiles
     final int scale = 3;                                    // scale graphics by this multiple
     final int tileSize = originalTileSize * scale;          // scale tiles by 3, 48 x 48 in this case
     double FPS = 60;                                        // frames per second (how smoothly game animation runs)
     public final int maxRooms = 7;
 
-    //col in map txt file
-    public final int maxLabCol = 60;
-    public final int maxLabRow = 32;
+    // dimensions for map txt file
+    public final int maxLabCol = 60;                        // max columns of tiles in the main lab map
+    public final int maxLabRow = 32;                        // max rows of tiles in the main lab map
     final int maxSectorCol = 16;                            // define how many columns will comprise window
     final int maxSectorRow = 12;                            // define how many rows will comprise window
     public final int screenWidth = tileSize * maxSectorCol;        // window width
     public final int screenHeight = tileSize * maxSectorRow;       // window height
-    public int mapDisplayed;
+    public int mapDisplayed;                                       // number for which map should display
 
-    //Object creation
+    // creation of manager classes
     public KeyHandler keyHandler = new KeyHandler(this);        // create new instance of input manager for keyboard commands
-
     public Player player = new Player(this, keyHandler);  // create instance of Player
-    public TileSetter tileSetter = new TileSetter();
-    public TileHelper tileHelper = new TileHelper(this);
-    private SoundManager sfx;                                      // instance of SoundManager used for SFX
-    private SoundManager music;                                      // instance of SoundManager used for music
-
+    public TileSetter tileSetter = new TileSetter();                // instance of TileSetter to place tile images
+    public TileHelper tileHelper = new TileHelper(this);        // instance of TileHelper to line up tiles
+    private SoundManager sfx;                                       // instance of SoundManager used for SFX
+    private SoundManager music;                                     // instance of SoundManager used for music
     public LocationManager locations = new LocationManager(true);
     public Location currentRoom = locations.getLocations().get("sector2");
     public ItemManager items = new ItemManager(this);
     public ObjectManager object = new ObjectManager(this);
-    //public EventHandler eventHandler = new EventHandler(this);
     public Map playerMap = new Map(this);
     public CollisionDetector collisionDetector = new CollisionDetector(this);
-    public UI ui = new UI(this);                   // create new instance of User Interface
-    private Thread gameThread;                                       // create a new thread for game logic
-    private Boolean isFullScreen = false;                            // toggle for full screen in options menu
 
-    //game state
+    // GAME SETTINGS
+    public UI ui = new UI(this);                   // create new instance of User Interface
+    private Thread gameThread;                              // create a new thread for game logic
+
+    // game state variables
     public int gameState;
     public final int titleState = 0;
     public final int playState = 1;
@@ -75,6 +66,8 @@ public class GamePanel extends JPanel implements Runnable {
     public final int dialoguePlay = 5;
     public int switchStateCounter = 300;
 
+
+    // CTOR
     public GamePanel() {
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
         this.setBackground(Color.black);
@@ -84,10 +77,13 @@ public class GamePanel extends JPanel implements Runnable {
         setSfx(new SoundManager(this));
         setMusic(new SoundManager(this));
     }
+
+
+    // CLASS METHODS
+    // define context for game start, starting gameState, starting map, and first song played
     public void setupGame() {
         gameState = playState;
         mapDisplayed = currentRoom.getRoomCode();
-
         playMusic("mainMenuTheme"); // plays main menu theme from soundsURL map inside SoundManager
     }
 
@@ -97,7 +93,7 @@ public class GamePanel extends JPanel implements Runnable {
         gameThread.start();
     }
 
-    // runs each frame to allow constant update for animation graphics
+    // runs each frame to allow constant updates for animation, graphics, etc
     @Override
     public void run() {
         double drawInterval = 1000000000 / FPS;                   // how long to draw for
@@ -126,41 +122,45 @@ public class GamePanel extends JPanel implements Runnable {
             }
         }
     }
+
     // update() runs every frame
     public void update() {
+        // if game is in a state that allows the player to move
         if (gameState == playState || gameState == dialoguePlay) {
             player.update(); /* listens for player controller for movement */
         }
     }
 
-    // update graphics for player
+    // updates all game graphics
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g; // defines graphics configurations
 
-
+        // game is in the title menu
         if(gameState == titleState) {
             ui.draw(g2); // draws the Title screen
         }
+        // displays map of game for player to navigate
         else if (gameState == mapState) {
             playerMap.setCurrentMapDisplayed(g2, mapDisplayed);
         }
+        // dialogue state still allows for player movement
         else if (gameState == dialoguePlay) {
             if (switchStateCounter > 0) {
-                tileHelper.draw(g2);
-                items.draw(g2);
-                object.draw(g2);
-                currentRoom.draw(g2);
-                player.draw(g2);
-                ui.draw(g2);
-                switchStateCounter--;
+                tileHelper.draw(g2);    // draw tiles
+                items.draw(g2);         // draw items to be picked up
+                object.draw(g2);        // draw room objects
+                currentRoom.draw(g2);   // draw the current room of play
+                player.draw(g2);        // draw player graphics
+                ui.draw(g2);            // draw any UI that needs to be rendered currently
+                switchStateCounter--;   // decrement counter
             }
+            // after the switchStateCounter reaches 0, end the dialogue state to dismiss the window
             else{
-                switchStateCounter = 300;
-                gameState = playState;
+                switchStateCounter = 300; // reset timer
+                gameState = playState;    // return to gameplay state
             }
-
-
+        // if not in any other state, then game is in play state
         } else{
             tileHelper.draw(g2);
             items.draw(g2);
@@ -176,19 +176,9 @@ public class GamePanel extends JPanel implements Runnable {
 
     }
 
-    // sets game window to full screen
-//    public void makeFullScreen(){
-//        // grabs a reference to the local screen device
-//        GraphicsEnvironment graphEnv = GraphicsEnvironment.getLocalGraphicsEnvironment();
-//        GraphicsDevice screenDevice = graphEnv.getDefaultScreenDevice();
-//
-//        // set full screen to device
-//        screenDevice.setFullScreenWindow();
-//    }
-
     // plays music on a loop, made for looped music and sounds
     public void playMusic(String name){
-        music.setFile(name);
+        music.setFile(name); // set which audio file to use
         music.play();
         music.loop();
     }
@@ -200,7 +190,7 @@ public class GamePanel extends JPanel implements Runnable {
 
     // sound effects only play once without a loop
     public void playSfx(String name){
-        sfx.setFile(name);
+        sfx.setFile(name); // set which audio file to use
         sfx.play();
     }
 
@@ -236,13 +226,5 @@ public class GamePanel extends JPanel implements Runnable {
 
     public int getMaxSectorRow(){
         return this.maxSectorRow;
-    }
-
-    public Boolean getFullScreen() {
-        return isFullScreen;
-    }
-
-    public void setFullScreen(Boolean fullScreen) {
-        isFullScreen = fullScreen;
     }
 }
