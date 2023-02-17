@@ -15,7 +15,7 @@ import java.security.Key;
 
 public class KeyHandler implements KeyListener {
     GamePanel gp;
-    public boolean upPressed, downPressed, leftPressed, rightPressed, enterPressed;
+    public boolean upPressed, downPressed, leftPressed, rightPressed, enterPressed, attackKeyPressed;
 
     // CTOR
     public KeyHandler(GamePanel gp) {
@@ -64,6 +64,9 @@ public class KeyHandler implements KeyListener {
         }
         if (code == KeyEvent.VK_ENTER) {
             setEnterPressed(false);
+        }
+        if(code == KeyEvent.VK_K){
+            attackKeyPressed = false;
         }
     }
 
@@ -247,9 +250,10 @@ public class KeyHandler implements KeyListener {
             gp.gameState = gp.mapState;
         } else if (code == KeyEvent.VK_ESCAPE) {
             gp.gameState = gp.optionsState;
+        } else if (code == KeyEvent.VK_K) {
+            attackKeyPressed = true;
         }
     }
-
 
     private void mapState(int code) {
         if (code == KeyEvent.VK_M) {

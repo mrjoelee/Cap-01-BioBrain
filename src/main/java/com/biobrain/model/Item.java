@@ -1,11 +1,13 @@
 package com.biobrain.model;
 
+import com.biobrain.util.JSONParser;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.reflect.Type;
+import java.util.HashMap;
 import java.util.Map;
 
 public class Item implements Inventory{
@@ -40,27 +42,11 @@ public class Item implements Inventory{
     }
 
     public static Map<String,Item> getAllItems() {
-        Gson gson = new Gson();
-        Type itemMap = new TypeToken<Map<String,Item>>() {
-        }.getType();
-        InputStream inputStream = Item.class.getClassLoader().getResourceAsStream("jsonFiles/items.json");
-        InputStreamReader reader = new InputStreamReader(inputStream);
-        return gson.fromJson(reader, itemMap);
+        Map<String, Item> items = new HashMap<>();
+        JSONParser.parseItemFromJSON().forEach(x -> items.put(x.getName(), x));
+        return items;
     }
 
-    public static String getDescriptions(String itemName) {
-        if(getAllItems().containsKey(itemName)){
-            return getAllItems().get(itemName).getDescription();
-        }
-        return "Item description not found";
-    }
-
-    public static int getDamageValue(String itemName) {
-        if(getAllItems().containsKey(itemName)){
-            return getAllItems().get(itemName).getDamage();
-        }
-        return 0;
-    }
 
 }
 

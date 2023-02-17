@@ -1,14 +1,9 @@
 package com.biobrain.app;
 
-import com.biobrain.model.Inventory;
 import com.biobrain.model.Item;
-import com.biobrain.model.Player;
-import org.junit.jupiter.api.Assertions;
+import com.biobrain.view.entities.Player;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import java.lang.reflect.Method;
-import java.util.HashMap;
-import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -19,7 +14,7 @@ class BioBrainAppTest {
     @BeforeEach
     void setup(){
         testApp = new BioBrainApp();
-        testApp.setPlayer(Player.create());
+        testApp.setPlayer(new Player());
         testPlayer = testApp.getPlayer();
         testApp.currentPlayerLocation();
     }

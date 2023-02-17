@@ -6,7 +6,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Random;
 
-public class Npc extends Character {
+public class Npc {
     private String name;
     private String weapon;
     private String description;
