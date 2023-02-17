@@ -8,12 +8,15 @@ package com.biobrain.view.event;
  */
 
 import com.biobrain.model.Location;
+import com.biobrain.view.entities.ItemEntity;
+import com.biobrain.view.entities.Player;
 import com.biobrain.view.entities.SuperObject;
 import com.biobrain.view.panels.GamePanel;
 import com.biobrain.view.entities.Entity;
 import com.biobrain.view.tile.Tile;
 import com.biobrain.view.tile.TileHelper;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public class CollisionDetector {
@@ -68,6 +71,65 @@ public class CollisionDetector {
                     gamePanel.gameState = gamePanel.dialogueState;
                 }
             }
+        }
+    }
+
+    // check if an item that may be picked up is colliding with player
+    public String checkGrabItem(Player player) {
+        String itemName = "none";
+        Map<String, ItemEntity> items = gamePanel.getItemManager().getItems();
+        for (ItemEntity item : items.values()) {
+            if (item != null) {
+                if (item.getRoomCode() == gamePanel.currentRoom.getRoomCode()) {
+                    player.collider.x = player.labX + player.collider.x;
+                    player.collider.y = player.labY + player.collider.y;
+
+                    switch (player.direction) {
+                        case "up":
+                            player.collider.y -= player.speed;
+                            if (player.collider.intersects(item.getItemCollider())) {
+                                itemName = item.getName();
+                                isBioBrainLocked(itemName, player);
+                            }
+                            break;
+                        case "down":
+                            player.collider.y += player.speed;
+                            if (player.collider.intersects(item.getItemCollider())) {
+                                itemName = item.getName();
+                                isBioBrainLocked(itemName, player);
+                            }
+                            break;
+
+                        case "left":
+                            player.collider.x -= player.speed;
+                            if (player.collider.intersects(item.getItemCollider())) {
+                                itemName = item.getName();
+                                isBioBrainLocked(itemName, player);
+                            }
+                            break;
+                        case "right":
+                            player.collider.x += player.speed;
+                            if (player.collider.intersects(item.getItemCollider())) {
+                                itemName = item.getName();
+                                isBioBrainLocked(itemName, player);
+                            }
+                            break;
+
+                    }
+                }
+            }
+            player.collider.x = player.colliderDefaultX;
+            player.collider.y = player.colliderDefaultY;
+        }
+        return itemName;
+    }
+
+    // check if BioBrain can be downloaded yet
+    private void isBioBrainLocked(String itemName, Player player){
+        if (itemName.equals("biobrain")){
+            player.collisionOn = true;
+            gamePanel.ui.setCurrentDialogue("The LASER SHIELD defenses must be deactivated before I can download the BIOBRAIN!");
+            gamePanel.gameState = gamePanel.dialogueState;
         }
     }
 
@@ -149,6 +211,7 @@ public class CollisionDetector {
                         gamePanel.player.labX = previous.getEntrance().x + 24; // get the entrance of the room add 24 so player exits in middle
                         gamePanel.player.labY = previous.getEntrance().y + gamePanel.getTileSize();
                         gamePanel.ui.setCurrentDialogue(lab.getDescription());
+                        gamePanel.getBioBrainApp().setCurrentLocation(lab);
                         gamePanel.gameState = gamePanel.dialoguePlay;
                     }
                 }
@@ -173,6 +236,7 @@ public class CollisionDetector {
                             gamePanel.player.labX = room.getExit().x + 24;
                             gamePanel.player.labY = room.getExit().y - gamePanel.getTileSize();
                             gamePanel.ui.setCurrentDialogue(room.getDescription());
+                            gamePanel.getBioBrainApp().setCurrentLocation(room);
                             gamePanel.gameState = gamePanel.dialoguePlay;
                             break;
                         } else {

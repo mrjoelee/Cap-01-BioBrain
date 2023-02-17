@@ -83,7 +83,9 @@ public class Player extends Entity {
     }
 
     public void addItem(String itemName, Item item) {
+        System.out.println("should have: " + itemName);
         inventory.put(itemName,item);
+        System.out.println("Item Added: " + inventory.get(itemName).getName());
     }
 
     public void removeItem(String itemName, Item item) {
@@ -169,6 +171,8 @@ public class Player extends Entity {
             gamePanel.collisionDetector.checkEntrance(this);
             gamePanel.collisionDetector.checkExit(this);
             gamePanel.collisionDetector.checkObject(this);
+            String itemGrabbed = gamePanel.collisionDetector.checkGrabItem(this);
+            pickUpItem(itemGrabbed);
             //gamePanel.eventHandler.checkEvent();
 
             if (!collisionOn) {
@@ -205,6 +209,14 @@ public class Player extends Entity {
             isAttacking = true;
             loadAttackImages();
             playerAttack();
+        }
+    }
+
+    public void pickUpItem(String itemName) {
+        if (!itemName.equals("none") && !itemName.equals("biobrain")) {
+            System.out.println(itemName);
+            gamePanel.getBioBrainApp().validateThenGetItem(itemName);
+            gamePanel.getItemManager().getItems().put(itemName, null);
         }
     }
 

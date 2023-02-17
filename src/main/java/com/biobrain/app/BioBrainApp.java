@@ -34,6 +34,14 @@ public class BioBrainApp {
     public final View view = new View();
 
     // APP METHODS
+    // loads game data into memory for GUI version of game
+    public void loadToGui(){
+        LocationManager locationManager = new LocationManager(false);
+        locations = locationManager.getLocations();
+        setCurrentLocation(locations.get("sector2"));
+        itemsInRoom = getCurrentLocation().getItems();
+    }
+
     public void execute() {
         setPlayer(new Player());
         LocationManager locationManager = new LocationManager(false);
@@ -150,10 +158,10 @@ public class BioBrainApp {
                 movePlayer(noun);
                 break;
             case "get":
-                validateThenGetItem(noun);
+                getItem(noun);
                 break;
             case "use":
-                validateThenUseItem(noun);
+                useItem(noun);
                 break;
             case "show":
                 if (noun.equalsIgnoreCase("inventory")) {
@@ -199,30 +207,37 @@ public class BioBrainApp {
 
     }
 
+    // validates an item actually exists in this room (only used for GUI version)
     public void validateThenGetItem(String itemToPickup) throws IllegalArgumentException{
+        // throws an exception if player attempts to hack an item into their inventory
+        // which does not exist in the room already
         if (!currentLocation.getItems().contains(itemToPickup)) {
             throw new RuntimeException(new IllegalArgumentException("\n"+ itemToPickup +" was not found! Please try again."));
         } else {
+            // if item exists, pass it to the normal method for getting items
             getItem(itemToPickup);
         }
     }
 
+    // removes items from location in memory
     private void getItem(String itemToPickup) {
-        addToPlayerInventory(itemToPickup);
-        itemsInRoom.remove(itemToPickup);
-        System.out.printf("\nAwesome! You've added the %s to your inventory!\n", itemToPickup);
-        System.out.println(player.displayPlayerInfo());
-        Console.pause(1000);
+        if(itemsInRoom.contains(itemToPickup)) {
+            // if room contained the item, pass it to the Player class now
+            addToPlayerInventory(itemToPickup, Item.getAllItems().get(itemToPickup));
+            itemsInRoom.remove(itemToPickup); // remove item from room in memory
+        }
     }
 
-    private void addToPlayerInventory(String itemToPickup) {
-        player.addItem(itemToPickup, player.getInventory().get(itemToPickup));
-        itemsInRoom.remove(itemToPickup);
+    // add to inventory tracked by player class
+    private void addToPlayerInventory(String itemToPickup, Item item) {
+        getPlayer().addItem(itemToPickup, item); // add item to player inventory in memory
+        // alert user in console version what they picked up
         System.out.printf("\nAwesome! You've added the %s to your inventory!\n", itemToPickup);
     }
 
     // validates the item used was located in the player's inventory,
     // if not, displays a message that the item is not in possession
+    // (only used for GUI version)
     public void validateThenUseItem(String usedItem) throws IllegalArgumentException{
         if (player.getInventory().containsKey(usedItem)) {
             useItem(usedItem);
@@ -298,7 +313,7 @@ public class BioBrainApp {
 
         Console.clear();
         System.out.println("\n ======================================================================");
-        System.out.println("\nYou have the following items in your inventory: " + inventory.keySet());
+        System.out.println("\nYou have the following items in your inventory: " + getPlayer().getInventory().keySet());
         System.out.println("\n ======================================================================");
         Console.pause(1500);
     }
@@ -403,5 +418,17 @@ public class BioBrainApp {
 
     public void setLockedLocations(Map<String, Boolean> lockedLocations) {
         this.lockedLocations = lockedLocations;
+    }
+
+    // get current location player is located inside of
+    public Location getCurrentLocation() {
+        return currentLocation;
+    }
+
+    // sets current location player is located inside of
+    // also updates the list of itemsInRoom in memory for gameplay
+    public void setCurrentLocation(Location currentLocation) {
+        itemsInRoom = currentLocation.getItems();
+        this.currentLocation = currentLocation;
     }
 }

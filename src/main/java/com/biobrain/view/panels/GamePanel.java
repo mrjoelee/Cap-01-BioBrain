@@ -6,6 +6,7 @@ package com.biobrain.view.panels;
  * begins main update loop that keeps gamePanel graphics updated
  */
 
+import com.biobrain.app.BioBrainApp;
 import com.biobrain.items.ItemManager;
 import com.biobrain.model.Location;
 import com.biobrain.util.music.SoundManager;
@@ -44,6 +45,8 @@ public class GamePanel extends JPanel implements Runnable {
     public final int screenHeight = tileSize * maxSectorRow;       // window height
     public int mapDisplayed;                                       // number for which map should display
 
+    // BioBrainApp logic
+    private BioBrainApp bioBrainApp;
     // creation of manager classes
     public KeyHandler keyHandler = new KeyHandler(this);        // create new instance of input manager for keyboard commands
     public Player player = new Player(this, keyHandler);  // create instance of Player
@@ -91,9 +94,12 @@ public class GamePanel extends JPanel implements Runnable {
     // CLASS METHODS
     // define context for game start, starting gameState, starting map, and first song played
     public void setupGame() {
-        gameState = playState;
+        bioBrainApp = new BioBrainApp();    // create instance of game logic for items in memory
+        bioBrainApp.loadToGui();            // load necessary gameplay data into memory as game begins
+        bioBrainApp.setPlayer(getPlayer()); // track the created player in memory
+        gameState = playState;              // begin playstate, which changes to bring user to new scenes/menus
         mapDisplayed = currentRoom.getRoomCode();
-        playMusic("mainMenuTheme"); // plays main menu theme from soundsURL map inside SoundManager
+        playMusic("mainMenuTheme");   // plays main menu theme from soundsURL map inside SoundManager
     }
 
     // starts new thread
@@ -236,12 +242,24 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     // ACCESSOR METHODS
+    public BioBrainApp getBioBrainApp() {
+        return bioBrainApp;
+    }
+
+    public Player getPlayer() {
+        return player;
+    }
+
     public int getTileSize() {
         return this.tileSize;
     }
 
     public KeyHandler getKeyHandler() {
         return keyHandler;
+    }
+
+    public ItemManager getItemManager() {
+        return items;
     }
 
     public SoundManager getSfx() {
