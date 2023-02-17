@@ -4,6 +4,7 @@ import com.biobrain.model.*;
 import com.biobrain.util.Console;
 import com.biobrain.util.Prompter;
 import com.biobrain.view.View;
+import com.biobrain.view.entities.Player;
 import com.biobrain.view.locations.LocationManager;
 
 import java.util.*;
@@ -34,10 +35,9 @@ public class BioBrainApp {
 
     // APP METHODS
     public void execute() {
-        setPlayer(Player.create());
+        setPlayer(new Player());
         LocationManager locationManager = new LocationManager(false);
         locations = locationManager.getLocations();
-        player = Player.create();
         intro();
         welcome();
        askIfUserWantToPlay();
@@ -176,13 +176,15 @@ public class BioBrainApp {
     }
 
     private void lookAtItem(String item) {
-        if (!currentLocation.getItems().contains(item)) {
-            System.out.printf("\n%s not found! Please try again.", item);
+        if (Item.getAllItems().get(item) == null || !currentLocation.getItems().contains(item)) {
+            System.out.printf("\nThere is no %s here! Please try again.", item);
             return;
         }
+        Item itemFound = Item.getAllItems().get(item);
 
-        String itemDescription = Item.getDescriptions(item);
-        int damageValue = Item.getDamageValue(item);
+        String itemDescription = itemFound.getDescription();
+        int damageValue = itemFound.getDamage();
+
         if (damageValue > 0) {
             System.out.println("\n===================================================");
             System.out.printf("\n*** Weapon Description:\n- %s. It has a Damage value of %s \n", itemDescription, damageValue);

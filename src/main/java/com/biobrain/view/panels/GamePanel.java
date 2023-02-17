@@ -10,7 +10,9 @@ import com.biobrain.items.ItemManager;
 import com.biobrain.model.Location;
 import com.biobrain.util.music.SoundManager;
 import com.biobrain.objects.ObjectManager;
+import com.biobrain.view.entities.Entity;
 import com.biobrain.view.entities.Player;
+import com.biobrain.view.entities.Projectile;
 import com.biobrain.view.event.CollisionDetector;
 import com.biobrain.view.event.KeyHandler;
 import com.biobrain.view.event.UI;
@@ -20,6 +22,10 @@ import com.biobrain.view.tile.TileHelper;
 import com.biobrain.view.tile.TileSetter;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
 
 public class GamePanel extends JPanel implements Runnable {
     // TILE MAP Settings
@@ -66,8 +72,11 @@ public class GamePanel extends JPanel implements Runnable {
     public final int dialoguePlay = 5;
     public int switchStateCounter = 300;
 
+    //weapons / projectile stuff
+    public ArrayList<Projectile> projectiles = new ArrayList<>();
+    private boolean grayScreen = false;
+    private int alpha = 0;
 
-    // CTOR
     public GamePanel() {
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
         this.setBackground(Color.black);
@@ -128,6 +137,19 @@ public class GamePanel extends JPanel implements Runnable {
         // if game is in a state that allows the player to move
         if (gameState == playState || gameState == dialoguePlay) {
             player.update(); /* listens for player controller for movement */
+            int i = 0;
+            while(projectiles.size() > 0 && i < projectiles.size()){
+                if(projectiles.get(i) != null){
+                    if(projectiles.get(i).isAlive()){
+                        projectiles.get(i).update();
+                    }
+                    if(!projectiles.get(i).isAlive()){
+                        projectiles.remove(i);
+                    }
+                }
+                i++;
+            }
+
         }
     }
 
@@ -135,8 +157,6 @@ public class GamePanel extends JPanel implements Runnable {
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g; // defines graphics configurations
-
-        // game is in the title menu
         if(gameState == titleState) {
             ui.draw(g2); // draws the Title screen
         }
@@ -144,36 +164,57 @@ public class GamePanel extends JPanel implements Runnable {
         else if (gameState == mapState) {
             playerMap.setCurrentMapDisplayed(g2, mapDisplayed);
         }
-        // dialogue state still allows for player movement
+        else if (grayScreen){
+            //neuralyzer was used
+            runDialoguePlayState(g2);
+            runGrayScreenEffect(g2);
+
+        }
         else if (gameState == dialoguePlay) {
-            if (switchStateCounter > 0) {
-                tileHelper.draw(g2);    // draw tiles
-                items.draw(g2);         // draw items to be picked up
-                object.draw(g2);        // draw room objects
-                currentRoom.draw(g2);   // draw the current room of play
-                player.draw(g2);        // draw player graphics
-                ui.draw(g2);            // draw any UI that needs to be rendered currently
-                switchStateCounter--;   // decrement counter
-            }
-            // after the switchStateCounter reaches 0, end the dialogue state to dismiss the window
-            else{
-                switchStateCounter = 300; // reset timer
-                gameState = playState;    // return to gameplay state
-            }
-        // if not in any other state, then game is in play state
-        } else{
+            runDialoguePlayState(g2);
+        }
+        else{
+            runPlayState(g2);
+        }
+        g2.dispose(); // dispose of old configurations, player sprite will update each frame
+    }
+
+    private void drawAttack(Graphics2D g2) {
+        List<Projectile> projectilesCopy = new ArrayList<>(projectiles);
+        for (Projectile proj: projectilesCopy) {
+            proj.draw(g2);
+        }
+    }
+    public void runDialoguePlayState(Graphics2D g2){
+        if (switchStateCounter > 0) {
             tileHelper.draw(g2);
             items.draw(g2);
             object.draw(g2);
             currentRoom.draw(g2);
             player.draw(g2);
             ui.draw(g2);
+            drawAttack(g2);
+            switchStateCounter--;
         }
-        g2.dispose(); // dispose of old configurations, player sprite will update each frame
+        else{
+            switchStateCounter = 300;
+            gameState = playState;
+        }
     }
-
-    private void drawItems() {
-
+    public void runPlayState(Graphics2D g2){
+        tileHelper.draw(g2);
+        items.draw(g2);
+        object.draw(g2);
+        currentRoom.draw(g2);
+        player.draw(g2);
+        ui.draw(g2);
+        drawAttack(g2);
+    }
+    public void runGrayScreenEffect(Graphics2D g2){
+        g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, (float) alpha / 255));
+        g2.setColor(Color.GRAY);
+        g2.fillRect(0, 0, screenWidth, screenHeight);
+        g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1.0f)); // reset composite
     }
 
     // plays music on a loop, made for looped music and sounds
@@ -193,7 +234,6 @@ public class GamePanel extends JPanel implements Runnable {
         sfx.setFile(name); // set which audio file to use
         sfx.play();
     }
-
 
     // ACCESSOR METHODS
     public int getTileSize() {
@@ -226,5 +266,14 @@ public class GamePanel extends JPanel implements Runnable {
 
     public int getMaxSectorRow(){
         return this.maxSectorRow;
+    }
+
+    public void setGrayScreen(boolean grayScreen) {
+        this.grayScreen = grayScreen;
+    }
+
+    public void setGrayScreenAlpha(int alpha) {
+        this.alpha = alpha;
+        repaint();
     }
 }

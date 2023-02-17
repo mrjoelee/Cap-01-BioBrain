@@ -1,5 +1,6 @@
 package com.biobrain.util;
 
+import com.biobrain.model.Item;
 import com.biobrain.objects.ObjectManager;
 import com.biobrain.view.entities.ItemEntity;
 import com.biobrain.view.entities.SuperObject;
@@ -46,5 +47,18 @@ public class JSONParser {
             e.printStackTrace();
         }
         return objectList;
+    }
+
+    public static List<Item> parseItemFromJSON(){
+        Gson gson = new Gson();
+        List<Item> itemList = new ArrayList<>();
+        try (Reader reader = new InputStreamReader(Objects.requireNonNull(ObjectManager.class.getClassLoader().getResourceAsStream("jsonFiles/items.json")))) {
+            Type objectType = new TypeToken<ArrayList<Item>>() {
+            }.getType();
+            itemList = gson.fromJson(reader, objectType);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return itemList;
     }
 }
