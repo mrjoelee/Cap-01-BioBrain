@@ -47,6 +47,9 @@ public class Item implements Inventory{
         return items;
     }
 
+    public static Item itemName(String name){
+        return getAllItems().get(name);
+    }
 
 }
 

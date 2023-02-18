@@ -6,6 +6,7 @@ package com.biobrain.view.event;
  * tracks basic logic for menus and selections
  */
 
+import com.biobrain.model.Item;
 import com.biobrain.view.entities.ItemEntity;
 import com.biobrain.view.panels.GamePanel;
 
@@ -353,8 +354,21 @@ public class KeyHandler implements KeyListener {
 
                     ItemEntity usedItem = gp.getUi().getInventoryIndexArray().get(gp.getUi().getItemIndexOnSlot());
                     gp.getBioBrainApp().validateThenUseItem(usedItem.getName());
+                    Item item = Item.itemName(usedItem.getName()); // gets the item name
+                    gp.getPlayer().setMainWeapon(item); //sets the weapon by the item name
                     gp.gameState = gp.playState;
+                    if(usedItem.getName().equalsIgnoreCase("tablet") && gp.currentRoom.getRoomCode() == 2 ){
+                        gp.ui.setCurrentDialogue("You have successfully disabled the laser shield on the biobrain");
+                        gp.gameState = gp.dialogueState;
+                        //to get the biobrain path
+                        gp.ui.noLaserBioBrain(gp.ui.g2);
+                    }
+                    if(usedItem.getName().equalsIgnoreCase("tablet") && gp.currentRoom.getRoomCode() != 2 ){
+                        gp.ui.setCurrentDialogue("You must use the tablet where the Network Interface is located");
+                        gp.gameState = gp.dialogueState;
+                    }
                 }
+
             }
         }
     }

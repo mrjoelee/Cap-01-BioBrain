@@ -7,16 +7,15 @@ package com.biobrain.view.entities;
  */
 
 import com.biobrain.util.FileLoader;
-import com.biobrain.view.panels.GamePanel;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.util.List;
 
 public class ItemEntity{
     String name;
     int roomCode;
     String image;
+    String image2; //to replace the biobrain without shield
     String description;
     int damage;
     private int x;
@@ -81,6 +80,9 @@ public class ItemEntity{
     public String getImagePath(){
         return image;
     }
+    public String getBiobrainNoLaserPath(){
+        return image2;
+    }
 
     public int getRoomCode() {
         return roomCode;
@@ -88,6 +90,10 @@ public class ItemEntity{
 
     public BufferedImage getItemImage(){
         return FileLoader.loadBuffered(getImagePath());
+    }
+
+    public BufferedImage getBiobrainNoLaserImage(){
+        return FileLoader.loadBuffered(getBiobrainNoLaserPath());
     }
 
 }

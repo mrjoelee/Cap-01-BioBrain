@@ -117,6 +117,7 @@ public class GamePanel extends JPanel implements Runnable {
         player.setDefaultPositions();
         player.setDefaultValues();
         player.restoreLife();
+        player.resetInventory();
         currentRoom = locations.getLocations().get("sector2");
     }
 
