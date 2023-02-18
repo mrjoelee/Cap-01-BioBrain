@@ -161,11 +161,11 @@ public class GamePanel extends JPanel implements Runnable {
         // if game is in a state that allows the player to move
         if (gameState == playState || gameState == dialoguePlay) {
             player.update(); /* listens for player controller for movement */
-            for (Npc aiRobot : aiRobots) {
-                if (aiRobot != null) {
-                    aiRobot.update();
-                }
-            }
+//            for (Npc aiRobot : aiRobots) {
+//                if (aiRobot != null) {
+//                    aiRobot.update();
+//                }
+//            }
             int i = 0;
             while(projectiles.size() > 0 && i < projectiles.size()){
                 if(projectiles.get(i) != null){
@@ -220,11 +220,11 @@ public class GamePanel extends JPanel implements Runnable {
             items.draw(g2);
             object.draw(g2);
             currentRoom.draw(g2);
-            for (Npc aiRobot : aiRobots) {
-                if (aiRobot != null) {
-                    aiRobot.draw(g2);
-                }
-            }
+//            for (Npc aiRobot : aiRobots) {
+//                if (aiRobot != null) {
+//                    aiRobot.draw(g2);
+//                }
+//            }
 
             player.draw(g2);
             ui.draw(g2);
@@ -241,11 +241,11 @@ public class GamePanel extends JPanel implements Runnable {
         items.draw(g2);
         object.draw(g2);
         currentRoom.draw(g2);
-        for (Npc aiRobot : aiRobots) {
-            if (aiRobot != null) {
-                aiRobot.draw(g2);
-            }
-        }
+//        for (Npc aiRobot : aiRobots) {
+//            if (aiRobot != null) {
+//                aiRobot.draw(g2);
+//            }
+//        }
         player.draw(g2);
         ui.draw(g2);
         drawAttack(g2);
