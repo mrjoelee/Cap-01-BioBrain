@@ -671,16 +671,6 @@
     "height": 25
   },
   {
-    "name": "boss6_1",
-    "roomCode": 6,
-    "image": "images/objects/boss.png",
-    "description": "",
-    "x": 170,
-    "y": 90,
-    "width": 75,
-    "height": 65
-  },
-  {
     "name": "capsule6_1",
     "roomCode": 6,
     "image": "images/objects/capsule1.png",

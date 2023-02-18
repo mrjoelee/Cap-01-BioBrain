@@ -1,10 +1,10 @@
 package com.biobrain.util;
 
 import com.biobrain.model.Item;
+import com.biobrain.view.entities.NPC.Npc;
 import com.biobrain.objects.ObjectManager;
-import com.biobrain.view.entities.ItemEntity;
 import com.biobrain.view.entities.SuperObject;
-import com.google.gson.Gson;
+import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
 import com.biobrain.model.Location;
 
@@ -60,5 +60,22 @@ public class JSONParser {
             e.printStackTrace();
         }
         return itemList;
+    }
+
+    public static List<JsonObject> npcToJSONObjects() {
+        List<JsonObject> npcList = new ArrayList<>();
+
+        try (Reader reader = new InputStreamReader(Objects.requireNonNull(JSONParser.class.getClassLoader().getResourceAsStream("jsonFiles/npc.json")))) {
+            JsonElement jsonElement = JsonParser.parseReader(reader);
+            if (jsonElement.isJsonArray()) {
+                JsonArray jsonArray = jsonElement.getAsJsonArray();
+                for (JsonElement element : jsonArray) {
+                    npcList.add(element.getAsJsonObject());
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return npcList;
     }
 }

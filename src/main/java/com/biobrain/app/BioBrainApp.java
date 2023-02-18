@@ -29,7 +29,7 @@ public class BioBrainApp {
     private List<String> itemsInRoom;
     private boolean isLaser = true;
     private boolean gameOver = false;
-    private String randomDialogue = Npc.getRandomDialogue();
+   // private String randomDialogue = ;
 
     public final View view = new View();
 

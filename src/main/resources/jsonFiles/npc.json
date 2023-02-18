@@ -1,26 +1,79 @@
 [
   {
-    "cookie": "Rouge AI Robot1",
-    "weapon": "Blaster",
+    "name": "Rouge AI Robot1",
     "description": "A rouge AI robot that has been programmed to stop you. It is armed with a blaster and is very dangerous.",
-    "location": "Sector 3"
+    "roomCode": 0,
+    "speed":2,
+    "maxLife":5,
+    "width": 60,
+    "height": 60,
+    "blockX": 3,
+    "blockY": 15
   },
   {
-    "cookie": "Rouge AI Robot2",
-    "weapon": "Blaster",
+    "name": "Rouge AI Robot2",
     "description": "A rouge AI robot that has been programmed to stop you. It is armed with a blaster and is very dangerous.",
-    "location" : "Sector 4"
+    "roomCode" : 0,
+    "speed": 2,
+    "maxLife": 5,
+    "width": 60,
+    "height": 60,
+    "blockX":  22,
+    "blockY": 15
   },
   {
-    "cookie": "Rouge AI Robot3",
-    "weapon": "Blaster",
+    "name": "Rouge AI Robot3",
     "description": "A rouge AI robot that has been programmed to stop you. It is armed with a blaster and is very dangerous.",
-    "location": "Sector 5"
+    "roomCode": 0,
+    "speed": 2,
+    "maxLife": 5,
+    "width": 60,
+    "height": 60,
+    "blockX":  41,
+    "blockY": 15
   },
   {
-    "cookie": "Boss AI Robot..",
-    "weapon": "Blaster",
+    "name": "Rouge AI Robot4",
+    "description": "A rouge AI robot that has been programmed to stop you. It is armed with a blaster and is very dangerous.",
+    "roomCode": 0,
+    "speed": 2,
+    "maxLife": 5,
+    "width": 60,
+    "height": 60,
+    "blockX":  3,
+    "blockY": 29
+  },
+  {
+    "name": "Rouge AI Robot5",
+    "description": "A rouge AI robot that has been programmed to stop you. It is armed with a blaster and is very dangerous.",
+    "roomCode" : 0,
+    "speed": 2,
+    "maxLife": 5,
+    "width": 60,
+    "height": 60,
+    "blockX":  22,
+    "blockY": 29
+  },
+  {
+    "name": "Rouge AI Robot6",
+    "description": "A rouge AI robot that has been programmed to stop you. It is armed with a blaster and is very dangerous.",
+    "roomCode": 0,
+    "speed": 2,
+    "maxLife": 5,
+    "width": 60,
+    "height": 60,
+    "blockX":  41,
+    "blockY": 29
+  },
+  {
+    "name": "Boss AI Robot",
     "description" : "This is the boss of the game. You need to defeat it to escape the facility.",
-    "location": "Sector 6"
+    "roomCode": 6,
+    "speed": 2,
+    "maxLife": 10,
+    "width": 72,
+    "height": 72,
+    "blockX":  7,
+    "blockY": 6
   }
 ]
