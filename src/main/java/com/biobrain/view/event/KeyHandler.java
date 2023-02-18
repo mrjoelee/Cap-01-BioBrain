@@ -276,9 +276,12 @@ public class KeyHandler implements KeyListener {
             leftPressed = true;
         } else if (code == KeyEvent.VK_D || code == KeyEvent.VK_RIGHT) {
             rightPressed = true;
-        } else if (code == KeyEvent.VK_M && gp.player.getInventory().containsKey("tablet")) {
+        } else if (code == KeyEvent.VK_M && gp.getPlayer().getInventory().containsKey("tablet")) {
             gp.mapDisplayed = gp.currentRoom.getRoomCode();
             gp.gameState = gp.mapState;
+        } else if (code == KeyEvent.VK_M && !gp.getPlayer().getInventory().containsKey("tablet")){
+            gp.ui.setCurrentDialogue("You must have the tablet to use the map!");
+            gp.gameState = gp.dialogueState;
         } else if (code == KeyEvent.VK_ESCAPE) {
             gp.gameState = gp.optionsState;
         } else if (code == KeyEvent.VK_K) {
