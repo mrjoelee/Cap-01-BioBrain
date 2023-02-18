@@ -15,13 +15,14 @@ import java.io.Reader;
 import java.lang.reflect.Type;
 import java.util.*;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class ObjectManager {
     public Map<String, SuperObject> object;
     public GamePanel gamePanel;
     private final List<SuperObject> objects;
 
-
+    static List<SuperObject> objectsList = JSONParser.parseObjectFromJson();
     public ObjectManager(GamePanel gamePanel){
         this.gamePanel=gamePanel;
         object = new HashMap<>();
@@ -30,7 +31,6 @@ public class ObjectManager {
     }
 
     private void generateObjects() {
-        List<SuperObject> objectsList = JSONParser.parseObjectFromJson();
         for(SuperObject obj : objectsList){
             Rectangle collider = new Rectangle(obj.getX()*2, obj.getY()*2, (int) (obj.getWidth()*1.5), obj.getHeight()*3);
             obj.setObjectCollider(collider);
@@ -40,6 +40,10 @@ public class ObjectManager {
             object.put(obj.getName(),obj);
             objects.add(obj);
         }
+    }
+
+    public static List<SuperObject> getObjectsByRoomCode(int roomCode){
+        return objectsList.stream().filter(e-> e.getRoomCode() == roomCode).collect(Collectors.toList());
     }
 
     public void draw(Graphics2D g2) {

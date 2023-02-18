@@ -48,6 +48,8 @@ public class KeyHandler implements KeyListener {
             playState(code);
         } else if (gp.gameState == gp.inventoryState) {
             inventoryState(code);
+        } else if (gp.gameState == gp.gameOverState) {
+            gameOverState(code);
         }
     }
     @Override
@@ -70,6 +72,32 @@ public class KeyHandler implements KeyListener {
         }
         if(code == KeyEvent.VK_K){
             attackKeyPressed = false;
+        }
+    }
+
+    //gameover state
+    private void gameOverState(int code) {
+        if (code == KeyEvent.VK_W || code == KeyEvent.VK_UP) {
+            gp.ui.commandNum--;
+            gp.playSfx("menuNavigationSound");
+            if (gp.ui.commandNum < 0) {
+                gp.ui.commandNum = 1;
+            }
+        }
+        if (code == KeyEvent.VK_S || code == KeyEvent.VK_DOWN) {
+            gp.ui.commandNum++;
+            gp.playSfx("menuNavigationSound");
+            if (gp.ui.commandNum > 1) {
+                gp.ui.commandNum = 0;
+            }
+        }
+        if (code == KeyEvent.VK_ENTER) {
+            if (gp.ui.commandNum == 0) {
+                gp.gameState = gp.titleState;
+                gp.tryAgain();
+            } else if (gp.ui.commandNum == 1) {
+                System.exit(0);
+            }
         }
     }
 
@@ -248,7 +276,7 @@ public class KeyHandler implements KeyListener {
             leftPressed = true;
         } else if (code == KeyEvent.VK_D || code == KeyEvent.VK_RIGHT) {
             rightPressed = true;
-        } else if (code == KeyEvent.VK_M) {
+        } else if (code == KeyEvent.VK_M && gp.player.getInventory().containsKey("tablet")) {
             gp.mapDisplayed = gp.currentRoom.getRoomCode();
             gp.gameState = gp.mapState;
         } else if (code == KeyEvent.VK_ESCAPE) {
