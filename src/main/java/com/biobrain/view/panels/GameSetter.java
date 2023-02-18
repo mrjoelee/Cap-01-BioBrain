@@ -35,9 +35,9 @@ public class GameSetter extends JFrame implements WindowInterface {
         window.setIconImage(icon);
 
         gamePanel = new GamePanel();                            // new instance of GamePanel (contains game logic)
-        inventoryPanel = new InventoryPanel(this,gamePanel); // new panel for inventory
-        inventoryImg = new JLabel(new ImageIcon(image));            // label to add inventory img
-        inventoryPanel.add(inventoryImg);
+        //inventoryPanel = new InventoryPanel(this,gamePanel); // new panel for inventory
+        //inventoryImg = new JLabel(new ImageIcon(image));            // label to add inventory img
+        //inventoryPanel.add(inventoryImg);
         gamePanel = new GamePanel();               // new instance of GamePanel (contains game logic)
 
         window.add(gamePanel);                                  // add Game Panel as window display
@@ -55,9 +55,9 @@ public class GameSetter extends JFrame implements WindowInterface {
 
     public static void manageVisibility(){
         if(gamePanel.gameState == gamePanel.playState){
-            inventoryPanel.setVisible(true);
-            window.add(inventoryPanel,BorderLayout.LINE_END);
-            window.pack();
+            //inventoryPanel.setVisible(true);
+            //window.add(inventoryPanel,BorderLayout.LINE_END);
+            //window.pack();
         }
     }
 }

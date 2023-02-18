@@ -73,6 +73,7 @@ public class GamePanel extends JPanel implements Runnable {
     public final int optionsState = 3;
     public final int dialogueState = 4;
     public final int dialoguePlay = 5;
+    public final int inventoryState = 6;
     public int switchStateCounter = 300;
 
     //weapons / projectile stuff
@@ -252,6 +253,10 @@ public class GamePanel extends JPanel implements Runnable {
 
     public int getTileSize() {
         return this.tileSize;
+    }
+
+    public UI getUi() {
+        return ui;
     }
 
     public KeyHandler getKeyHandler() {

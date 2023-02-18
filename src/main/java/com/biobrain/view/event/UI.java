@@ -7,10 +7,14 @@ package com.biobrain.view.event;
  * draws windows for dialogues and menus
  */
 
+import com.biobrain.items.ItemManager;
+import com.biobrain.model.Item;
 import com.biobrain.util.FileLoader;
 import com.biobrain.util.WindowInterface;
+import com.biobrain.view.entities.ItemEntity;
 import com.biobrain.view.panels.GamePanel;
 import com.biobrain.view.panels.GameSetter;
+
 import java.awt.*;
 import java.awt.font.FontRenderContext;
 import java.awt.font.LineBreakMeasurer;
@@ -21,11 +25,19 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.text.AttributedCharacterIterator;
 import java.text.AttributedString;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 public class UI implements WindowInterface {
     GamePanel gamePanel;
     Graphics2D g2;
     Font thaleahFont;
+    private int slotCol = 0;         // tracks which col of the inventory we are selecting
+    private int slotRow = 0;         // tracks which row of the inventory we are selecting
+    private int maxSlotRow = 1;     // 0: row1, 1: row2, etc.
+    private int maxSlotCol = 3;      // 0: col1, 1: col2, etc.
     public int commandNum = 0;       // tracks which menu selection the cursor is currently highlighting
 
     //substates for in-game menus
@@ -38,6 +50,9 @@ public class UI implements WindowInterface {
     public Color color = new Color(255, 255, 255);
     private String currentDialogue = "";
 
+    // used to store item descriptions in the corresponding index for the inventory
+    List<ItemEntity> inventoryIndexArray = new ArrayList<>();
+
     //CTOR
     public UI(GamePanel gamePanel) {
         this.gamePanel = gamePanel;
@@ -46,7 +61,6 @@ public class UI implements WindowInterface {
 
 
     // CLASS METHODS
-
     // draws the current playstate
     public void draw(Graphics2D g2) {
         this.g2 = g2;
@@ -57,10 +71,13 @@ public class UI implements WindowInterface {
         if (gamePanel.gameState == gamePanel.titleState) {
             drawTitleScreen();
         }
-        //TODO: will add features such as sound, quit later on.
         //option state
         if (gamePanel.gameState == gamePanel.optionsState) {
             drawOption();
+        }
+        //inventory state
+        if (gamePanel.gameState == gamePanel.inventoryState) {
+            drawInventory();
         }
         //adding inventory panel
         if (gamePanel.gameState == gamePanel.playState) {
@@ -147,7 +164,6 @@ public class UI implements WindowInterface {
         }
     }
 
-
     // draws option menu elements
     private void drawOption() {
         g2.setColor(Color.white);
@@ -202,11 +218,19 @@ public class UI implements WindowInterface {
             g2.drawString(">", textX - 25, textY);  // draws given string as text with txtX/textY values
         }
 
+        // Controls
+        textY += gamePanel.getTileSize();                // give text a position 1 tile below the above text
+        g2.drawString("Controls", textX, textY);     // draws given string as text with txtX/textY values
+
+        if (commandNum == 2) {                             // draws cursor next to Sound Effects
+            g2.drawString(">", textX - 25, textY);  // draws given string as text with txtX/textY values
+        }
+
         // Quit Game
         textY += gamePanel.getTileSize();                          // give text a position 1 tile below the above text
         g2.drawString("Quit Game", textX, textY);              // draws given string as text with txtX/textY values
 
-        if (commandNum == 2) {                                     // draws cursor next to Quit
+        if (commandNum == 3) {                                     // draws cursor next to Quit
             g2.drawString(">", textX - 25, textY);          // draws given string as text with txtX/textY values
             if (gamePanel.getKeyHandler().isEnterPressed()) {
                 setOptionsSubState(2);                            // set substate to quit game window
@@ -219,7 +243,7 @@ public class UI implements WindowInterface {
         textY += gamePanel.getTileSize() * 2;                      // give text a position 1 tile below the above text
         g2.drawString("Back", textX, textY);                   // draws given string as text with txtX/textY values
 
-        if (commandNum == 3) {                                     // draws cursor next to Back
+        if (commandNum == 4) {                                     // draws cursor next to Back
             g2.drawString(">", textX - 25, textY);          // draws given string as text with txtX/textY values
             if (gamePanel.getKeyHandler().isEnterPressed()) {
                 gamePanel.gameState = gamePanel.playState;        // return to playstate
@@ -276,6 +300,103 @@ public class UI implements WindowInterface {
                 gamePanel.getKeyHandler().setEnterPressed(false);         // reset enterPressed to false so enter is not held down
             }
         }
+    }
+
+    // draws the inventory window, item images, and item descriptions
+    private void drawInventory() {
+        g2.setColor(Color.yellow);                // set text color
+        g2.setFont(g2.getFont().deriveFont(36F)); // set font size
+        String text = "INVENTORY";                // create inventory title text
+        int titleTextX = getXForCenteredText(text);    // center text on screen
+        int titleTextY = gamePanel.getTileSize() * 4;    // give text a position at the top of the window
+        g2.drawString(text, titleTextX, titleTextY);        // draw text with given config
+
+        // Draw the item window first
+        int frameX = getXForCenteredText(text) - 48;   // x position (matched to text above)
+        int frameY = gamePanel.getTileSize() * 5;        // y position
+        int frameHeight = gamePanel.getTileSize() * 3;   // height of window
+        int frameWidth = gamePanel.getTileSize() * 5;    // width of window
+
+        // draw inventory window
+        drawWindow(frameX, frameY, frameWidth, frameHeight);
+
+        // Make the Item Slots
+        final int slotXstart = frameX; // distance on x from one slot to the next
+        final int slotYstart = frameY; // distance on y from one slot to the next
+        int slotX = slotXstart;             // starting x pos for slot 1
+        int slotY = slotYstart;             // starting y pos for slot 1
+
+        // Draw Items Currently Held by Player
+
+        int inventoryIndex = 0;
+
+        // using an iterator to go through the map of items in the player's inventory
+        Iterator<Map.Entry<String, Item>> itemItr = gamePanel.getPlayer().getInventory().entrySet().iterator();
+
+        // while there is still another item in the inventory,
+        while (itemItr.hasNext()) {
+            Map.Entry<String, Item> item = itemItr.next();
+            if (!inventoryIndexArray.contains(gamePanel.getPlayer().getInvItemImages().get(item.getKey()))) {
+                inventoryIndexArray.add(gamePanel.getPlayer().getInvItemImages().get(item.getKey()));
+            }
+        }
+
+        for (int i = 0; i < inventoryIndexArray.size(); i++) {
+            // draw the itemEntity found
+            g2.drawImage(inventoryIndexArray.get(i).getItemImage(), slotX + 20, slotY + 20, 48, 48, null);
+
+            inventoryIndex++;                 // increment the index we are focusing on by 1
+            slotX += gamePanel.getTileSize(); // add 1 tile of width between the slots
+
+            // if we ever get to the slot at end of the row, start putting item images in the next
+            if (inventoryIndex == 4) {
+                slotX = slotXstart;                // back to the starting slot of the row
+                slotY += gamePanel.getTileSize(); // move the items 1 tile downward to start the next row
+            }
+        }
+
+        // Dimensions for Item Selection Cursor
+        int cursorX = slotXstart + 20 + (gamePanel.getTileSize() * getSlotCol()); // starting x pos
+        int cursorY = slotYstart + 20 + (gamePanel.getTileSize() * getSlotRow()); // starting y pos
+        int cursorWidth = gamePanel.getTileSize();  // cursor width
+        int cursorHeight = gamePanel.getTileSize(); // cursor height
+
+        // Draw Cursor
+        g2.setColor(Color.white);               // cursor is white
+        g2.setStroke(new BasicStroke(2)); // change thickness of line
+
+        // Draw Cursor as Rounded Square
+        g2.drawRoundRect(cursorX, cursorY, cursorWidth, cursorHeight, 10, 10);
+
+        // Item Description Window
+        int dFrameX = frameX;                                     // x pos
+        int dFrameY = frameY + frameHeight;                       // y pos
+        int dFrameWidth = frameWidth;                             // width of window
+        int dFrameHeight = gamePanel.getTileSize() * 3;           // height of window
+        drawWindow(dFrameX, dFrameY, dFrameWidth, dFrameHeight);  // draw the description text window
+
+        // Item Description Text
+        int textX = dFrameX + 20;                       // x pos
+        int textY = dFrameY + gamePanel.getTileSize();  // y pos
+        g2.setFont(g2.getFont().deriveFont(20F));       // set font size
+
+        // tracks which item index is the cursor sitting on
+        int itemIndex = getItemIndexOnSlot();
+
+        // check as long as there are items in the inventory
+        if (itemIndex < gamePanel.getPlayer().getInventory().size()) {
+            // split the description up by its new lines
+            for (String line : inventoryIndexArray.get(itemIndex).getDescription().split("\n")) {
+                g2.drawString(line, textX, textY); // draw a line
+                textY += 32;                       // move the next line down
+            }
+        }
+    }
+
+    // get the item index of the currently highlighted inventory slot
+    private int getItemIndexOnSlot() {
+        int itemIndex = getSlotCol() + (getSlotRow() * 4); // get number index of current item in inventory
+        return itemIndex;
     }
 
     private Image playerIcon() {
@@ -432,7 +553,31 @@ public class UI implements WindowInterface {
         this.optionsSubState = optionsSubState;
     }
 
-    public Font getFont(){
+    public Font getFont() {
         return thaleahFont;
+    }
+
+    public int getSlotCol() {
+        return slotCol;
+    }
+
+    public void setSlotCol(int slotCol) {
+        this.slotCol = slotCol;
+    }
+
+    public int getSlotRow() {
+        return slotRow;
+    }
+
+    public void setSlotRow(int slotRow) {
+        this.slotRow = slotRow;
+    }
+
+    public int getMaxSlotRow() {
+        return maxSlotRow;
+    }
+
+    public int getMaxSlotCol() {
+        return maxSlotCol;
     }
 }
