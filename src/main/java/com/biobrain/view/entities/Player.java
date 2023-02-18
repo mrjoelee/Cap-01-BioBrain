@@ -105,16 +105,13 @@ public class Player extends Entity {
 
     // add a picked up item to the player's inventory
     public void addItem(String itemName, Item item) {
-        System.out.println("Item to be added: "+ itemName);
         inventory.put(itemName,item);
         invItemImages.put(itemName, gamePanel.getItemManager().getItems().get(itemName));
-        System.out.println("Item was added: "+ invItemImages.containsKey(itemName));
     }
 
     // remove used up items from inventory
     public void removeItem(String itemName, Item item) {
-        gamePanel.getUi().getInventoryIndexArray().remove(gamePanel.getItemManager().getItems().get(itemName));
-        System.out.println("Confirm " + itemName + " Removed: " + gamePanel.getUi().getInventoryIndexArray().contains(gamePanel.getItemManager().getItems().get(itemName)));
+        gamePanel.getUi().removeItemInventoryIndex(itemName);
         inventory.remove(itemName, item);
         invItemImages.remove(itemName, gamePanel.getItemManager().getItems().get(itemName));
     }
@@ -122,6 +119,10 @@ public class Player extends Entity {
     // pickup a collided with item
     public void pickUpItem(String itemName) {
         if (!itemName.equals("none") && !itemName.equals("biobrain")) {
+            gamePanel.getBioBrainApp().validateThenGetItem(itemName);
+            gamePanel.getItemManager().getItems().put(itemName, null);
+        }
+        if(!itemName.equals("none") && getInventory().containsKey("sphere") && itemName.equals("biobrain")){
             gamePanel.getBioBrainApp().validateThenGetItem(itemName);
             gamePanel.getItemManager().getItems().put(itemName, null);
         }

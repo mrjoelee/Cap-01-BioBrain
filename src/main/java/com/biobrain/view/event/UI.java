@@ -8,13 +8,11 @@ package com.biobrain.view.event;
  */
 
 import com.biobrain.objects.Health;
-import com.biobrain.items.ItemManager;
 import com.biobrain.model.Item;
 import com.biobrain.util.FileLoader;
 import com.biobrain.util.WindowInterface;
 import com.biobrain.view.entities.ItemEntity;
 import com.biobrain.view.panels.GamePanel;
-import com.biobrain.view.panels.GameSetter;
 
 import java.awt.*;
 import java.awt.font.FontRenderContext;
@@ -24,12 +22,11 @@ import java.awt.font.TextLayout;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
+import java.sql.Array;
 import java.text.AttributedCharacterIterator;
 import java.text.AttributedString;
-import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
 
 public class UI implements WindowInterface {
     GamePanel gamePanel;
@@ -482,7 +479,6 @@ public class UI implements WindowInterface {
             }
         }
 
-        //System.out.println("size of item image array: " + );
 
         for (int i = 0; i < inventoryIndexArray.size(); i++) {
             // draw the itemEntity found
@@ -656,7 +652,7 @@ public class UI implements WindowInterface {
         return gamePanel.screenWidth / 2 - length / 2;
     }
 
-    //creates a inner window
+    //creates an inner window
     public void drawWindow(int x, int y, int width, int height) {
         //creates a rectangle
         Color windowColor = new Color(0, 0, 0, 200);  // a is the opacity
@@ -691,6 +687,27 @@ public class UI implements WindowInterface {
     }
 
     // ACCESSOR METHODS
+    // remove an item from the inventory list
+    public void removeItemInventoryIndex(String itemToRemove){
+        List<ItemEntity> temp = new ArrayList<>(getInventoryIndexArray());
+        for(ItemEntity item: getInventoryIndexArray()){
+            if(itemToRemove.equals(item.getName())){
+                temp.remove(item);
+            }
+        }
+        setInventoryIndexArray(temp);
+    }
+
+    // set the invetory list to be drawn in inventory window
+    public void setInventoryIndexArray(List<ItemEntity> inventoryIndexArray) {
+        this.inventoryIndexArray = inventoryIndexArray;
+    }
+
+    // return list holding items to be drawn in inventory window
+    public List<ItemEntity> getInventoryIndexArray() {
+        return inventoryIndexArray;
+    }
+
     // OptionsSubState dictates condition of options menu
     public int getOptionsSubState() {
         return optionsSubState;
@@ -728,7 +745,5 @@ public class UI implements WindowInterface {
         return maxSlotCol;
     }
 
-    public List<ItemEntity> getInventoryIndexArray() {
-        return inventoryIndexArray;
-    }
+
 }

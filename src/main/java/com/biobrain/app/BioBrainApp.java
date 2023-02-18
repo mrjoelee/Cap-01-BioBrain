@@ -222,15 +222,17 @@ public class BioBrainApp {
     public void validateThenGetItem(String itemToPickup) throws IllegalArgumentException {
         // throws an exception if player attempts to hack an item into their inventory
         // which does not exist in the room already
-        if (currentLocation.getItems().contains(itemToPickup) || itemToPickup.equals("sphere")) {
+        if (currentLocation.getItems().contains(itemToPickup) || itemToPickup.equals("sphere") || itemToPickup.equals("biobrain")) {
             if (itemsInRoom.contains(itemToPickup)) {
-                System.out.println("Added: "+ itemToPickup);
                 // if item exists, pass it to the normal method for getting items
                 getItem(itemToPickup);
             } else if (itemToPickup.equals("sphere")){
                 // if sphere is added to inventory ignore room standards
                 getItem(itemToPickup);
-            }
+            } else if (itemToPickup.equals("biobrain")){
+            // if sphere is added to inventory ignore room standards
+            getItem(itemToPickup);
+        }
         } else {
             throw new RuntimeException(new IllegalArgumentException("\n" + itemToPickup + " was not found! Please try again."));
         }
@@ -239,7 +241,6 @@ public class BioBrainApp {
     // removes items from location in memory
     private void getItem(String itemToPickup) {
         // if room contained the item, pass it to the Player class now
-        System.out.println("Item: "+ Item.getAllItems().get(itemToPickup));
         addToPlayerInventory(itemToPickup, Item.getAllItems().get(itemToPickup));
         itemsInRoom.remove(itemToPickup); // remove item from room in memory
 }
@@ -247,7 +248,6 @@ public class BioBrainApp {
     // add to inventory tracked by player class
     private void addToPlayerInventory(String itemToPickup, Item item) {
         getPlayer().addItem(itemToPickup, item); // add item to player inventory in memory
-        System.out.println("Sent to player: "+ Item.getAllItems().get(itemToPickup));
         // alert user in console version what they picked up
         System.out.printf("\nAwesome! You've added the %s to your inventory!\n", itemToPickup);
     }
