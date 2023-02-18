@@ -8,8 +8,8 @@ import java.awt.image.BufferedImage;
 
 public class Entity {
     GamePanel gamePanel;
-    public static final double MIN_HEALTH = 0;
-    public static final double MAX_HEALTH = 100;
+    public static final int MIN_HEALTH = 0;
+    public static final int MAX_HEALTH = 6;
     public int labX, labY;
     public int speed;
     public BufferedImage up1, up2, down1, down2, left1, left2, right1, right2, itemImage;
@@ -20,12 +20,17 @@ public class Entity {
     public Rectangle collider;
     public int colliderDefaultX, colliderDefaultY;
     public boolean collisionOn = false;
-    private double health = 100.0;
+
+    //Character Status
+    //public int maxHealth;
+    //public int health1;
+
+    private int health;
     private boolean isDead = false;
-    public double getHealth() {
+    public int getHealth() {
         return health;
     }
-    public void setHealth(double health){
+    public void setHealth(int health){
         if(health < MIN_HEALTH){
             setDead(true);
         } else {

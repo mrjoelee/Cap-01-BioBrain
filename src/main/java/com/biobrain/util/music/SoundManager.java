@@ -30,6 +30,7 @@ public class SoundManager {
         soundsURL.put("menuNavigationSound", getClass().getResource("/sounds/sfx/menuNavigationSound.wav"));
         soundsURL.put("menuSelectPlaySound", getClass().getResource("/sounds/sfx/menuSelectPlaySound.wav"));
         soundsURL.put("menuSelectSound", getClass().getResource("/sounds/sfx/menuSelectSound.wav"));
+        soundsURL.put("gameOverSound", getClass().getResource("/sounds/sfx/gameOver.wav"));
 
         this.gamePanel = gamePanel;
     }

@@ -1,11 +1,15 @@
 package com.biobrain.app;
 
 import com.biobrain.model.Item;
+import com.biobrain.model.Location;
 import com.biobrain.view.entities.Player;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
+
+//@Disabled - disable the test to package into a jar
 
 class BioBrainAppTest {
     BioBrainApp testApp;
@@ -31,8 +35,9 @@ class BioBrainAppTest {
                 RuntimeException.class,
                 () -> testApp.validateThenGetItem(itemNotPresent)
         );
-        String expectedMessage = "java.lang.IllegalArgumentException: \n" +
+        String expectedMessage = "java.lang.IllegalArgumentException:\n" +
                 "cheese was not found! Please try again.";
+
 
         // ASSERT
         assertTrue(except.getMessage().contentEquals(expectedMessage));

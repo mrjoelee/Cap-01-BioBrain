@@ -74,6 +74,7 @@ public class GamePanel extends JPanel implements Runnable {
     public final int dialogueState = 4;
     public final int dialoguePlay = 5;
     public final int inventoryState = 6;
+    public final int gameOverState = 7;
     public int switchStateCounter = 300;
 
     //weapons / projectile stuff
@@ -100,7 +101,15 @@ public class GamePanel extends JPanel implements Runnable {
         bioBrainApp.setPlayer(getPlayer()); // track the created player in memory
         gameState = playState;              // begin playstate, which changes to bring user to new scenes/menus
         mapDisplayed = currentRoom.getRoomCode();
-        playMusic("mainMenuTheme");   // plays main menu theme from soundsURL map inside SoundManager
+        playMusic("mainMenuTheme"); // plays main menu theme from soundsURL map inside SoundManager
+    }
+
+    //resetting the player status
+    public void tryAgain(){
+        player.setDefaultPositions();
+        player.setDefaultValues();
+        player.restoreLife();
+        currentRoom = locations.getLocations().get("sector2");
     }
 
     // starts new thread

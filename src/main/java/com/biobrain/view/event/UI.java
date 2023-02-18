@@ -7,6 +7,7 @@ package com.biobrain.view.event;
  * draws windows for dialogues and menus
  */
 
+import com.biobrain.objects.Health;
 import com.biobrain.items.ItemManager;
 import com.biobrain.model.Item;
 import com.biobrain.util.FileLoader;
@@ -33,6 +34,7 @@ import java.util.Map;
 public class UI implements WindowInterface {
     GamePanel gamePanel;
     Graphics2D g2;
+    Image fullHeart, halfHeart, blankHeart;
     Font thaleahFont;
     private int slotCol = 0;         // tracks which col of the inventory we are selecting
     private int slotRow = 0;         // tracks which row of the inventory we are selecting
@@ -57,6 +59,12 @@ public class UI implements WindowInterface {
     public UI(GamePanel gamePanel) {
         this.gamePanel = gamePanel;
         thaleahFont = loadFont();
+
+        //Create Health
+        Health heart = new Health(gamePanel);
+        fullHeart = heart.imageHeart1.getScaledInstance(50,40,0);
+        halfHeart = heart.imageHeart2.getScaledInstance(50,40,0);
+        blankHeart = heart.imageHeart3.getScaledInstance(50,40,0);
     }
 
 
@@ -74,6 +82,7 @@ public class UI implements WindowInterface {
         //option state
         if (gamePanel.gameState == gamePanel.optionsState) {
             drawOption();
+            drawPlayerHealth();
         }
         //inventory state
         if (gamePanel.gameState == gamePanel.inventoryState) {
@@ -81,15 +90,83 @@ public class UI implements WindowInterface {
         }
         //adding inventory panel
         if (gamePanel.gameState == gamePanel.playState) {
-            GameSetter.manageVisibility();
+            drawPlayerHealth();
         }
         //dialogue state
         if (gamePanel.gameState == gamePanel.dialogueState) {
             drawDialogueScreen();
+            drawPlayerHealth();
         }
         if (gamePanel.gameState == gamePanel.dialoguePlay) {
             drawDialogueScreen();
+            drawPlayerHealth();
         }
+        if(gamePanel.gameState == gamePanel.gameOverState){
+            drawGameOver();
+        }
+    }
+
+    private void drawGameOver() {
+        g2.setColor(new Color(0,0,0,150));
+        g2.fillRect(0,0,gamePanel.screenWidth, gamePanel.screenHeight);
+        int x;
+        int y;
+        String text;
+        g2.setFont(g2.getFont().deriveFont(Font.BOLD, 110f));
+        text = "Game Over";
+        //Shadow
+        g2.setColor(Color.black);
+        x = getXForCenteredText(text);
+        y = gamePanel.getTileSize()*4;
+        g2.drawString(text,x,y);
+        //Main
+        g2.setColor(Color.white);
+        g2.drawString(text,x-4,y-4);
+        //start new game or quit
+        g2.setFont(g2.getFont().deriveFont(50f));
+        text="Try Again?";
+        x = getXForCenteredText(text);
+        y += gamePanel.getTileSize()*4;
+        g2.drawString(text,x,y);
+        playerIconPos(x,y,0);
+
+        //Back to title screen
+        text="Quit";
+        x=getXForCenteredText(text);
+        y +=55;
+        g2.drawString(text,x,y);
+        playerIconPos(x,y,1);
+    }
+
+    private void drawPlayerHealth() {
+        int x = gamePanel.getTileSize()*12;  //starting point to place the health heart
+        int y = gamePanel.getTileSize()-30;
+        int i = 0;
+
+        // Draw max health
+        //noinspection AccessStaticViaInstance
+        while(i < gamePanel.player.MAX_HEALTH/2){  // 2 lives == 1 heart.
+            g2.drawImage(blankHeart,x,y,null);
+            i++;
+            x += gamePanel.getTileSize();
+        }
+
+        //Reset
+        x = gamePanel.getTileSize()*12;
+        y = gamePanel.getTileSize()-30;
+        i=0;
+
+        //Draw current health
+        while(i < gamePanel.player.health){
+            g2.drawImage(halfHeart, x, y, null);
+            i++;
+            if(i < gamePanel.player.health){
+                g2.drawImage(fullHeart,x,y,null);
+            }
+            i++;
+            x += gamePanel.getTileSize();
+        }
+
     }
 
     private void drawDialogueScreen() {
@@ -465,6 +542,7 @@ public class UI implements WindowInterface {
 
     private Image playerIcon() {
         BufferedImage playerIcon = FileLoader.loadBuffered("images/player/player_down_1.png");
+        //noinspection ConstantConditions
         return playerIcon.getScaledInstance(25, 25, 0);
     }
 
@@ -478,11 +556,15 @@ public class UI implements WindowInterface {
             g2.setColor(color);
             g2.drawImage(title, x, y, null);
 
-            g2.setFont(g2.getFont().deriveFont(Font.BOLD, 72F));
+            g2.setFont(g2.getFont().deriveFont(Font.BOLD, 80F));
             String text = "BIO BRAIN";
+            g2.setColor(Color.black);
             x = getXForCenteredText(text);
-            y = gamePanel.getTileSize() * 2;
-            g2.drawString(text, x, y);
+            y = gamePanel.getTileSize()*2;
+            g2.drawString(text,x,y);
+
+            g2.setColor(color);
+            g2.drawString(text, x-4, y-4);
             /* --- Menu ---*/
             //New Game
             g2.setFont(g2.getFont().deriveFont(Font.BOLD, 36F));
@@ -555,7 +637,6 @@ public class UI implements WindowInterface {
         int y = 0;
         g2.setColor(Color.white);
         g2.drawImage(intro, x, y, null);
-        //WindowInterface.displayPopUpWindow(gamePanel,FileLoader.loadTextFile("Instructions/Instructions.txt"));
     }
 
     private void showIntro() {
