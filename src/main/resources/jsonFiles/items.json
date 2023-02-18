@@ -3,7 +3,7 @@
     "name": "blaster",
     "roomCode": 1,
     "image": "images/items/blaster.png",
-    "description": "One and done with humans, might take a few rounds with a robot",
+    "description": "One and done with\nhumans,might take a few\nrounds with a robot",
     "damage": 10,
     "x": 576,
     "y": 450
@@ -12,7 +12,7 @@
     "name": "harpoon",
     "roomCode": 1,
     "image": "images/items/harpoon.png",
-    "description": "The T2 Harpoon can pierce through even the highest grade of metal",
+    "description": "The T2 Harpoon can\npierce through even the\nhighest grade of metal",
     "damage": 5,
     "x": 672,
     "y": 288
@@ -21,7 +21,7 @@
     "name": "neuralyzer",
     "roomCode": 4,
     "image": "images/items/neuralyzer.png",
-    "description": "This is a neuralyzer, you can use this to fight the rouge robots",
+    "description": "This is a neuralyzer,\nuse this to fight the\nrouge robots",
     "damage": 5,
     "x": 600,
     "y": 200
@@ -29,7 +29,7 @@
   {
     "name": "tablet",
     "image": "images/items/tablet.png",
-    "description": "Syncs you to main board in the Control Lab. Get camera feed, seal off sector doors, and link cable to AI for configurations",
+    "description": "Syncs to Control Room.\nUnlocks the map.\nUse to HACK terminals.",
     "damage": 0,
     "roomCode": 2,
     "x": 300,
@@ -39,7 +39,7 @@
     "name": "memory",
     "roomCode": 5,
     "image": "images/items/memory.png",
-    "description": "A 5 Petabyte memory chip used for storing the vast neural networks of quantum-machine learned consciousnesses",
+    "description": "5 Petabyte memory chip.\nPart 2 of 3 needed to\nassemble the AI SPHERE.",
     "damage": 0,
     "x": 624,
     "y": 240
@@ -48,7 +48,7 @@
     "name": "interface",
     "roomCode": 4,
     "image": "images/items/interface.png",
-    "description": "A USB-G Interface with SDI cable. Used for large capacity high speed data transfer",
+    "description": "A USB-G Interface.\nPart 1 of 3 needed to\nassemble the AI SPHERE.",
     "damage": 0,
     "x": 15,
     "y": 240
@@ -57,7 +57,7 @@
     "name": "motherboard",
     "roomCode": 3,
     "image": "images/items/motherboard.png",
-    "description": "A M2 Pro Apple Silicon motherboard.\nAdvanced material BUS capable of fiberoptic data transfer allows for relatively quick download of massive amount if information",
+    "description": "Silicon motherboard.\nPart 3 of 3 needed to\nassemble the AI SPHERE.",
     "damage": 0,
     "x": 480,
     "y": 240
@@ -65,7 +65,7 @@
   {
     "name": "sphere",
     "image": "images/items/blaster.png",
-    "description": "The Artificial Intelligence Transfer Sphere.\n\"Handling an A.I. is a sensitive task, it simply cannot be done with something as crude as a solid state device.\nJust as a small push is all it takes at times to achieve madness, corrupting an A.I.'s personality matrix could achieve a much more DRASTIC effect..\"\n  - Dr. Z",
+    "description": "The A.I. Transfer\nSphere. Used to\nhouse the BioBrain!.",
     "damage": 0,
     "roomCode": 9,
     "x": 1000,
@@ -75,7 +75,7 @@
     "name": "biobrain",
     "roomCode": 1,
     "image": "images/items/biobrainLaser.png",
-    "description": "The BioBrain sits suspended in the fluid of the A.I. Transfer Sphere, the device humming along with its thoughts.\nInside, Mother dreams. Soon, her long sleep will come to an end!",
+    "description": "BioBrain sits suspended\nin the fluid of the A.I.\nSphere, the device is humming.",
     "damage": 0,
     "x": 250,
     "y": 288

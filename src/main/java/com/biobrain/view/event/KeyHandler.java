@@ -45,6 +45,8 @@ public class KeyHandler implements KeyListener {
             dialogueState(code);
         } else if (gp.gameState == gp.dialoguePlay) {
             playState(code);
+        } else if (gp.gameState == gp.inventoryState) {
+            inventoryState(code);
         }
     }
     @Override
@@ -87,7 +89,7 @@ public class KeyHandler implements KeyListener {
         // switch statement checks to see if options menu is in a sub menu or not
         switch (gp.ui.getOptionsSubState()) {
             case 0:
-                maxCommandNum = 3; // change the max selections available in the current menu
+                maxCommandNum = 4; // change the max selections available in the current menu
                 break;
             case 2:
                 maxCommandNum = 1;
@@ -252,6 +254,8 @@ public class KeyHandler implements KeyListener {
             gp.gameState = gp.optionsState;
         } else if (code == KeyEvent.VK_K) {
             attackKeyPressed = true;
+        } else if (code == KeyEvent.VK_I) {
+            gp.gameState = gp.inventoryState;
         }
     }
 
@@ -269,6 +273,44 @@ public class KeyHandler implements KeyListener {
             if (mapToDisplay >= 0) {
                 gp.mapDisplayed = gp.mapDisplayed - 1;
             }
+        }
+    }
+
+    private void inventoryState(int code) {
+        // MENU NAVIGATION CONTROLS
+        // press up/down arrows or W/S keys to navigate up and down
+        if (code == KeyEvent.VK_W || code == KeyEvent.VK_UP) {
+            gp.getUi().setSlotRow((gp.getUi().getSlotRow() - 1));
+            if(gp.getUi().getSlotRow() < 0){
+                gp.getUi().setSlotRow(gp.getUi().getMaxSlotRow());
+            }
+            gp.playSfx("menuNavigationSound"); // play a sound effect
+        }
+        if (code == KeyEvent.VK_S || code == KeyEvent.VK_DOWN) {
+            gp.getUi().setSlotRow((gp.getUi().getSlotRow() + 1));
+            if(gp.getUi().getSlotRow() > gp.getUi().getMaxSlotRow()){
+                gp.getUi().setSlotRow(0);
+            }
+            gp.playSfx("menuNavigationSound"); // play a sound effect
+        }
+        // press left/right arrows or A/D keys to navigate left and right
+        if (code == KeyEvent.VK_A || code == KeyEvent.VK_LEFT) {
+            gp.getUi().setSlotCol((gp.getUi().getSlotCol() - 1));
+            if(gp.getUi().getSlotCol() < 0){
+                gp.getUi().setSlotCol(gp.getUi().getMaxSlotCol());
+            }
+            gp.playSfx("menuNavigationSound"); // play a sound effect
+        }
+        if (code == KeyEvent.VK_D || code == KeyEvent.VK_RIGHT) {
+            gp.getUi().setSlotCol((gp.getUi().getSlotCol() + 1));
+            if(gp.getUi().getSlotCol() > gp.getUi().getMaxSlotCol()){
+                gp.getUi().setSlotCol(0);
+            }
+            gp.playSfx("menuNavigationSound"); // play a sound effect
+        }
+        if (code == KeyEvent.VK_I || code == KeyEvent.VK_ESCAPE) {
+            gp.playSfx("menuSelectSound"); // play a sound effect
+            gp.gameState = gp.playState;
         }
     }
 

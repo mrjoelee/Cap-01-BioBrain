@@ -57,6 +57,10 @@ public class ItemEntity{
         return name;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
     public Rectangle getItemCollider(){
         return this.itemCollider;
     }

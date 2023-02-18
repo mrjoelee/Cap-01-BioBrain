@@ -26,6 +26,7 @@ import java.util.Map;
 public class Player extends Entity {
 
     public Map<String, Item> inventory;
+    public Map<String, ItemEntity> invItemImages;
     private final List<String> visitedLocations;
     private Item mainWeapon;
     private GamePanel gamePanel; // reference to GamePanel holding game logic
@@ -39,15 +40,16 @@ public class Player extends Entity {
         super();
         this.visitedLocations = new ArrayList<>();
         this.inventory = new HashMap<>();
+        this.invItemImages  = new HashMap<>();
     }
 
     // CTOR
     public Player(GamePanel gamePanel, KeyHandler keyHandler) {
         super(gamePanel);
-        //TODO Undo for testing purposes
         this.mainWeapon = new Item("blaster", "a blaster test", 5);
         this.visitedLocations = new ArrayList<>();
         this.inventory = new HashMap<>();
+        this.invItemImages  = new HashMap<>();
         this.gamePanel = gamePanel;
         this.handler = keyHandler;
         screenX = gamePanel.screenWidth/2;
@@ -84,6 +86,7 @@ public class Player extends Entity {
 
     public void addItem(String itemName, Item item) {
         inventory.put(itemName,item);
+        invItemImages.put(itemName, gamePanel.getItemManager().getItems().get(itemName));
     }
 
     public void removeItem(String itemName, Item item) {
@@ -169,6 +172,8 @@ public class Player extends Entity {
             gamePanel.collisionDetector.checkEntrance(this);
             gamePanel.collisionDetector.checkExit(this);
             gamePanel.collisionDetector.checkObject(this);
+            String itemGrabbed = gamePanel.collisionDetector.checkGrabItem(this);
+            pickUpItem(itemGrabbed);
             //gamePanel.eventHandler.checkEvent();
 
             if (!collisionOn) {
@@ -205,6 +210,14 @@ public class Player extends Entity {
             isAttacking = true;
             loadAttackImages();
             playerAttack();
+        }
+    }
+
+    public void pickUpItem(String itemName) {
+        if (!itemName.equals("none") && !itemName.equals("biobrain")) {
+            System.out.println(itemName);
+            gamePanel.getBioBrainApp().validateThenGetItem(itemName);
+            gamePanel.getItemManager().getItems().put(itemName, null);
         }
     }
 
@@ -390,5 +403,12 @@ public class Player extends Entity {
         } else {
             g2.drawImage(image, screenX, screenY, gamePanel.getTileSize(), gamePanel.getTileSize(), null);
         }
+    }
+
+
+    // ACCESSOR METHODS
+
+    public Map<String, ItemEntity> getInvItemImages() {
+        return invItemImages;
     }
 }

@@ -54,7 +54,7 @@ public class ItemManager {
 
     public void draw(Graphics2D g2) {
         for (ItemEntity item : items.values()) {
-            if (item.getRoomCode() == gamePanel.currentRoom.getRoomCode()) {
+            if (item != null && item.getRoomCode() == gamePanel.currentRoom.getRoomCode()) {
                 item.draw(g2);
             }
         }
