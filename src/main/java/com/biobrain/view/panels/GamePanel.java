@@ -11,7 +11,6 @@ import com.biobrain.items.ItemManager;
 import com.biobrain.model.Location;
 import com.biobrain.util.music.SoundManager;
 import com.biobrain.objects.ObjectManager;
-import com.biobrain.view.entities.Entity;
 import com.biobrain.view.entities.Player;
 import com.biobrain.view.entities.Projectile;
 import com.biobrain.view.event.CollisionDetector;
@@ -23,8 +22,6 @@ import com.biobrain.view.tile.TileHelper;
 import com.biobrain.view.tile.TileSetter;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,6 +44,7 @@ public class GamePanel extends JPanel implements Runnable {
 
     // BioBrainApp logic
     private BioBrainApp bioBrainApp;
+
     // creation of manager classes
     public KeyHandler keyHandler = new KeyHandler(this);        // create new instance of input manager for keyboard commands
     public Player player = new Player(this, keyHandler);  // create instance of Player
@@ -95,7 +93,7 @@ public class GamePanel extends JPanel implements Runnable {
     // CLASS METHODS
     // define context for game start, starting gameState, starting map, and first song played
     public void setupGame() {
-        bioBrainApp = new BioBrainApp();    // create instance of game logic for items in memory
+        bioBrainApp = new BioBrainApp(this);    // create instance of game logic for items in memory
         bioBrainApp.loadToGui();            // load necessary gameplay data into memory as game begins
         bioBrainApp.setPlayer(getPlayer()); // track the created player in memory
         gameState = playState;              // begin playstate, which changes to bring user to new scenes/menus

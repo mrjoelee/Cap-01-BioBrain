@@ -51,7 +51,7 @@ public class UI implements WindowInterface {
     private String currentDialogue = "";
 
     // used to store item descriptions in the corresponding index for the inventory
-    List<ItemEntity> inventoryIndexArray = new ArrayList<>();
+    private List<ItemEntity> inventoryIndexArray = new ArrayList<>();
 
     //CTOR
     public UI(GamePanel gamePanel) {
@@ -405,6 +405,8 @@ public class UI implements WindowInterface {
             }
         }
 
+        //System.out.println("size of item image array: " + );
+
         for (int i = 0; i < inventoryIndexArray.size(); i++) {
             // draw the itemEntity found
             g2.drawImage(inventoryIndexArray.get(i).getItemImage(), slotX + 20, slotY + 20, 48, 48, null);
@@ -458,7 +460,7 @@ public class UI implements WindowInterface {
     }
 
     // get the item index of the currently highlighted inventory slot
-    private int getItemIndexOnSlot() {
+    public int getItemIndexOnSlot() {
         int itemIndex = getSlotCol() + (getSlotRow() * 4); // get number index of current item in inventory
         return itemIndex;
     }
@@ -643,5 +645,9 @@ public class UI implements WindowInterface {
 
     public int getMaxSlotCol() {
         return maxSlotCol;
+    }
+
+    public List<ItemEntity> getInventoryIndexArray() {
+        return inventoryIndexArray;
     }
 }

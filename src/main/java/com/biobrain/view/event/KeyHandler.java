@@ -6,6 +6,7 @@ package com.biobrain.view.event;
  * tracks basic logic for menus and selections
  */
 
+import com.biobrain.view.entities.ItemEntity;
 import com.biobrain.view.panels.GamePanel;
 
 import java.awt.event.KeyEvent;
@@ -311,6 +312,19 @@ public class KeyHandler implements KeyListener {
         if (code == KeyEvent.VK_I || code == KeyEvent.VK_ESCAPE) {
             gp.playSfx("menuSelectSound"); // play a sound effect
             gp.gameState = gp.playState;
+        }
+        if (code == KeyEvent.VK_ENTER) {
+            gp.playSfx("menuSelectSound"); // play a sound effect
+
+            if(gp.getUi().getInventoryIndexArray().size() > gp.getUi().getItemIndexOnSlot()){
+                if(gp.getUi().getInventoryIndexArray().get(gp.getUi().getItemIndexOnSlot()) != null){
+                    gp.playSfx("menuSelectPlaySound"); // play a sound effect
+
+                    ItemEntity usedItem = gp.getUi().getInventoryIndexArray().get(gp.getUi().getItemIndexOnSlot());
+                    gp.getBioBrainApp().validateThenUseItem(usedItem.getName());
+                    gp.gameState = gp.playState;
+                }
+            }
         }
     }
 
