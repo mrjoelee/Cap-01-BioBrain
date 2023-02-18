@@ -89,7 +89,7 @@ public class KeyHandler implements KeyListener {
         // switch statement checks to see if options menu is in a sub menu or not
         switch (gp.ui.getOptionsSubState()) {
             case 0:
-                maxCommandNum = 3; // change the max selections available in the current menu
+                maxCommandNum = 4; // change the max selections available in the current menu
                 break;
             case 2:
                 maxCommandNum = 1;

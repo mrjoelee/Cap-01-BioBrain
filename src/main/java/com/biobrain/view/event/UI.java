@@ -180,6 +180,9 @@ public class UI implements WindowInterface {
             case 0:
                 optionTop(x, y);                          // draw main options window
                 break;
+            case 1:
+                optionControlsWindow(x, y);               // draw window displaying keyboard controls
+                break;
             case 2:
                 optionEndGameConfirm(x, y);               // draw confirmation window for quitting game
                 break;
@@ -224,6 +227,12 @@ public class UI implements WindowInterface {
 
         if (commandNum == 2) {                             // draws cursor next to Sound Effects
             g2.drawString(">", textX - 25, textY);  // draws given string as text with txtX/textY values
+
+            if (gamePanel.getKeyHandler().isEnterPressed()) {
+                setOptionsSubState(1);                            // set substate to keyboard controls window
+                commandNum = 0;                                   // reset commandNum for option selection
+                gamePanel.getKeyHandler().setEnterPressed(false); // reset enterPressed to false so enter is not held
+            }
         }
 
         // Quit Game
@@ -234,7 +243,7 @@ public class UI implements WindowInterface {
             g2.drawString(">", textX - 25, textY);          // draws given string as text with txtX/textY values
             if (gamePanel.getKeyHandler().isEnterPressed()) {
                 setOptionsSubState(2);                            // set substate to quit game window
-                commandNum = 0;                                   // reset commandNum for option slection
+                commandNum = 0;                                   // reset commandNum for option selection
                 gamePanel.getKeyHandler().setEnterPressed(false); // reset enterPressed to false so enter is not held
             }
         }
@@ -264,6 +273,61 @@ public class UI implements WindowInterface {
         g2.drawRect(textX, textY, 120, 24);                   // draw rectangle
         volumeBarWidth = 24 * gamePanel.getSfx().getVolumeScale();        // adjusts value of width of volume bar
         g2.fillRect(textX, textY, volumeBarWidth, 24);              // adjusts width of SFX volume bar in box
+    }
+
+    // draws the window and text for the controls reminder in the options menu
+    private void optionControlsWindow(int frameX, int frameY){
+        String text = "Keyboard Controls";            // starting text for title
+        int textX = getXForCenteredText(text);        // x pos
+        int textY = frameY + gamePanel.getTileSize(); // y pos
+
+        // Draw Title Text of Window
+        g2.drawString(text, textX, textY);
+
+        textX = frameX + gamePanel.getTileSize();                    // move text left
+        textY = textY + gamePanel.getTileSize();                     // move text down
+        g2.drawString("Navigate Menu", textX, textY); // draw next keyboard input
+        textY = textY + gamePanel.getTileSize();                     // move text down
+        g2.drawString("Movement", textX, textY); // draw next keyboard input
+        textY = textY + gamePanel.getTileSize();                     // move text down
+        g2.drawString("Attack", textX, textY);                   // draw next keyboard input
+        textY = textY + gamePanel.getTileSize();                     // move text down
+        g2.drawString("Map", textX, textY);                      // draw next keyboard input
+        textY = textY + gamePanel.getTileSize();                     // move text down
+        g2.drawString("Inventory", textX, textY);                // draw next keyboard input
+        textY = textY + gamePanel.getTileSize();                     // move text down
+        g2.drawString("Confirm Selections", textX, textY);       // draw next keyboard input
+        textY = textY + gamePanel.getTileSize();                     // move text down
+        g2.drawString("Options / Back", textX, textY);           // draw next keyboard input
+
+        textX = frameX + gamePanel.getTileSize() * 5;
+        textY = frameY + gamePanel.getTileSize() * 2;
+        g2.drawString("W A S D / Arrows", textX, textY); // draw next keyboard input
+        textY = textY + gamePanel.getTileSize();                     // move text down
+        g2.drawString("W A S D / Arrows", textX, textY); // draw next keyboard input
+        textY = textY + gamePanel.getTileSize();                     // move text down
+        g2.drawString("K", textX, textY);                   // draw next keyboard input
+        textY = textY + gamePanel.getTileSize();                     // move text down
+        g2.drawString("M", textX, textY);                      // draw next keyboard input
+        textY = textY + gamePanel.getTileSize();                     // move text down
+        g2.drawString("I", textX, textY);                // draw next keyboard input
+        textY = textY + gamePanel.getTileSize();                     // move text down
+        g2.drawString("Enter", textX, textY);       // draw next keyboard input
+        textY = textY + gamePanel.getTileSize();                     // move text down
+        g2.drawString("Esc", textX, textY);           // draw next keyboard input
+
+        // Draw the Back Selection to Leave the Menu
+        textY = textY + gamePanel.getTileSize();
+
+        g2.drawString("Back", textX, textY);
+
+        if(commandNum == 0){
+            g2.drawString(">", textX - 25, textY);
+
+            if(gamePanel.getKeyHandler().isEnterPressed()){
+                setOptionsSubState(0);
+            }
+        }
     }
 
     // draws window and selections to confirm user is ready to quit game
