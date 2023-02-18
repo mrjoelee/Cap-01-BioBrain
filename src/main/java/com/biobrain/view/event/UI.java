@@ -283,25 +283,30 @@ public class UI implements WindowInterface {
         textY += gamePanel.getTileSize() * 2;               // give text a position 1 tile below the above text
         g2.drawString("Music", textX, textY);       // draws given string as text with txtX/textY values
 
-        if (commandNum == 0) {                            // draws cursor next to Music
-            g2.drawString(">", textX - 25, textY);// draws given string as text with txtX/textY values
-        }
+//        if (commandNum == 0) {
+//            g2.drawString(">", textX - 25, textY);
+        //}
+
+        // draws playericon cursor next to Music
+        playerIconPos(textX+12,textY,0);             // draws given string as text with txtX/textY values
 
         // SFX Settings
         textY += gamePanel.getTileSize();                // give text a position 1 tile below the above text
         g2.drawString("Sound Effects", textX, textY);// draws given string as text with txtX/textY values
 
-        if (commandNum == 1) {                             // draws cursor next to Sound Effects
-            g2.drawString(">", textX - 25, textY);  // draws given string as text with txtX/textY values
-        }
+//        if (commandNum == 1) {
+//            g2.drawString(">", textX - 25, textY);
+//        }
 
+        // draws cursor next to Sound Effects
+        playerIconPos(textX+12,textY,1);            // draws given string as text with txtX/textY values
         // Controls
         textY += gamePanel.getTileSize();                // give text a position 1 tile below the above text
         g2.drawString("Controls", textX, textY);     // draws given string as text with txtX/textY values
 
         if (commandNum == 2) {                             // draws cursor next to Sound Effects
-            g2.drawString(">", textX - 25, textY);  // draws given string as text with txtX/textY values
-
+//            g2.drawString(">", textX - 25, textY);  // draws given string as text with txtX/textY values
+            playerIconPos(textX+12,textY,2);
             if (gamePanel.getKeyHandler().isEnterPressed()) {
                 setOptionsSubState(1);                            // set substate to keyboard controls window
                 commandNum = 0;                                   // reset commandNum for option selection
@@ -314,7 +319,8 @@ public class UI implements WindowInterface {
         g2.drawString("Quit Game", textX, textY);              // draws given string as text with txtX/textY values
 
         if (commandNum == 3) {                                     // draws cursor next to Quit
-            g2.drawString(">", textX - 25, textY);          // draws given string as text with txtX/textY values
+            //g2.drawString(">", textX - 25, textY);          // draws given string as text with txtX/textY values
+            playerIconPos(textX+12,textY,3);
             if (gamePanel.getKeyHandler().isEnterPressed()) {
                 setOptionsSubState(2);                            // set substate to quit game window
                 commandNum = 0;                                   // reset commandNum for option selection
@@ -327,7 +333,8 @@ public class UI implements WindowInterface {
         g2.drawString("Back", textX, textY);                   // draws given string as text with txtX/textY values
 
         if (commandNum == 4) {                                     // draws cursor next to Back
-            g2.drawString(">", textX - 25, textY);          // draws given string as text with txtX/textY values
+            //g2.drawString(">", textX - 25, textY);          // draws given string as text with txtX/textY values
+            playerIconPos(textX+12,textY,4);
             if (gamePanel.getKeyHandler().isEnterPressed()) {
                 gamePanel.gameState = gamePanel.playState;        // return to playstate
                 commandNum = 0;                                   // reset commandNum for option slection
@@ -356,6 +363,8 @@ public class UI implements WindowInterface {
         int textY = frameY + gamePanel.getTileSize(); // y pos
 
         // Draw Title Text of Window
+//        g2.setColor(Color.white);
+//        g2.setFont(g2.getFont().deriveFont(18F));
         g2.drawString(text, textX, textY);
 
         textX = frameX + gamePanel.getTileSize();                    // move text left
@@ -396,8 +405,8 @@ public class UI implements WindowInterface {
         g2.drawString("Back", textX, textY);
 
         if(commandNum == 0){
-            g2.drawString(">", textX - 25, textY);
-
+            //g2.drawString(">", textX - 25, textY);
+            playerIconPos(textX+12,textY,0);
             if(gamePanel.getKeyHandler().isEnterPressed()){
                 setOptionsSubState(0);
             }
@@ -406,19 +415,20 @@ public class UI implements WindowInterface {
 
     // draws window and selections to confirm user is ready to quit game
     private void optionEndGameConfirm(int frameX, int frameY) {
-        int textX = frameX + gamePanel.getTileSize();                // starting x position
+        String text = "Quit the Game?";
+        int textX = getXForCenteredText(text);           // starting x position
         int textY = frameY + gamePanel.getTileSize();                // starting y position
-
-        g2.drawString("Quit the Game?", textX, textY);           // draw confirmation text
+        g2.drawString(text, textX, textY);           // draw confirmation text
 
         //CHOICES
         // Return to Title Screen
-        String text = "Yes";                                         // Yes text
+        text = "Yes";                                         // Yes text
         textX = getXForCenteredText(text);                           // center this text on the x
         textY += gamePanel.getTileSize() * 3;                        // move this text 3 tiles below confirmation text
         g2.drawString(text, textX, textY);                           // draw text is specified position
         if (commandNum == 0) {                                       // if on the Yes selection,
-            g2.drawString(">", textX - 25, textY);               // draw the cursor next to "yes"
+            //g2.drawString(">", textX - 25, textY);               // draw the cursor next to "yes"
+            playerIconPos(textX+12,textY,0);
             if (gamePanel.getKeyHandler().enterPressed) {              // if enter is pressed,
                 setOptionsSubState(0);                                    // reset subState
                 System.exit(0);                                     // exit app
@@ -431,7 +441,8 @@ public class UI implements WindowInterface {
         textY += gamePanel.getTileSize();                            // move this text 1 tiles below yes text
         g2.drawString(text, textX, textY);                           // draw text is specified position
         if (commandNum == 1) {                                       // if on the Yes selection,
-            g2.drawString(">", textX - 25, textY);               // draw the cursor next to "no"
+            //g2.drawString(">", textX - 25, textY);               // draw the cursor next to "no"
+            playerIconPos(textX+12,textY,1);
             if (gamePanel.getKeyHandler().enterPressed) {              // if enter is pressed,
                 setOptionsSubState(0);                                    // reset subState
                 commandNum = 3;                                           // reset commandNum selection back to "quit game"

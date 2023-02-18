@@ -58,7 +58,7 @@ public class GamePanel extends JPanel implements Runnable {
 
     public LocationManager locations = new LocationManager(true);
 
-    public Location currentRoom = locations.getLocations().get("sector6");
+    public Location currentRoom = locations.getLocations().get("sector2");
     public ItemManager items = new ItemManager(this);
 
     public ObjectManager object = new ObjectManager(this);
