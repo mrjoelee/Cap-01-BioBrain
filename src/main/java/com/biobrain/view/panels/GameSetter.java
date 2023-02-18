@@ -16,11 +16,11 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 
 public class GameSetter extends JFrame implements WindowInterface {
-        static JFrame window;
-        //static JPanel inventory;
-        static GamePanel gamePanel;
-        static InventoryPanel inventoryPanel;
-        JLabel inventoryImg;
+    static JFrame window;
+    //static JPanel inventory;
+    static GamePanel gamePanel;
+    static InventoryPanel inventoryPanel;
+    JLabel inventoryImg;
     // create a window of the game logic and begins play
 
     public GameSetter() {
@@ -34,11 +34,10 @@ public class GameSetter extends JFrame implements WindowInterface {
         window.setTitle("BioBrain");                            // set title of window to game title
         window.setIconImage(icon);
 
-        gamePanel = new GamePanel();                            // new instance of GamePanel (contains game logic)
-        //inventoryPanel = new InventoryPanel(this,gamePanel); // new panel for inventory
-        //inventoryImg = new JLabel(new ImageIcon(image));            // label to add inventory img
-        //inventoryPanel.add(inventoryImg);
         gamePanel = new GamePanel();               // new instance of GamePanel (contains game logic)
+        inventoryPanel = new InventoryPanel(this, gamePanel); // new panel for inventory
+        inventoryImg = new JLabel(new ImageIcon(image));            // label to add inventory img
+        inventoryPanel.add(inventoryImg);
 
         window.add(gamePanel);                                  // add Game Panel as window display
         window.pack();
@@ -50,21 +49,6 @@ public class GameSetter extends JFrame implements WindowInterface {
 
         gamePanel.startGameThread();                            // begin the game thread to start game loop
 
-        WindowInterface.displayPopUpWindow(gamePanel, FileLoader.loadTextFile("Instructions/Instructions.txt")); // call a pop-up window
+        //WindowInterface.displayPopUpWindow(gamePanel, FileLoader.loadTextFile("Instructions/Instructions.txt")); // call a pop-up window
     }
-
-    public static void manageVisibility(){
-        if(gamePanel.gameState == gamePanel.playState){
-            //inventoryPanel.setVisible(true);
-            //window.add(inventoryPanel,BorderLayout.LINE_END);
-            //window.pack();
-        }
-    }
-
-//    public static void  removeInventoryPanel(){
-//        if(gamePanel.gameState == gamePanel.gameOverState){
-//            window.remove(inventoryPanel);
-//            window.pack();
-//        }
-//    }
 }

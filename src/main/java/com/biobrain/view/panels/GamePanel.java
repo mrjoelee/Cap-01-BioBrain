@@ -11,7 +11,8 @@ import com.biobrain.items.ItemManager;
 import com.biobrain.model.Location;
 import com.biobrain.util.music.SoundManager;
 import com.biobrain.objects.ObjectManager;
-import com.biobrain.view.entities.Entity;
+import com.biobrain.view.entities.NPC.Npc;
+import com.biobrain.view.entities.NPC.RobotSetter;
 import com.biobrain.view.entities.Player;
 import com.biobrain.view.entities.Projectile;
 import com.biobrain.view.event.CollisionDetector;
@@ -23,8 +24,6 @@ import com.biobrain.view.tile.TileHelper;
 import com.biobrain.view.tile.TileSetter;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,17 +48,22 @@ public class GamePanel extends JPanel implements Runnable {
     private BioBrainApp bioBrainApp;
     // creation of manager classes
     public KeyHandler keyHandler = new KeyHandler(this);        // create new instance of input manager for keyboard commands
+
     public Player player = new Player(this, keyHandler);  // create instance of Player
     public TileSetter tileSetter = new TileSetter();                // instance of TileSetter to place tile images
     public TileHelper tileHelper = new TileHelper(this);        // instance of TileHelper to line up tiles
     private SoundManager sfx;                                       // instance of SoundManager used for SFX
     private SoundManager music;                                     // instance of SoundManager used for music
+
     public LocationManager locations = new LocationManager(true);
-    public Location currentRoom = locations.getLocations().get("sector2");
+
+    public Location currentRoom = locations.getLocations().get("sector6");
     public ItemManager items = new ItemManager(this);
+
     public ObjectManager object = new ObjectManager(this);
     public Map playerMap = new Map(this);
     public CollisionDetector collisionDetector = new CollisionDetector(this);
+    private RobotSetter robotSetter = new RobotSetter(this);
 
     // GAME SETTINGS
     public UI ui = new UI(this);                   // create new instance of User Interface
@@ -82,6 +86,9 @@ public class GamePanel extends JPanel implements Runnable {
     private boolean grayScreen = false;
     private int alpha = 0;
 
+    //TODO AIROBOT
+    public List<Npc> aiRobots= new ArrayList<>();
+
     public GamePanel() {
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
         this.setBackground(Color.black);
@@ -92,7 +99,6 @@ public class GamePanel extends JPanel implements Runnable {
         setMusic(new SoundManager(this));
     }
 
-
     // CLASS METHODS
     // define context for game start, starting gameState, starting map, and first song played
     public void setupGame() {
@@ -101,6 +107,7 @@ public class GamePanel extends JPanel implements Runnable {
         bioBrainApp.setPlayer(getPlayer()); // track the created player in memory
         gameState = playState;              // begin playstate, which changes to bring user to new scenes/menus
         mapDisplayed = currentRoom.getRoomCode();
+       robotSetter.setRobots();
         playMusic("mainMenuTheme"); // plays main menu theme from soundsURL map inside SoundManager
     }
 
@@ -153,6 +160,11 @@ public class GamePanel extends JPanel implements Runnable {
         // if game is in a state that allows the player to move
         if (gameState == playState || gameState == dialoguePlay) {
             player.update(); /* listens for player controller for movement */
+            for (Npc aiRobot : aiRobots) {
+                if (aiRobot != null) {
+                    aiRobot.update();
+                }
+            }
             int i = 0;
             while(projectiles.size() > 0 && i < projectiles.size()){
                 if(projectiles.get(i) != null){
@@ -207,6 +219,12 @@ public class GamePanel extends JPanel implements Runnable {
             items.draw(g2);
             object.draw(g2);
             currentRoom.draw(g2);
+            for (Npc aiRobot : aiRobots) {
+                if (aiRobot != null) {
+                    aiRobot.draw(g2);
+                }
+            }
+
             player.draw(g2);
             ui.draw(g2);
             drawAttack(g2);
@@ -222,6 +240,11 @@ public class GamePanel extends JPanel implements Runnable {
         items.draw(g2);
         object.draw(g2);
         currentRoom.draw(g2);
+        for (Npc aiRobot : aiRobots) {
+            if (aiRobot != null) {
+                aiRobot.draw(g2);
+            }
+        }
         player.draw(g2);
         ui.draw(g2);
         drawAttack(g2);

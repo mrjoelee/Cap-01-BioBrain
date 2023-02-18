@@ -49,7 +49,8 @@ public class Player extends Entity {
     public Player(GamePanel gamePanel, KeyHandler keyHandler) {
         super(gamePanel);
         //TODO Undo for testing purposes
-        this.mainWeapon = new Item("blaster", "a blaster test", 5);
+        this.mainWeapon = null;
+                //= new Item("neuralyzer", "a blaster test", 5);
         this.visitedLocations = new ArrayList<>();
         this.inventory = new HashMap<>();
         this.invItemImages  = new HashMap<>();
@@ -76,7 +77,9 @@ public class Player extends Entity {
     // default player configuration values
     public void setDefaultValues() {
         labX = (gamePanel.getTileSize() * gamePanel.getMaxSectorCol()) /2; // player x position in lab
-        labY = (gamePanel.getTileSize() * gamePanel.getMaxSectorRow()) /2; // player y position in lab
+        labY = (gamePanel.getTileSize() * gamePanel.getMaxSectorRow())/2; // player y position in lab
+        setWidth(gamePanel.getTileSize());
+        setHeight(gamePanel.getTileSize());
         speed = 4;   // how fast player moves through positions
 
         //Player Status
@@ -201,6 +204,7 @@ public class Player extends Entity {
             gamePanel.collisionDetector.checkObject(this);
             String itemGrabbed = gamePanel.collisionDetector.checkGrabItem(this);
             pickUpItem(itemGrabbed);
+            gamePanel.collisionDetector.checkNPCCollision(this, gamePanel.aiRobots);
             //gamePanel.eventHandler.checkEvent();
 
             if (!collisionOn) {
@@ -235,7 +239,6 @@ public class Player extends Entity {
         }
         if(gamePanel.keyHandler.attackKeyPressed){
             isAttacking = true;
-            loadAttackImages();
             playerAttack();
         }
     }
@@ -249,11 +252,12 @@ public class Player extends Entity {
     }
 
     private void playerAttack(){
-        if (mainWeapon == null){
-            playerHandCombat();
+        if(mainWeapon == null){
+            loadAttackImages();
         }
-        else if(mainWeapon.getName().equalsIgnoreCase("blaster") || mainWeapon.getName().equalsIgnoreCase("harpoon")){
+       else if(mainWeapon.getName().equalsIgnoreCase("blaster") || mainWeapon.getName().equalsIgnoreCase("harpoon")){
             //TODO can we add a attack cool down for each weapon
+            loadAttackImages();
             long currentTime = System.currentTimeMillis();
             long attackCoolDown = 250;
             if(currentTime - lastAttackTime > attackCoolDown) {
@@ -262,14 +266,15 @@ public class Player extends Entity {
             }
         }
         else if (mainWeapon.getName().equalsIgnoreCase("neuralyzer")) {
+           loadAttackImages();
             long currentTime = System.currentTimeMillis();
-            long attackCoolDown = 500; //timer so the neuralyzer isn't used back to back
+            long attackCoolDown = 3000; //timer so the neuralyzer isn't used back to back
             if(currentTime - lastAttackTime > attackCoolDown) {
                 gamePanel.setGrayScreen(true);
                 neuralyzerEffect();
+                lastAttackTime = currentTime;
             }
         }
-        isAttacking = false;
     }
 
     public void neuralyzerEffect() {
@@ -299,10 +304,6 @@ public class Player extends Entity {
         });
         timer.setInitialDelay(0);
         timer.start();
-    }
-
-    public void playerHandCombat(){
-
     }
 
     public void loadAttackImages(){
@@ -389,6 +390,7 @@ public class Player extends Entity {
                     image = rightAttack;
                     break;
             }
+            isAttacking = false;
         }else {
             switch (direction) {
                 case "up":
@@ -426,9 +428,9 @@ public class Player extends Entity {
             }
         }
         if (gamePanel.currentRoom.isSector()) {
-            g2.drawImage(image, labX, labY, gamePanel.getTileSize(), gamePanel.getTileSize(), null);
+            g2.drawImage(image, labX, labY, getWidth(), getHeight(), null);
         } else {
-            g2.drawImage(image, screenX, screenY, gamePanel.getTileSize(), gamePanel.getTileSize(), null);
+            g2.drawImage(image, screenX, screenY, getWidth(), getHeight(), null);
         }
     }
 

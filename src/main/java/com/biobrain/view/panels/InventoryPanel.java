@@ -10,17 +10,18 @@ import java.awt.image.BufferedImage;
 public class InventoryPanel extends JPanel {
     public JFrame inventoryFrame;
     public JPanel inventory = new JPanel(new BorderLayout());
-    GamePanel gamePanel = new GamePanel();
+    GamePanel gamePanel;
     ////    public Image image;
     public int screenWith = 216;
-    public int screenHeight = gamePanel.screenHeight;
+    public int screenHeight;
     Boolean isDisplay;
 
     public InventoryPanel(JFrame inventoryFrame,  GamePanel gamePanel) {
+        this.gamePanel = gamePanel;
+        this.screenHeight = gamePanel.screenHeight;
         this.setPreferredSize((new Dimension(216, screenHeight)));
         this.inventoryFrame = inventoryFrame;
         this.setLayout(new BorderLayout());
-        this.gamePanel = gamePanel;
         this.setOpaque(false);
     }
 
