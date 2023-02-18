@@ -1,19 +1,15 @@
 package com.biobrain.items;
 
-import com.biobrain.model.Item;
-import com.biobrain.model.Location;
-import com.biobrain.util.FileLoader;
 import com.biobrain.view.entities.ItemEntity;
 import com.biobrain.view.panels.GamePanel;
-import com.biobrain.view.tile.Tile;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-
 import java.awt.*;
 import java.io.*;
 import java.lang.reflect.Type;
 import java.util.*;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class ItemManager {
     private final Map<String, ItemEntity> items;
@@ -38,12 +34,17 @@ public class ItemManager {
     }
 
 
+    public static List<ItemEntity> getItemsByRoomCode(int roomCode){
+        return parseItemsFromJson().stream().filter(e-> e.getRoomCode() == roomCode).collect(Collectors.toList());
+    }
+
     public static List<ItemEntity> parseItemsFromJson() {
         Gson gson = new Gson();
         List<ItemEntity> list = new ArrayList<>();
         try (Reader reader = new InputStreamReader(Objects.requireNonNull(ItemManager.class.getClassLoader().getResourceAsStream("jsonFiles/items.json")))) {
             Type itemType = new TypeToken<ArrayList<ItemEntity>>() {
             }.getType();
+
             list = gson.fromJson(reader, itemType);
         } catch (IOException e) {
             e.printStackTrace();
@@ -53,7 +54,7 @@ public class ItemManager {
 
     public void draw(Graphics2D g2) {
         for (ItemEntity item : items.values()) {
-            if (item.getRoomCode() == gamePanel.currentRoom.getRoomCode()) {
+            if (item != null && item.getRoomCode() == gamePanel.currentRoom.getRoomCode()) {
                 item.draw(g2);
             }
         }

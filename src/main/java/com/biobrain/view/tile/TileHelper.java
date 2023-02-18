@@ -105,7 +105,7 @@ public class TileHelper {
 
             }
         }
-        g2.setFont(g2.getFont().deriveFont(20f));
+        g2.setFont(gp.ui.getFont().deriveFont(25F));
         g2.setColor(Color.white);
         g2.drawString(gp.currentRoom.getName(), 20, 35);
     }

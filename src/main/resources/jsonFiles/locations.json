@@ -25,7 +25,7 @@
     ],
     "isSector" : true,
     "isLocked": false,
-    "description": "This is the Weapon's Chamber. A highly secured location with limited access. Be sure you have your badge to get in!",
+    "description": "Weapon's Chamber: A highly secured location with limited access. Be sure you have your badge to get in!",
     "npc":"",
     "directions": {
       "east": "Sector 2 - Control Lab",
@@ -43,7 +43,7 @@
     ],
     "isSector" : true,
     "isLocked": false,
-    "description": "This is the Control Lab. You can monitor the entire Space Station from here! There are over a dozen cameras, buttons for Sector access control, and controls for the alarm and comms system.",
+    "description": "Control Lab: You can monitor the entire Space Station from here! There are over a dozen cameras, buttons for Sector access control, and controls for the alarm and comms system.",
     "npc":"",
     "directions": {
       "east": "Sector 3 - Production Room",
@@ -64,7 +64,7 @@
     ],
     "isSector" : true,
     "isLocked": false,
-    "description": "This is the Production Room. The main hub for AI body creation, beginning from metal shaping all the way to final skin grafting. Tons of robots in there, but they're inactive...or at least they should be.",
+    "description": "Production Room: The main hub for AI body creation, beginning from metal shaping all the way to final skin grafting. Tons of robots in there, but they're inactive...or at least they should be.",
     "npc": "Rouge AI Robot1",
     "directions": {
       "east": "Sector 3 - Production Room",
@@ -84,7 +84,7 @@
     ],
     "isSector" : true,
     "isLocked": false,
-    "description": "This is the Storage. Extra tools, extra parts, it's all there.",
+    "description": "Storage: Extra tools, extra parts, it's all there.",
     "npc": "Rouge AI Robot2",
     "directions": {
       "north": "Sector 1 - Weapons Chamber",
@@ -103,7 +103,7 @@
     ],
     "isSector" : true,
     "isLocked": false,
-    "description": "This is the Conference Room where all the presentations to government agents and the director take place.",
+    "description": "Conference Room: All the presentations to government agents and the director take place.",
     "npc": "Rouge AI Robot3",
     "directions": {
       "north": "Sector 2 - Control Lab",
@@ -111,7 +111,6 @@
       "east": "Sector 6 - Train Dock"
     }
   },
-
   {
     "name": "Sector 6 - Train Dock",
     "roomCode": 6,
@@ -120,8 +119,8 @@
     "map": "images/mapS6.txt",
     "items": [],
     "isSector" : true,
-    "isLocked": false,
-    "description": "This is the Train Dock.. The only way to leave and enter the Space Station. Be careful! You must get there before the boss does!",
+    "isLocked": true,
+    "description": "Train Dock: The only way to leave and enter the Space Station. Be careful! You must get there before the boss does!",
 
     "npc": "Boss AI Robot",
     "directions": {

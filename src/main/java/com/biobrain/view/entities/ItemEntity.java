@@ -11,6 +11,7 @@ import com.biobrain.view.panels.GamePanel;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.List;
 
 public class ItemEntity{
     String name;
@@ -47,13 +48,18 @@ public class ItemEntity{
 
     // update player graphics
     public void draw(Graphics2D g2) {
-
         g2.drawImage(getItemImage(), getX(), getY(), 48, 48, null);
+        g2.setStroke(new BasicStroke(3));
+        g2.setColor(new Color(0,0,0,0));
         g2.drawRect(getItemCollider().x, getItemCollider().y, getItemCollider().width, getItemCollider().height);
     }
 
     public String getName() {
         return name;
+    }
+
+    public String getDescription() {
+        return description;
     }
 
     public Rectangle getItemCollider(){
@@ -72,7 +78,6 @@ public class ItemEntity{
         return y;
     }
 
-
     public String getImagePath(){
         return image;
     }
@@ -84,4 +89,5 @@ public class ItemEntity{
     public BufferedImage getItemImage(){
         return FileLoader.loadBuffered(getImagePath());
     }
+
 }

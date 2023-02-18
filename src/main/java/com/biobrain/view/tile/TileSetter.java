@@ -18,7 +18,6 @@ public class TileSetter {
         loadRoomTiles();
     }
     private void loadRoomTiles(){
-        //TODO : sector generic is a temporary style used for all sectors. As we start designing sectors we can change the tiles here.
         List<Tile> genericTiles = new ArrayList<>(){{
             add(new Tile(FileLoader.loadBuffered("maps/sectorGeneric/sector_0.png"), true));
             add(new Tile(FileLoader.loadBuffered("maps/sectorGeneric/sector_1.png"), true));
@@ -33,7 +32,24 @@ public class TileSetter {
 
         }};
 
-        roomTiles.put("lab", genericTiles);
+        List<Tile> labTiles = new ArrayList<>(){{
+            add(new Tile(FileLoader.loadBuffered("maps/lab/lab_0.png"), true));
+            add(new Tile(FileLoader.loadBuffered("maps/lab/lab_1.png"), true));
+            add(new Tile(FileLoader.loadBuffered("maps/lab/lab_2.png"), true));
+            add(new Tile(FileLoader.loadBuffered("maps/lab/lab_3.png"), true));
+            add(new Tile(FileLoader.loadBuffered("maps/lab/lab_4.png"), true));
+            add(new Tile(FileLoader.loadBuffered("maps/lab/lab_5.png"), false));
+            add(new Tile(FileLoader.loadBuffered("maps/lab/lab_6.png"), true));
+            add(new Tile(FileLoader.loadBuffered("maps/lab/lab_7.png"), true));
+            add(new Tile(FileLoader.loadBuffered("maps/lab/lab_8.png"), true));
+            add(new Tile(FileLoader.loadBuffered("maps/lab/lab_9.png"), true));
+            add(new Tile(FileLoader.loadBuffered("maps/lab/lab_10.png"), false));
+            add(new Tile(FileLoader.loadBuffered("maps/lab/lab_11.png"), false));
+            add(new Tile(FileLoader.loadBuffered("maps/lab/lab_12.png"), false));
+
+        }};
+
+        roomTiles.put("lab", labTiles);
         roomTiles.put("sector1", genericTiles);
         roomTiles.put("sector2", genericTiles);
         roomTiles.put("sector3", genericTiles);

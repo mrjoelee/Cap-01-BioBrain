@@ -4,21 +4,20 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.Objects;
 
 public class FileLoader {
 
-    public static BufferedImage loadBuffered(String path){
-        BufferedImage bufferedImage = null;
-        try {
-            bufferedImage = ImageIO.read(Objects.requireNonNull(FileLoader.class.getClassLoader().getResourceAsStream(path)));
-        }
-        catch (IOException e) {
+    public static BufferedImage loadBuffered(String path) {
+        try (InputStream in = FileLoader.class.getClassLoader().getResourceAsStream(path)) {
+            //noinspection ConstantConditions
+            return ImageIO.read(in);
+        } catch (IOException e) {
 
             e.printStackTrace();
         }
-        return bufferedImage;
+        return null;
     }
 
     public static String loadTextFile(String fileName) {

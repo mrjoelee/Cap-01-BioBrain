@@ -1,0 +1,804 @@
+[
+  {
+    "name": "capsule1_1",
+    "roomCode": 1,
+    "image": "images/objects/capsule1.png",
+    "description": "Is that John Legend or Chase Brooks with his Mahome's Jersey??..",
+    "x": 20,
+    "y": 30,
+    "width": 65,
+    "height": 50
+  },
+  {
+    "name": "capsule1_2",
+    "roomCode": 1,
+    "image": "images/objects/capsule_liquid.png",
+    "description": "Seems like the humanoid has been taken out...",
+    "x": 75,
+    "y": 30,
+    "width": 65,
+    "height": 50
+  },
+  {
+    "name": "capsule1_3",
+    "roomCode": 1,
+    "image": "images/objects/capsule1.png",
+    "description": "Oh no! It's Sergio and he still got his kitchen apron...",
+    "x": 140,
+    "y": 30,
+    "width": 65,
+    "height": 50
+  },
+  {
+    "name": "capsule1_4",
+    "roomCode": 1,
+    "image": "images/objects/capsule_liquid.png",
+    "description": "Seems like the humanoid has been taken out...",
+    "x": 195,
+    "y": 30,
+    "width": 65,
+    "height": 50
+  },
+  {
+    "name": "capsule1_5",
+    "roomCode": 1,
+    "image": "images/objects/capsule1.png",
+    "description": "AiWood has been captured by the Gulag...",
+    "x": 265,
+    "y": 30,
+    "width": 65,
+    "height": 50
+  },
+  {
+    "name": "capsule1_6",
+    "roomCode": 1,
+    "image": "images/objects/capsule_liquid.png",
+    "description": "Seems like the humanoid has been taken out...",
+    "x": 320,
+    "y": 30,
+    "width": 65,
+    "height": 50
+  },
+  {
+    "name": "screenLab1_1",
+    "roomCode": 1,
+    "image": "images/objects/screenLab.png",
+    "description": "Monitor displaying the status of the containers...",
+    "x": 10,
+    "y": 130,
+    "width": 100,
+    "height": 30
+  },
+  {
+    "name": "screenLab1_2",
+    "roomCode": 1,
+    "image": "images/objects/screenLab.png",
+    "description": "Monitor displaying the status of the containers...",
+    "x": 155,
+    "y": 130,
+    "width": 100,
+    "height": 30
+  },
+  {
+    "name": "computer1_1",
+    "roomCode": 1,
+    "image": "images/objects/computer.png",
+    "description": "computer doing computation stuff...",
+    "x": 10,
+    "y": 200,
+    "width": 120,
+    "height": 40
+  },
+  {
+    "name": "computer1_2",
+    "roomCode": 1,
+    "image": "images/objects/computer.png",
+    "description": "computer doing computation stuff...",
+    "x": 155,
+    "y": 200,
+    "width": 120,
+    "height": 40
+  },
+  {
+    "name": "capsule2_1",
+    "roomCode": 2,
+    "image": "images/objects/capsule1.png",
+    "description": "Rennie is not looking so good...",
+    "x": 20,
+    "y": 30,
+    "width": 65,
+    "height": 50
+  },
+  {
+    "name": "capsule2_2",
+    "roomCode": 2,
+    "image": "images/objects/empty_capsule.png",
+    "description": "An empty container...",
+    "x": 75,
+    "y": 30,
+    "width": 65,
+    "height": 50
+  },
+  {
+    "name": "capsule2_3",
+    "roomCode": 2,
+    "image": "images/objects/capsule1.png",
+    "description": "John can't go to disneyland anymore...",
+    "x": 140,
+    "y": 30,
+    "width": 65,
+    "height": 50
+  },
+  {
+    "name": "capsule2_4",
+    "roomCode": 2,
+    "image": "images/objects/empty_capsule.png",
+    "description": "An empty container...",
+    "x": 195,
+    "y": 30,
+    "width": 65,
+    "height": 50
+  },
+  {
+    "name": "capsule2_5",
+    "roomCode": 2,
+    "image": "images/objects/capsule1.png",
+    "description": "Chris is still coding inside here...",
+    "x": 265,
+    "y": 30,
+    "width": 65,
+    "height": 50
+  },
+  {
+    "name": "capsule2_6",
+    "roomCode": 2,
+    "image": "images/objects/empty_capsule.png",
+    "description": "An empty container...",
+    "x": 320,
+    "y": 30,
+    "width": 65,
+    "height": 50
+  },
+  {
+    "name": "screenLab2_1",
+    "roomCode": 2,
+    "image": "images/objects/screenLab.png",
+    "description": "Monitor displaying the status of the containers...",
+    "x": 10,
+    "y": 125,
+    "width": 100,
+    "height": 30
+  },
+  {
+    "name": "screenLab2_2",
+    "roomCode": 2,
+    "image": "images/objects/screenLab1.png",
+    "description": "Monitor displaying progression of the humanoid creation...",
+    "x": 155,
+    "y": 180,
+    "width": 100,
+    "height": 30
+  },
+  {
+    "name": "screenLab2_3",
+    "roomCode": 2,
+    "image": "images/objects/screenLab.png",
+    "description": "Monitor displaying the status of the containers...",
+    "x": 300,
+    "y": 125,
+    "width": 100,
+    "height": 30
+  },
+  {
+    "name": "computer2_1",
+    "roomCode": 2,
+    "image": "images/objects/blackComputer.png",
+    "description": "Network Interface: Use the tablet to hack the network to disable the laser shield from the biobrain",
+    "x": 10,
+    "y": 190,
+    "width": 80,
+    "height": 40
+  },
+
+  {
+    "name": "computer2_2",
+    "roomCode": 2,
+    "image": "images/objects/computer.png",
+    "description": "computer doing computation stuff...",
+    "x": 290,
+    "y": 185,
+    "width": 120,
+    "height": 40
+  },
+  {
+    "name": "capsule3_1",
+    "roomCode": 3,
+    "image": "images/objects/capsule1.png",
+    "description": "Michael is still boxing inside the container...",
+    "x": 20,
+    "y": 30,
+    "width": 65,
+    "height": 50
+  },
+  {
+    "name": "capsule3_2",
+    "roomCode": 3,
+    "image": "images/objects/empty_capsule.png",
+    "description": "An empty container...",
+    "x": 75,
+    "y": 30,
+    "width": 65,
+    "height": 50
+  },
+  {
+    "name": "capsule3_3",
+    "roomCode": 3,
+    "image": "images/objects/capsule1.png",
+    "description": "No! it's grandpa Nick!...",
+    "x": 140,
+    "y": 30,
+    "width": 65,
+    "height": 50
+  },
+  {
+    "name": "capsule3_4",
+    "roomCode": 3,
+    "image": "images/objects/empty_capsule.png",
+    "description": "An empty container...",
+    "x": 195,
+    "y": 30,
+    "width": 65,
+    "height": 50
+  },
+  {
+    "name": "capsule3_5",
+    "roomCode": 3,
+    "image": "images/objects/capsule1.png",
+    "description": "Larry with this drum sticks...",
+    "x": 265,
+    "y": 30,
+    "width": 65,
+    "height": 50
+  },
+  {
+    "name": "capsule3_6",
+    "roomCode": 3,
+    "image": "images/objects/empty_capsule.png",
+    "description": "An empty container...",
+    "x": 320,
+    "y": 30,
+    "width": 65,
+    "height": 50
+  },
+  {
+    "name": "screenLab3_7",
+    "roomCode": 3,
+    "image": "images/objects/screenLab1.png",
+    "description": "Monitor displaying progression of the humanoid creation...",
+    "x": 155,
+    "y": 140,
+    "width": 100,
+    "height": 30
+  },
+  {
+    "name": "computer3_8",
+    "roomCode": 3,
+    "image": "images/objects/blackComputer.png",
+    "description": "A computer on power saving mode...",
+    "x": 140,
+    "y": 210,
+    "width": 60,
+    "height": 30
+  },
+  {
+    "name": "computer3_9",
+    "roomCode": 3,
+    "image": "images/objects/blackComputer.png",
+    "description": "A computer on power saving mode...",
+    "x": 190,
+    "y": 210,
+    "width": 60,
+    "height": 30
+  },
+  {
+    "name": "greenMonitor3_10",
+    "roomCode": 3,
+    "image": "images/objects/greenMonitor.png",
+    "description": "Monitors showing bunch of different charts...what in the world?",
+    "x": 10,
+    "y": 140,
+    "width": 100,
+    "height": 30
+  },
+  {
+    "name": "greenMonitor3_11",
+    "roomCode": 3,
+    "image": "images/objects/greenMonitor.png",
+    "description": "Monitors showing bunch of different charts...what in the world?",
+    "x": 300,
+    "y": 140,
+    "width": 100,
+    "height": 30
+  },
+  {
+    "name": "blackMonitor4_1",
+    "roomCode": 4,
+    "image": "images/objects/blackMonitor.png",
+    "description": "A QLED monitor that is power off...",
+    "x": 10,
+    "y": 50,
+    "width": 100,
+    "height": 30
+  },
+  {
+    "name": "blackComputer4_2",
+    "roomCode": 4,
+    "image": "images/objects/blackComputer.png",
+    "description": "A computer on power saving mode...",
+    "x": 90,
+    "y": 50,
+    "width": 60,
+    "height": 30
+  },
+  {
+    "name": "box4_3",
+    "roomCode": 4,
+    "image": "images/objects/openBox.png",
+    "description": "An empty box...nothing to grab",
+    "x": 245,
+    "y": 50,
+    "width": 70,
+    "height": 25
+  },
+  {
+    "name": "box4_4",
+    "roomCode": 4,
+    "image": "images/objects/closedBox.png",
+    "description": "A closed box..I don't have time to access this!",
+    "x": 195,
+    "y": 50,
+    "width": 70,
+    "height": 25
+  },
+  {
+    "name": "box4_5",
+    "roomCode": 4,
+    "image": "images/objects/openBox.png",
+    "description": "An empty box...nothing to grab",
+    "x": 140,
+    "y": 50,
+    "width": 70,
+    "height": 25
+  },
+  {
+    "name": "box4_6",
+    "roomCode": 4,
+    "image": "images/objects/closedBox.png",
+    "description": "A closed box..I don't have time to access this!",
+    "x": 300,
+    "y": 50,
+    "width": 75,
+    "height": 25
+  },
+  {
+    "name": "emptyCapsule4_7",
+    "roomCode": 4,
+    "image": "images/objects/empty_capsule.png",
+    "description": "An empty container...",
+    "x": 75,
+    "y": 120,
+    "width": 65,
+    "height": 50
+  },
+  {
+    "name": "emptyCapsule4_8",
+    "roomCode": 4,
+    "image": "images/objects/empty_capsule.png",
+    "description": "An empty container...",
+    "x": 140,
+    "y": 120,
+    "width": 65,
+    "height": 50
+  },
+  {
+    "name": "emptyCapsule_4_9",
+    "roomCode": 4,
+    "image": "images/objects/empty_capsule.png",
+    "description": "An empty container...",
+    "x": 200,
+    "y": 120,
+    "width": 65,
+    "height": 50
+  },
+  {
+    "name": "box4_10",
+    "roomCode": 4,
+    "image": "images/objects/closedBox.png",
+    "description": "A closed box..I don't have time to access this!",
+    "x": 120,
+    "y": 240,
+    "width": 70,
+    "height": 25
+  },
+  {
+    "name": "box4_11",
+    "roomCode": 4,
+    "image": "images/objects/openBox.png",
+    "description": "An empty box...nothing to grab",
+    "x": 175,
+    "y": 240,
+    "width": 70,
+    "height": 25
+  },
+  {
+    "name": "box4_12",
+    "roomCode": 4,
+    "image": "images/objects/closedBox.png",
+    "description": "A closed box..I don't have time to access this!",
+    "x": 10,
+    "y": 240,
+    "width":70,
+    "height":25
+  },
+  {
+    "name": "box4_13",
+    "roomCode": 4,
+    "image": "images/objects/openBox.png",
+    "description": "An empty box...nothing to grab",
+    "x": 65,
+    "y": 240,
+    "width": 70,
+    "height": 25
+  },
+  {
+    "name": "screenLab4_3",
+    "roomCode": 4,
+    "image": "images/objects/screenLab1.png",
+    "description": "Monitor displaying progression of the humanoid creation...",
+    "x": 268,
+    "y": 130,
+    "width": 100,
+    "height": 30
+  },
+  {
+    "name": "greenMonitor5_2",
+    "roomCode": 5,
+    "image": "images/objects/greenMonitor.png",
+    "description": "Monitor showing bunch of different charts...what in the world?",
+    "x": 80,
+    "y": 70,
+    "width": 200,
+    "height": 30
+  },
+  {
+    "name": "chair_5_1",
+    "roomCode": 5,
+    "image": "images/objects/chair.png",
+    "description": "",
+    "x": 250,
+    "y": 140,
+    "width": 32,
+    "height": 20
+  },
+  {
+    "name": "chair_5_2",
+    "roomCode": 5,
+    "image": "images/objects/chair.png",
+    "description": "",
+    "x": 220,
+    "y": 140,
+    "width": 32,
+    "height": 20
+  },
+  {
+    "name": "chair_5_3",
+    "roomCode": 5,
+    "image": "images/objects/chair.png",
+    "description": "",
+    "x": 190,
+    "y": 140,
+    "width": 32,
+    "height": 20
+  },
+  {
+    "name": "chair_5_4",
+    "roomCode": 5,
+    "image": "images/objects/chair.png",
+    "description": "",
+    "x": 160,
+    "y": 140,
+    "width": 32,
+    "height": 20
+  },
+  {
+    "name": "chair_5_5",
+    "roomCode": 5,
+    "image": "images/objects/chair.png",
+    "description": "",
+    "x": 130,
+    "y": 140,
+    "width": 32,
+    "height": 20
+  },
+  {
+    "name": "chair_5_6",
+    "roomCode": 5,
+    "image": "images/objects/chair.png",
+    "description": "",
+    "x": 100,
+    "y": 140,
+    "width": 32,
+    "height": 20
+  },
+  {
+    "name": "chair_5_7",
+    "roomCode": 5,
+    "image": "images/objects/chair.png",
+    "description": "",
+    "x": 70,
+    "y": 140,
+    "width": 32,
+    "height": 20
+  },
+  {
+    "name": "chair_5_8",
+    "roomCode": 5,
+    "image": "images/objects/chair.png",
+    "description": "",
+    "x": 40,
+    "y": 140,
+    "width": 32,
+    "height": 20
+  },
+  {
+    "name": "chair_5_9",
+    "roomCode": 5,
+    "image": "images/objects/chair.png",
+    "description": "",
+    "x": 250,
+    "y": 180,
+    "width": 32,
+    "height": 20
+  },
+  {
+    "name": "chair_5_10",
+    "roomCode": 5,
+    "image": "images/objects/chair.png",
+    "description": "",
+    "x": 220,
+    "y": 180,
+    "width": 32,
+    "height": 20
+  },
+  {
+    "name": "chair_5_11",
+    "roomCode": 5,
+    "image": "images/objects/chair.png",
+    "description": "",
+    "x": 190,
+    "y": 180,
+    "width": 32,
+    "height": 20
+  },
+  {
+    "name": "chair_5_12",
+    "roomCode": 5,
+    "image": "images/objects/chair.png",
+    "description": "",
+    "x": 160,
+    "y": 180,
+    "width": 32,
+    "height": 20
+  },
+  {
+    "name": "chair_5_13",
+    "roomCode": 5,
+    "image": "images/objects/chair.png",
+    "description": "",
+    "x": 130,
+    "y": 180,
+    "width": 32,
+    "height": 20
+  },
+  {
+    "name": "chair_5_14",
+    "roomCode": 5,
+    "image": "images/objects/chair.png",
+    "description": "",
+    "x": 100,
+    "y": 180,
+    "width": 32,
+    "height": 20
+  },
+  {
+    "name": "chair_5_15",
+    "roomCode": 5,
+    "image": "images/objects/chair.png",
+    "description": "",
+    "x": 70,
+    "y": 180,
+    "width": 32,
+    "height": 20
+  },
+  {
+    "name": "chair_5_16",
+    "roomCode": 5,
+    "image": "images/objects/chair.png",
+    "description": "",
+    "x": 40,
+    "y": 180,
+    "width": 32,
+    "height": 20
+  },
+  {
+    "name": "blackMonitor5_4",
+    "roomCode": 5,
+    "image": "images/objects/reverseMonitor.png",
+    "description": "Nothing good to watch here...",
+    "x": 150,
+    "y": 240,
+    "width": 70,
+    "height": 25
+  },
+  {
+    "name": "blackMonitor5_5",
+    "roomCode": 5,
+    "image": "images/objects/reverseMonitor.png",
+    "description": "Something on Netflix..,eh",
+    "x": 205,
+    "y": 240,
+    "width": 70,
+    "height": 25
+  },
+  {
+    "name": "blackMonitor5_6",
+    "roomCode": 5,
+    "image": "images/objects/reverseMonitor.png",
+    "description": "Only if I can connect my PS4, but no time!",
+    "x": 40,
+    "y": 240,
+    "width":70,
+    "height":25
+  },
+  {
+    "name": "blackMonitor5_7",
+    "roomCode": 5,
+    "image": "images/objects/reverseMonitor.png",
+    "description": "An QLED monitor that is off...",
+    "x": 95,
+    "y": 240,
+    "width": 70,
+    "height": 25
+  },
+  {
+    "name": "capsule6_1",
+    "roomCode": 6,
+    "image": "images/objects/capsule1.png",
+    "description": "",
+    "x": 10,
+    "y": 30,
+    "width": 65,
+    "height": 50
+  },
+  {
+    "name": "capsule6_2",
+    "roomCode": 6,
+    "image": "images/objects/capsule1.png",
+    "description": "",
+    "x": 60,
+    "y": 30,
+    "width": 65,
+    "height": 50
+  },
+  {
+    "name": "capsule6_3",
+    "roomCode": 6,
+    "image": "images/objects/capsule1.png",
+    "description": "",
+    "x": 110,
+    "y": 30,
+    "width": 65,
+    "height": 50
+  },
+  {
+    "name": "trainDockDoor6_4",
+    "roomCode": 6,
+    "image": "images/objects/trainDockDoor.png",
+    "description": "",
+    "x": 170,
+    "y": 0,
+    "width": 65,
+    "height": 40
+  },
+  {
+    "name": "capsule6_5",
+    "roomCode": 6,
+    "image": "images/objects/capsule1.png",
+    "description": "",
+    "x": 230,
+    "y": 30,
+    "width": 65,
+    "height": 50
+  },
+  {
+    "name": "capsule6_6",
+    "roomCode": 6,
+    "image": "images/objects/capsule1.png",
+    "description": "",
+    "x": 280,
+    "y": 30,
+    "width": 65,
+    "height": 50
+  },
+  {
+    "name": "capsule6_7",
+    "roomCode": 6,
+    "image": "images/objects/capsule1.png",
+    "description": "",
+    "x": 330,
+    "y": 30,
+    "width": 65,
+    "height": 50
+  },
+  {
+    "name": "capsule6_8",
+    "roomCode": 6,
+    "image": "images/objects/capsule1.png",
+    "description": "",
+    "x": 330,
+    "y": 70,
+    "width": 65,
+    "height": 50
+  },
+  {
+    "name": "capsule6_9",
+    "roomCode": 6,
+    "image": "images/objects/capsule1.png",
+    "description": "",
+    "x": 330,
+    "y": 110,
+    "width": 65,
+    "height": 50
+  },
+  {
+    "name": "capsule6_10",
+    "roomCode": 6,
+    "image": "images/objects/capsule1.png",
+    "description": "",
+    "x": 330,
+    "y": 150,
+    "width": 65,
+    "height": 50
+  },
+  {
+    "name": "capsule6_11",
+    "roomCode": 6,
+    "image": "images/objects/capsule1.png",
+    "description": "",
+    "x": 10,
+    "y": 70,
+    "width": 65,
+    "height": 50
+  },
+  {
+    "name": "capsule6_12",
+    "roomCode": 6,
+    "image": "images/objects/capsule1.png",
+    "description": "",
+    "x": 10,
+    "y": 110,
+    "width": 65,
+    "height": 50
+  },
+  {
+    "name": "capsule6_14",
+    "roomCode": 6,
+    "image": "images/objects/capsule1.png",
+    "description": "",
+    "x": 10,
+    "y": 150,
+    "width": 65,
+    "height": 50
+  }
+
+]
