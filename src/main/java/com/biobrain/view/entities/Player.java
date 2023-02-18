@@ -221,7 +221,7 @@ public class Player extends Entity {
             gamePanel.collisionDetector.checkObject(this);
             String itemGrabbed = gamePanel.collisionDetector.checkGrabItem(this);
             pickUpItem(itemGrabbed);
-            gamePanel.collisionDetector.checkNPCCollision(this, gamePanel.aiRobots);
+            //gamePanel.collisionDetector.checkNPCCollision(this, gamePanel.aiRobots);
             //gamePanel.eventHandler.checkEvent();
 
             if (!collisionOn) {
