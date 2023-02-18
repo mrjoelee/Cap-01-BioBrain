@@ -60,4 +60,11 @@ public class GameSetter extends JFrame implements WindowInterface {
             //window.pack();
         }
     }
+
+//    public static void  removeInventoryPanel(){
+//        if(gamePanel.gameState == gamePanel.gameOverState){
+//            window.remove(inventoryPanel);
+//            window.pack();
+//        }
+//    }
 }

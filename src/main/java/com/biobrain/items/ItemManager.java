@@ -13,6 +13,7 @@ import java.io.*;
 import java.lang.reflect.Type;
 import java.util.*;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class ItemManager {
     private final Map<String, ItemEntity> items;
@@ -34,6 +35,10 @@ public class ItemManager {
 //            item.setItemImage(item.getImagePath());
             items.put(item.getName(), item);
         });
+    }
+
+    public static List<ItemEntity> getItemsByRoomCode(int roomCode){
+        return parseItemsFromJson().stream().filter(e-> e.getRoomCode() == roomCode).collect(Collectors.toList());
     }
 
 

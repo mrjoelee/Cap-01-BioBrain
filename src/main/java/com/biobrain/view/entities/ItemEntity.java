@@ -11,6 +11,7 @@ import com.biobrain.view.panels.GamePanel;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.List;
 
 public class ItemEntity{
     String name;
@@ -88,4 +89,5 @@ public class ItemEntity{
     public BufferedImage getItemImage(){
         return FileLoader.loadBuffered(getImagePath());
     }
+
 }

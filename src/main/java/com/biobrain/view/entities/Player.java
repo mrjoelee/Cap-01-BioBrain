@@ -35,6 +35,8 @@ public class Player extends Entity {
     public int screenY;
     private long lastAttackTime =0;
     private boolean isAttacking = false;
+    public int health = getHealth();
+    public int maxHealth;
 
     public Player() {
         super();
@@ -46,6 +48,7 @@ public class Player extends Entity {
     // CTOR
     public Player(GamePanel gamePanel, KeyHandler keyHandler) {
         super(gamePanel);
+        //TODO Undo for testing purposes
         this.mainWeapon = new Item("blaster", "a blaster test", 5);
         this.visitedLocations = new ArrayList<>();
         this.inventory = new HashMap<>();
@@ -75,7 +78,22 @@ public class Player extends Entity {
         labX = (gamePanel.getTileSize() * gamePanel.getMaxSectorCol()) /2; // player x position in lab
         labY = (gamePanel.getTileSize() * gamePanel.getMaxSectorRow()) /2; // player y position in lab
         speed = 4;   // how fast player moves through positions
+
+        //Player Status
+        maxHealth = 6; //3 hearts
+        health = maxHealth; //1 heart equals a half heart
     }
+
+    //resetting the game if player starts a new game from gameoverState
+    public void setDefaultPositions(){
+        labX = (gamePanel.getTileSize() * gamePanel.getMaxSectorCol()) /2; // player x position in lab
+        labY = (gamePanel.getTileSize() * gamePanel.getMaxSectorRow()) /2; // player y position in lab
+    }
+    public void restoreLife(){
+        maxHealth = MAX_HEALTH;
+        health = maxHealth;
+    }
+
     public void addVisitedLocation(String location){
         visitedLocations.add(location);
     }
@@ -144,6 +162,15 @@ public class Player extends Entity {
     // function will be called each frame, only contains logic that needs constant updating
     public void update() {
         playerControls(); // listens for user input each frame
+
+        if(health > MAX_HEALTH){
+            health = MAX_HEALTH;
+        }
+        if(health <= 0){
+            gamePanel.gameState = gamePanel.gameOverState;
+            gamePanel.stopMusic();
+            gamePanel.playSfx("gameOverSound");
+        }
     }
 
     // a list of user inputs via keyboard
