@@ -30,8 +30,8 @@ public class Map {
             Location curr = locations.get(i);
             List<Tile> roomTiles = gamePanel.tileSetter.getRoomTiles(curr.getShortName());
             //items
-            List<ItemEntity> itemList = ItemManager.getItemsByRoomCode(curr.getRoomCode());
-            List<SuperObject> objectList = ObjectManager.getObjectsByRoomCode(curr.getRoomCode());
+//            List<ItemEntity> itemList = ItemManager.getItemsByRoomCode(curr.getRoomCode());
+//            List<SuperObject> objectList = ObjectManager.getObjectsByRoomCode(curr.getRoomCode());
             int width = curr.isSector() ?
                     gamePanel.getMaxSectorCol() * gamePanel.getTileSize() :
                     gamePanel.maxLabCol * gamePanel.getTileSize();
@@ -57,20 +57,20 @@ public class Map {
                 graphics2D.drawImage(roomTiles.get(tileNum).image, x, y, gamePanel.getTileSize(), gamePanel.getTileSize(), null);
 
                 //adding items
-                if(gamePanel.currentRoom.getRoomCode() != 0 && curr.getRoomCode() != 0){
-                    for (ItemEntity item : itemList) {
-                            graphics2D.drawImage(item.getItemImage(), item.getX(), item.getY(), gamePanel.getTileSize(),
-                                    gamePanel.getTileSize(), null);
-                    }
-                }
+//                if(gamePanel.currentRoom.getRoomCode() != 0 && curr.getRoomCode() != 0){
+//                    for (ItemEntity item : itemList) {
+//                            graphics2D.drawImage(item.getItemImage(), item.getX(), item.getY(), gamePanel.getTileSize(),
+//                                    gamePanel.getTileSize(), null);
+//                    }
+//                }
 
-                //adding objects
-                if(gamePanel.currentRoom.getRoomCode() != 0 && curr.getRoomCode() != 0){
-                    for (SuperObject obj : objectList) {
-                        graphics2D.drawImage(obj.getObjectImage(), obj.getX()*2, (obj.getY()*2), gamePanel.getTileSize()*2,
-                                gamePanel.getTileSize()*2, null);
-                    }
-                }
+//                //adding objects
+//                if(gamePanel.currentRoom.getRoomCode() != 0 && curr.getRoomCode() != 0){
+//                    for (SuperObject obj : objectList) {
+//                        graphics2D.drawImage(obj.getObjectImage(), obj.getX()*2, (obj.getY()*2), gamePanel.getTileSize()*2,
+//                                gamePanel.getTileSize()*2, null);
+//                    }
+//                }
 
                 col++;
 
