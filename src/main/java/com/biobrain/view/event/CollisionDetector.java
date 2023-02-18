@@ -129,10 +129,14 @@ public class CollisionDetector {
 
     // check if BioBrain can be downloaded yet
     private void isBioBrainLocked(String itemName, Player player){
-        if (itemName.equals("biobrain")){
+        if (itemName.equals("biobrain") && !gamePanel.getPlayer().getInventory().containsKey("sphere")){
             player.collisionOn = true;
             gamePanel.ui.setCurrentDialogue("The LASER SHIELD defenses must be deactivated before I can download the BIOBRAIN!");
             gamePanel.gameState = gamePanel.dialogueState;
+        }
+        if (gamePanel.getPlayer().getInventory().containsKey("sphere")){
+            System.out.println("got sphere");
+            gamePanel.ui.setCurrentDialogue("DOWNLOADED!");
         }
     }
 
@@ -243,6 +247,13 @@ public class CollisionDetector {
                             gamePanel.getBioBrainApp().setCurrentLocation(room);
                             gamePanel.gameState = gamePanel.dialoguePlay;
                             break;
+                        } else if (room.isLocked() && gamePanel.getPlayer().getInventory().containsKey("biobrain")){
+                            gamePanel.ui.setCurrentDialogue("With the BioBrain in hand, the door unlocks!");
+                            gamePanel.currentRoom = room;
+                            gamePanel.player.labX = room.getExit().x + 24;
+                            gamePanel.player.labY = room.getExit().y - gamePanel.getTileSize();
+                            gamePanel.getBioBrainApp().setCurrentLocation(room);
+                            gamePanel.gameState = gamePanel.dialoguePlay;
                         } else {
                             gamePanel.ui.setCurrentDialogue(room.getLockedMessage());
                             gamePanel.gameState = gamePanel.dialogueState;

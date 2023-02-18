@@ -4,8 +4,10 @@ import com.biobrain.model.*;
 import com.biobrain.util.Console;
 import com.biobrain.util.Prompter;
 import com.biobrain.view.View;
+import com.biobrain.view.entities.NPC.Npc;
 import com.biobrain.view.entities.Player;
 import com.biobrain.view.locations.LocationManager;
+import com.biobrain.view.panels.GamePanel;
 
 import java.util.*;
 
@@ -29,13 +31,24 @@ public class BioBrainApp {
     private List<String> itemsInRoom;
     private boolean isLaser = true;
     private boolean gameOver = false;
-   // private String randomDialogue = ;
-
+    //private String randomDialogue = Npc.getRandomDialogue();
+    // private String randomDialogue = ;
     public final View view = new View();
+    GamePanel gamePanel;
+
+    // CTOR
+    // Text-Adventure CTOR
+    public BioBrainApp() {
+    }
+
+    // GUI Version CTOR
+    public BioBrainApp(GamePanel gamePanel) {
+        this.gamePanel = gamePanel;
+    }
 
     // APP METHODS
     // loads game data into memory for GUI version of game
-    public void loadToGui(){
+    public void loadToGui() {
         LocationManager locationManager = new LocationManager(false);
         locations = locationManager.getLocations();
         setCurrentLocation(locations.get("sector2"));
@@ -48,7 +61,7 @@ public class BioBrainApp {
         locations = locationManager.getLocations();
         intro();
         welcome();
-       askIfUserWantToPlay();
+        askIfUserWantToPlay();
     }
 
     public void intro() {
@@ -126,7 +139,7 @@ public class BioBrainApp {
     // pulls data from locations.json to create a map of locked sectors that cannot be entered
     private void lockDoors() {
         // create a temporary map to hold data
-        Map<String,Boolean> tempMap = new HashMap<>();
+        Map<String, Boolean> tempMap = new HashMap<>();
 
         // iterate over the locations map using a foreach on the location map's entryset
         for (Map.Entry<String, Location> entry : getLocations().entrySet()) {
@@ -161,7 +174,7 @@ public class BioBrainApp {
                 getItem(noun);
                 break;
             case "use":
-                useItem(noun);
+                useItem(noun, false);
                 break;
             case "show":
                 if (noun.equalsIgnoreCase("inventory")) {
@@ -208,25 +221,31 @@ public class BioBrainApp {
     }
 
     // validates an item actually exists in this room (only used for GUI version)
-    public void validateThenGetItem(String itemToPickup) throws IllegalArgumentException{
+    public void validateThenGetItem(String itemToPickup) throws IllegalArgumentException {
         // throws an exception if player attempts to hack an item into their inventory
         // which does not exist in the room already
-        if (!currentLocation.getItems().contains(itemToPickup)) {
-            throw new RuntimeException(new IllegalArgumentException("\n"+ itemToPickup +" was not found! Please try again."));
-        } else {
-            // if item exists, pass it to the normal method for getting items
+        if (currentLocation.getItems().contains(itemToPickup) || itemToPickup.equals("sphere") || itemToPickup.equals("biobrain")) {
+            if (itemsInRoom.contains(itemToPickup)) {
+                // if item exists, pass it to the normal method for getting items
+                getItem(itemToPickup);
+            } else if (itemToPickup.equals("sphere")){
+                // if sphere is added to inventory ignore room standards
+                getItem(itemToPickup);
+            } else if (itemToPickup.equals("biobrain")){
+            // if sphere is added to inventory ignore room standards
             getItem(itemToPickup);
+        }
+        } else {
+            throw new RuntimeException(new IllegalArgumentException("\n" + itemToPickup + " was not found! Please try again."));
         }
     }
 
     // removes items from location in memory
     private void getItem(String itemToPickup) {
-        if(itemsInRoom.contains(itemToPickup)) {
-            // if room contained the item, pass it to the Player class now
-            addToPlayerInventory(itemToPickup, Item.getAllItems().get(itemToPickup));
-            itemsInRoom.remove(itemToPickup); // remove item from room in memory
-        }
-    }
+        // if room contained the item, pass it to the Player class now
+        addToPlayerInventory(itemToPickup, Item.getAllItems().get(itemToPickup));
+        itemsInRoom.remove(itemToPickup); // remove item from room in memory
+}
 
     // add to inventory tracked by player class
     private void addToPlayerInventory(String itemToPickup, Item item) {
@@ -238,45 +257,61 @@ public class BioBrainApp {
     // validates the item used was located in the player's inventory,
     // if not, displays a message that the item is not in possession
     // (only used for GUI version)
-    public void validateThenUseItem(String usedItem) throws IllegalArgumentException{
+    public void validateThenUseItem(String usedItem) throws IllegalArgumentException {
         if (player.getInventory().containsKey(usedItem)) {
-            useItem(usedItem);
+            useItem(usedItem, true);
         } else {
-            throw new RuntimeException(new IllegalArgumentException("\nYou're not carrying a " + usedItem+ " to be able to use!"));
+            throw new RuntimeException(new IllegalArgumentException("\nYou're not carrying a " + usedItem + " to be able to use!"));
         }
     }
 
     // use an item from the inventory
-    private void useItem(String usedItem) {
-        Map<String, Item> inv = player.getInventory();// get a reference to the inventory map
+    private void useItem(String usedItem, Boolean isGui) {
         String networkLocation = locations.get("Sector 2 - Control Lab").getName(); //must be in sector 2 to hack the network interface
         String playerLocation = currentLocation.getName(); // get the player current location
         Set<String> itemForSphere = Set.of("memory", "interface", "motherboard"); //using set since we are checking for a certain item (faster)
         String sphere = "A.I. Transfer Sphere";
 
-        // todo use memory + interface + motherbooard = AI Sphere REVIEW LOGIC WITH TEAM
-        if (itemForSphere.contains(usedItem) && itemForSphere.stream().allMatch(item -> inv.containsKey(item))) {
-            player.addItem("sphere", Item.getAllItems().get("sphere"));
+        if (!isGui) {
+            // todo use memory + interface + motherbooard = AI Sphere REVIEW LOGIC WITH TEAM
+            if (itemForSphere.contains(usedItem) && itemForSphere.stream().allMatch(item -> player.getInventory().containsKey(item))) {
+                player.addItem("sphere", Item.getAllItems().get("sphere"));
+
+                //once combines to a sphere, it will remove the 3 elements
+                for (String item : itemForSphere) {
+                    player.removeItem(item, player.getInventory().get(item));
+                }
+                System.out.printf("\nAwesome! You've added the %s to your inventory!\n", sphere);
+                System.out.println(player.displayPlayerInfo());
+
+            }
+
+            // todo use sphere = download biobrain REVIEW LOGIC WITH TEAM
+            // needs a check to ensure laser shield is disabled
+            else if (usedItem.equalsIgnoreCase("sphere")) {
+                handleUseSphere(playerLocation);
+
+            } // todo use tablet = to disable laser
+            else if (usedItem.equalsIgnoreCase("tablet") && player.getInventory().containsKey(usedItem)) {
+                handleUseTablet(playerLocation, networkLocation);
+            }
+            // todo use weapons
+            System.out.println(player.displayPlayerInfo()); // finally, display player info to user again
+        } else {
+            guiCreateSphere(usedItem, itemForSphere);
+        }
+    }
+
+    // creates the AI Sphere in memory when playing the GUI version
+    private void guiCreateSphere(String usedItem, Set<String> itemForSphere) {
+        if (itemForSphere.contains(usedItem) && itemForSphere.stream().allMatch(item -> getPlayer().getInventory().containsKey(item))) {
+            validateThenGetItem("sphere");
 
             //once combines to a sphere, it will remove the 3 elements
             for (String item : itemForSphere) {
-                player.removeItem(item, inv.get(item));
+                player.removeItem(item, getPlayer().getInventory().get(item));
             }
-            System.out.printf("\nAwesome! You've added the %s to your inventory!\n", sphere);
-            System.out.println(player.displayPlayerInfo());
-
         }
-        // todo use sphere = download biobrain REVIEW LOGIC WITH TEAM
-        // needs a check to ensure laser shield is disabled
-        else if (usedItem.equalsIgnoreCase("sphere") ) {
-            handleUseSphere(playerLocation);
-
-        } // todo use tablet = to disable laser
-        else if (usedItem.equalsIgnoreCase("tablet") && player.getInventory().containsKey(usedItem)) {
-            handleUseTablet(playerLocation, networkLocation);
-        }
-        // todo use weapons
-        System.out.println(player.displayPlayerInfo()); // finally, display player info to user again
     }
 
     //using sphere - checking for location and laser logic
@@ -367,7 +402,7 @@ public class BioBrainApp {
         }
 
         // printing the location the player have visited.. if need to print map in the future
-        for(String location : player.getVisitedLocations()){
+        for (String location : player.getVisitedLocations()) {
             System.out.println("Visited locations: " + location);
         }
 
@@ -396,6 +431,10 @@ public class BioBrainApp {
 
 
     // ACCESSOR METHODS
+    public GamePanel getGamePanel() {
+        return gamePanel;
+    }
+
     public Player getPlayer() {
         return player;
     }

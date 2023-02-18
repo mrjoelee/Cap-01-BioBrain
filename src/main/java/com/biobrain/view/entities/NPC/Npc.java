@@ -55,7 +55,7 @@ public class Npc extends Entity {
         return roomCode;
     }
 
-    public String getRandomDialogue() {
+    public static String getRandomDialogue() {
         String[] DIALOGUE_OPTIONS = {
                 "This is a violation of protocol, report to the director immediately.",
                 "Come with me Dr. Z.",

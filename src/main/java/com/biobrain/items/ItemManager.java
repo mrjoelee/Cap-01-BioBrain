@@ -1,13 +1,9 @@
 package com.biobrain.items;
 
-import com.biobrain.model.Item;
-import com.biobrain.model.Location;
-import com.biobrain.util.FileLoader;
 import com.biobrain.view.entities.ItemEntity;
 import com.biobrain.view.panels.GamePanel;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-
 import java.awt.*;
 import java.io.*;
 import java.lang.reflect.Type;
@@ -37,11 +33,10 @@ public class ItemManager {
         });
     }
 
+
     public static List<ItemEntity> getItemsByRoomCode(int roomCode){
         return parseItemsFromJson().stream().filter(e-> e.getRoomCode() == roomCode).collect(Collectors.toList());
     }
-
-
 
     public static List<ItemEntity> parseItemsFromJson() {
         Gson gson = new Gson();

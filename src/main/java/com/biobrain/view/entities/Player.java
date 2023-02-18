@@ -87,6 +87,7 @@ public class Player extends Entity {
         health = maxHealth; //1 heart equals a half heart
     }
 
+
     //resetting the game if player starts a new game from gameoverState
     public void setDefaultPositions(){
         labX = (gamePanel.getTileSize() * gamePanel.getMaxSectorCol()) /2; // player x position in lab
@@ -105,13 +106,29 @@ public class Player extends Entity {
         return visitedLocations;
     }
 
+    // add a picked up item to the player's inventory
     public void addItem(String itemName, Item item) {
         inventory.put(itemName,item);
         invItemImages.put(itemName, gamePanel.getItemManager().getItems().get(itemName));
     }
 
+    // remove used up items from inventory
     public void removeItem(String itemName, Item item) {
+        gamePanel.getUi().removeItemInventoryIndex(itemName);
         inventory.remove(itemName, item);
+        invItemImages.remove(itemName, gamePanel.getItemManager().getItems().get(itemName));
+    }
+
+    // pickup a collided with item
+    public void pickUpItem(String itemName) {
+        if (!itemName.equals("none") && !itemName.equals("biobrain")) {
+            gamePanel.getBioBrainApp().validateThenGetItem(itemName);
+            gamePanel.getItemManager().getItems().put(itemName, null);
+        }
+        if(!itemName.equals("none") && getInventory().containsKey("sphere") && itemName.equals("biobrain")){
+            gamePanel.getBioBrainApp().validateThenGetItem(itemName);
+            gamePanel.getItemManager().getItems().put(itemName, null);
+        }
     }
 
     public Map<String,Item> getInventory() {
@@ -240,14 +257,6 @@ public class Player extends Entity {
         if(gamePanel.keyHandler.attackKeyPressed){
             isAttacking = true;
             playerAttack();
-        }
-    }
-
-    public void pickUpItem(String itemName) {
-        if (!itemName.equals("none") && !itemName.equals("biobrain")) {
-            System.out.println(itemName);
-            gamePanel.getBioBrainApp().validateThenGetItem(itemName);
-            gamePanel.getItemManager().getItems().put(itemName, null);
         }
     }
 

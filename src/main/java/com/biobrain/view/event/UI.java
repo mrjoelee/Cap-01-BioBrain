@@ -8,13 +8,11 @@ package com.biobrain.view.event;
  */
 
 import com.biobrain.objects.Health;
-import com.biobrain.items.ItemManager;
 import com.biobrain.model.Item;
 import com.biobrain.util.FileLoader;
 import com.biobrain.util.WindowInterface;
 import com.biobrain.view.entities.ItemEntity;
 import com.biobrain.view.panels.GamePanel;
-import com.biobrain.view.panels.GameSetter;
 
 import java.awt.*;
 import java.awt.font.FontRenderContext;
@@ -24,12 +22,11 @@ import java.awt.font.TextLayout;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
+import java.sql.Array;
 import java.text.AttributedCharacterIterator;
 import java.text.AttributedString;
-import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
 
 public class UI implements WindowInterface {
     GamePanel gamePanel;
@@ -53,7 +50,7 @@ public class UI implements WindowInterface {
     private String currentDialogue = "";
 
     // used to store item descriptions in the corresponding index for the inventory
-    List<ItemEntity> inventoryIndexArray = new ArrayList<>();
+    private List<ItemEntity> inventoryIndexArray = new ArrayList<>();
 
     //CTOR
     public UI(GamePanel gamePanel) {
@@ -482,6 +479,7 @@ public class UI implements WindowInterface {
             }
         }
 
+
         for (int i = 0; i < inventoryIndexArray.size(); i++) {
             // draw the itemEntity found
             g2.drawImage(inventoryIndexArray.get(i).getItemImage(), slotX + 20, slotY + 20, 48, 48, null);
@@ -535,7 +533,7 @@ public class UI implements WindowInterface {
     }
 
     // get the item index of the currently highlighted inventory slot
-    private int getItemIndexOnSlot() {
+    public int getItemIndexOnSlot() {
         int itemIndex = getSlotCol() + (getSlotRow() * 4); // get number index of current item in inventory
         return itemIndex;
     }
@@ -654,7 +652,7 @@ public class UI implements WindowInterface {
         return gamePanel.screenWidth / 2 - length / 2;
     }
 
-    //creates a inner window
+    //creates an inner window
     public void drawWindow(int x, int y, int width, int height) {
         //creates a rectangle
         Color windowColor = new Color(0, 0, 0, 200);  // a is the opacity
@@ -689,6 +687,27 @@ public class UI implements WindowInterface {
     }
 
     // ACCESSOR METHODS
+    // remove an item from the inventory list
+    public void removeItemInventoryIndex(String itemToRemove){
+        List<ItemEntity> temp = new ArrayList<>(getInventoryIndexArray());
+        for(ItemEntity item: getInventoryIndexArray()){
+            if(itemToRemove.equals(item.getName())){
+                temp.remove(item);
+            }
+        }
+        setInventoryIndexArray(temp);
+    }
+
+    // set the invetory list to be drawn in inventory window
+    public void setInventoryIndexArray(List<ItemEntity> inventoryIndexArray) {
+        this.inventoryIndexArray = inventoryIndexArray;
+    }
+
+    // return list holding items to be drawn in inventory window
+    public List<ItemEntity> getInventoryIndexArray() {
+        return inventoryIndexArray;
+    }
+
     // OptionsSubState dictates condition of options menu
     public int getOptionsSubState() {
         return optionsSubState;
@@ -725,4 +744,6 @@ public class UI implements WindowInterface {
     public int getMaxSlotCol() {
         return maxSlotCol;
     }
+
+
 }
