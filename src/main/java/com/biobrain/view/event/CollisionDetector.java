@@ -10,6 +10,7 @@ package com.biobrain.view.event;
 import com.biobrain.model.Location;
 import com.biobrain.view.entities.ItemEntity;
 import com.biobrain.view.entities.Player;
+import com.biobrain.view.entities.NPC.Npc;
 import com.biobrain.view.entities.SuperObject;
 import com.biobrain.view.panels.GamePanel;
 import com.biobrain.view.entities.Entity;
@@ -66,9 +67,11 @@ public class CollisionDetector {
         if (entity.collider.intersects(obj.getObjectCollider())) {
             if (obj.collision) {
                 entity.collisionOn = true;
-                if(!obj.getDescription().isEmpty()){
-                    gamePanel.ui.setCurrentDialogue(obj.getDescription());
-                    gamePanel.gameState = gamePanel.dialogueState;
+                if(!(entity instanceof Npc)) {
+                    if (!obj.getDescription().isEmpty()) {
+                        gamePanel.ui.setCurrentDialogue(obj.getDescription());
+                        gamePanel.gameState = gamePanel.dialogueState;
+                    }
                 }
             }
         }
@@ -171,6 +174,7 @@ public class CollisionDetector {
 
                 if (roomTiles.get(tileNum1).collision || roomTiles.get(tileNum2).collision) {
                     entity.collisionOn = true;
+
                 }
                 break;
 
@@ -260,5 +264,55 @@ public class CollisionDetector {
         }
         entity.collider.x = entity.colliderDefaultX;
         entity.collider.y = entity.colliderDefaultY;
+    }
+
+    //check npc collision
+    public void checkNPCCollision(Entity entity, List<Npc> target) {
+
+        for (Npc npc : target) {
+            if (npc != null) {
+                entity.collider.x = entity.labX + entity.collider.x;
+                entity.collider.y = entity.labY + entity.collider.y;
+
+                npc.collider.x = npc.labX + npc.collider.x;
+                npc.collider.y = npc.labY + npc.collider.y;
+
+                switch (entity.direction) {
+                    case "up":
+                        entity.collider.y -= entity.speed;
+                        if (entity.collider.intersects(npc.collider)) {
+                            entity.collisionOn = true;
+                        }
+                        break;
+
+                    case "down":
+                        entity.collider.y += entity.speed;
+                        if (entity.collider.intersects(npc.collider)) {
+                            entity.collisionOn = true;
+                        }
+
+                        break;
+
+                    case "left":
+                        entity.collider.x -= entity.speed;
+                        if (entity.collider.intersects(npc.collider)) {
+                            entity.collisionOn = true;
+                        }
+
+                        break;
+
+                    case "right":
+                        entity.collider.x += entity.speed;
+                        if (entity.collider.intersects(npc.collider)) {
+                            entity.collisionOn = true;
+                        }
+                        break;
+                }
+                entity.collider.x = entity.colliderDefaultX;
+                entity.collider.y = entity.colliderDefaultY;
+                npc.collider.x = npc.colliderDefaultX;
+                npc.collider.y = npc.colliderDefaultY;
+            }
+        }
     }
 }

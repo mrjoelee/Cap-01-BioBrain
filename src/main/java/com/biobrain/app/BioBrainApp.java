@@ -4,6 +4,7 @@ import com.biobrain.model.*;
 import com.biobrain.util.Console;
 import com.biobrain.util.Prompter;
 import com.biobrain.view.View;
+import com.biobrain.view.entities.NPC.Npc;
 import com.biobrain.view.entities.Player;
 import com.biobrain.view.locations.LocationManager;
 import com.biobrain.view.panels.GamePanel;
@@ -30,7 +31,8 @@ public class BioBrainApp {
     private List<String> itemsInRoom;
     private boolean isLaser = true;
     private boolean gameOver = false;
-    private String randomDialogue = Npc.getRandomDialogue();
+    //private String randomDialogue = Npc.getRandomDialogue();
+    // private String randomDialogue = ;
     public final View view = new View();
     GamePanel gamePanel;
 
