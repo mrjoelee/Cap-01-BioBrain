@@ -97,6 +97,9 @@ public class Player extends Entity {
         maxHealth = MAX_HEALTH;
         health = maxHealth;
     }
+    public void resetInventory(){
+        inventory.clear();
+    }
 
     public void addVisitedLocation(String location){
         visitedLocations.add(location);

@@ -75,6 +75,7 @@
     "name": "biobrain",
     "roomCode": 1,
     "image": "images/items/biobrainLaser.png",
+    "image2": "images/items/biobrainNoLaser.png",
     "description": "BioBrain sits suspended\nin the fluid of the A.I.\nSphere, the device is humming.",
     "damage": 0,
     "x": 250,

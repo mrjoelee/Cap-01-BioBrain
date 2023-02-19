@@ -7,6 +7,7 @@ package com.biobrain.view.event;
  * draws windows for dialogues and menus
  */
 
+import com.biobrain.items.ItemManager;
 import com.biobrain.objects.Health;
 import com.biobrain.model.Item;
 import com.biobrain.util.FileLoader;
@@ -22,7 +23,6 @@ import java.awt.font.TextLayout;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
-import java.sql.Array;
 import java.text.AttributedCharacterIterator;
 import java.text.AttributedString;
 import java.util.*;
