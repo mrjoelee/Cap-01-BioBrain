@@ -8,7 +8,7 @@ import java.awt.image.BufferedImage;
 public class Entity {
     GamePanel gamePanel;
     public static final int MIN_HEALTH = 0;
-    public static final int MAX_HEALTH = 6;
+    public static final int MAX_HEALTH = 10;
     GamePanel gp;
     public int labX, labY;
     public int speed;

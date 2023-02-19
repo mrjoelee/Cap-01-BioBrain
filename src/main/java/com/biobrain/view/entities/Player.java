@@ -83,7 +83,7 @@ public class Player extends Entity {
         speed = 4;   // how fast player moves through positions
 
         //Player Status
-        maxHealth = 6; //3 hearts
+        maxHealth = 10; //5 hearts
         health = maxHealth; //1 heart equals a half heart
     }
 
@@ -128,7 +128,7 @@ public class Player extends Entity {
             gamePanel.getBioBrainApp().validateThenGetItem(itemName);
             gamePanel.getItemManager().getItems().put(itemName, null);
         }
-        if(!itemName.equals("none") && getInventory().containsKey("sphere") && itemName.equals("biobrain")){
+        if(!itemName.equals("none") && getInventory().containsKey("sphere") && itemName.equals("biobrain") && !gp.isLaser){
             gamePanel.getBioBrainApp().validateThenGetItem(itemName);
             gamePanel.getItemManager().getItems().put(itemName, null);
         }

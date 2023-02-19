@@ -1,5 +1,6 @@
 package com.biobrain.items;
 
+import com.biobrain.util.FileLoader;
 import com.biobrain.view.entities.ItemEntity;
 import com.biobrain.view.panels.GamePanel;
 import com.google.gson.Gson;
@@ -53,9 +54,17 @@ public class ItemManager {
     }
 
     public void draw(Graphics2D g2) {
+
         for (ItemEntity item : items.values()) {
-            if (item != null && item.getRoomCode() == gamePanel.currentRoom.getRoomCode()) {
-                item.draw(g2);
+
+            if(item != null && item.getName().equalsIgnoreCase("biobrain") && !gamePanel.isLaser
+                    && gamePanel.currentRoom.getRoomCode() == item.getRoomCode()){
+                String noLaserBioBrain = "images/items/biobrainNoLaser.png";
+                item.draw(g2, FileLoader.loadBuffered(noLaserBioBrain));
+                item.setImage(noLaserBioBrain);
+            }
+            else if (item != null && gamePanel.currentRoom.getRoomCode() == item.getRoomCode()) {
+                item.draw(g2,item.getItemImage());
             }
         }
     }

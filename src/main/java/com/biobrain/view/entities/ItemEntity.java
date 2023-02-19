@@ -15,7 +15,6 @@ public class ItemEntity{
     String name;
     int roomCode;
     String image;
-    String image2; //to replace the biobrain without shield
     String description;
     int damage;
     private int x;
@@ -46,8 +45,8 @@ public class ItemEntity{
     }
 
     // update player graphics
-    public void draw(Graphics2D g2) {
-        g2.drawImage(getItemImage(), getX(), getY(), 48, 48, null);
+    public void draw(Graphics2D g2, BufferedImage image) {
+        g2.drawImage(image, getX(), getY(), 48, 48, null);
         g2.setStroke(new BasicStroke(3));
         g2.setColor(new Color(0,0,0,0));
         g2.drawRect(getItemCollider().x, getItemCollider().y, getItemCollider().width, getItemCollider().height);
@@ -80,20 +79,15 @@ public class ItemEntity{
     public String getImagePath(){
         return image;
     }
-    public String getBiobrainNoLaserPath(){
-        return image2;
+    public void setImage(String image){
+        this.image = image;
     }
-
     public int getRoomCode() {
         return roomCode;
     }
 
     public BufferedImage getItemImage(){
         return FileLoader.loadBuffered(getImagePath());
-    }
-
-    public BufferedImage getBiobrainNoLaserImage(){
-        return FileLoader.loadBuffered(getBiobrainNoLaserPath());
     }
 
 }

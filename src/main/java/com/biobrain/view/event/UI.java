@@ -59,9 +59,9 @@ public class UI implements WindowInterface {
 
         //Create Health
         Health heart = new Health(gamePanel);
-        fullHeart = heart.imageHeart1.getScaledInstance(50,40,0);
-        halfHeart = heart.imageHeart2.getScaledInstance(50,40,0);
-        blankHeart = heart.imageHeart3.getScaledInstance(50,40,0);
+        fullHeart = heart.imageHeart1.getScaledInstance(40,30,0);
+        halfHeart = heart.imageHeart2.getScaledInstance(40,30,0);
+        blankHeart = heart.imageHeart3.getScaledInstance(40,30,0);
     }
 
 
@@ -136,8 +136,8 @@ public class UI implements WindowInterface {
     }
 
     private void drawPlayerHealth() {
-        int x = gamePanel.getTileSize()*12;  //starting point to place the health heart
-        int y = gamePanel.getTileSize()-30;
+        int x = gamePanel.getTileSize()*11;  //starting point to place the health heart
+        int y = gamePanel.getTileSize()-32;
         int i = 0;
 
         // Draw max health
@@ -149,8 +149,8 @@ public class UI implements WindowInterface {
         }
 
         //Reset
-        x = gamePanel.getTileSize()*12;
-        y = gamePanel.getTileSize()-30;
+        x = gamePanel.getTileSize()*11;
+        y = gamePanel.getTileSize()-32;
         i=0;
 
         //Draw current health
@@ -574,12 +574,20 @@ public class UI implements WindowInterface {
 
             g2.setColor(color);
             g2.drawString(text, x-4, y-4);
+
+            g2.setColor(new Color(255,255,255,200));
+            g2.setFont(g2.getFont().deriveFont(Font.BOLD, 36F));
+            text = "Press Enter";
+            x = getXForCenteredText(text);
+            y += gamePanel.getTileSize();
+            g2.drawString(text, x, y);
             /* --- Menu ---*/
             //New Game
+            g2.setColor(color);
             g2.setFont(g2.getFont().deriveFont(Font.BOLD, 36F));
             text = "New Game";
             x = getXForCenteredText(text);
-            y += gamePanel.getTileSize() * 8;
+            y += gamePanel.getTileSize() * 7;
             g2.drawString(text, x, y);
             playerIconPos(x, y, 0);
             //TODO:Load Game?
