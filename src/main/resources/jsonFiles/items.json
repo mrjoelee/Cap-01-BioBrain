@@ -64,8 +64,17 @@
   },
   {
     "name": "sphere",
-    "image": "images/items/blaster.png",
+    "image": "images/items/sphere.png",
     "description": "The A.I. Transfer\nSphere. Used to\nhouse the BioBrain!.",
+    "damage": 0,
+    "roomCode": 9,
+    "x": 1000,
+    "y": 1000
+  },
+  {
+    "name": "sphereBioBrain",
+    "image": "images/items/sphereBioBrain.png",
+    "description": "The A.I. Sphere with the mighty BioBrain.",
     "damage": 0,
     "roomCode": 9,
     "x": 1000,

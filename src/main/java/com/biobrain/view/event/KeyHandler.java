@@ -7,6 +7,7 @@ package com.biobrain.view.event;
  */
 
 import com.biobrain.model.Item;
+import com.biobrain.model.Location;
 import com.biobrain.view.entities.ItemEntity;
 import com.biobrain.view.panels.GamePanel;
 
@@ -31,6 +32,7 @@ public class KeyHandler implements KeyListener {
     public void keyTyped(KeyEvent e) {
 
     }
+
     @Override
     public void keyPressed(KeyEvent e) {
         int code = e.getKeyCode();
@@ -53,6 +55,7 @@ public class KeyHandler implements KeyListener {
             gameOverState(code);
         }
     }
+
     @Override
     public void keyReleased(KeyEvent e) {
         int code = e.getKeyCode();
@@ -71,7 +74,7 @@ public class KeyHandler implements KeyListener {
         if (code == KeyEvent.VK_ENTER) {
             setEnterPressed(false);
         }
-        if(code == KeyEvent.VK_K){
+        if (code == KeyEvent.VK_K) {
             attackKeyPressed = false;
         }
     }
@@ -189,12 +192,10 @@ public class KeyHandler implements KeyListener {
         if (code == KeyEvent.VK_W || code == KeyEvent.VK_UP
                 || code == KeyEvent.VK_S || code == KeyEvent.VK_DOWN
                 || code == KeyEvent.VK_A || code == KeyEvent.VK_LEFT
-                || code == KeyEvent.VK_D || code == KeyEvent.VK_RIGHT)
-        {
+                || code == KeyEvent.VK_D || code == KeyEvent.VK_RIGHT) {
             gp.gameState = gp.playState;
             playState(code);
-        }
-        else if (code == KeyEvent.VK_ENTER) {
+        } else if (code == KeyEvent.VK_ENTER) {
             enterPressed = true;
         }
     }
@@ -280,7 +281,7 @@ public class KeyHandler implements KeyListener {
         } else if (code == KeyEvent.VK_M && gp.getPlayer().getInventory().containsKey("tablet")) {
             gp.mapDisplayed = gp.currentRoom.getRoomCode();
             gp.gameState = gp.mapState;
-        } else if (code == KeyEvent.VK_M && !gp.getPlayer().getInventory().containsKey("tablet")){
+        } else if (code == KeyEvent.VK_M && !gp.getPlayer().getInventory().containsKey("tablet")) {
             gp.ui.setCurrentDialogue("You must have the tablet to use the map!");
             gp.gameState = gp.dialogueState;
         } else if (code == KeyEvent.VK_ESCAPE) {
@@ -314,14 +315,14 @@ public class KeyHandler implements KeyListener {
         // press up/down arrows or W/S keys to navigate up and down
         if (code == KeyEvent.VK_W || code == KeyEvent.VK_UP) {
             gp.getUi().setSlotRow((gp.getUi().getSlotRow() - 1));
-            if(gp.getUi().getSlotRow() < 0){
+            if (gp.getUi().getSlotRow() < 0) {
                 gp.getUi().setSlotRow(gp.getUi().getMaxSlotRow());
             }
             gp.playSfx("menuNavigationSound"); // play a sound effect
         }
         if (code == KeyEvent.VK_S || code == KeyEvent.VK_DOWN) {
             gp.getUi().setSlotRow((gp.getUi().getSlotRow() + 1));
-            if(gp.getUi().getSlotRow() > gp.getUi().getMaxSlotRow()){
+            if (gp.getUi().getSlotRow() > gp.getUi().getMaxSlotRow()) {
                 gp.getUi().setSlotRow(0);
             }
             gp.playSfx("menuNavigationSound"); // play a sound effect
@@ -329,14 +330,14 @@ public class KeyHandler implements KeyListener {
         // press left/right arrows or A/D keys to navigate left and right
         if (code == KeyEvent.VK_A || code == KeyEvent.VK_LEFT) {
             gp.getUi().setSlotCol((gp.getUi().getSlotCol() - 1));
-            if(gp.getUi().getSlotCol() < 0){
+            if (gp.getUi().getSlotCol() < 0) {
                 gp.getUi().setSlotCol(gp.getUi().getMaxSlotCol());
             }
             gp.playSfx("menuNavigationSound"); // play a sound effect
         }
         if (code == KeyEvent.VK_D || code == KeyEvent.VK_RIGHT) {
             gp.getUi().setSlotCol((gp.getUi().getSlotCol() + 1));
-            if(gp.getUi().getSlotCol() > gp.getUi().getMaxSlotCol()){
+            if (gp.getUi().getSlotCol() > gp.getUi().getMaxSlotCol()) {
                 gp.getUi().setSlotCol(0);
             }
             gp.playSfx("menuNavigationSound"); // play a sound effect
@@ -348,8 +349,8 @@ public class KeyHandler implements KeyListener {
         if (code == KeyEvent.VK_ENTER) {
             gp.playSfx("menuSelectSound"); // play a sound effect
 
-            if(gp.getUi().getInventoryIndexArray().size() > gp.getUi().getItemIndexOnSlot()){
-                if(gp.getUi().getInventoryIndexArray().get(gp.getUi().getItemIndexOnSlot()) != null){
+            if (gp.getUi().getInventoryIndexArray().size() > gp.getUi().getItemIndexOnSlot()) {
+                if (gp.getUi().getInventoryIndexArray().get(gp.getUi().getItemIndexOnSlot()) != null) {
                     gp.playSfx("menuSelectPlaySound"); // play a sound effect
 
                     ItemEntity usedItem = gp.getUi().getInventoryIndexArray().get(gp.getUi().getItemIndexOnSlot());
@@ -357,18 +358,28 @@ public class KeyHandler implements KeyListener {
                     Item item = Item.itemName(usedItem.getName()); // gets the item name
                     gp.getPlayer().setMainWeapon(item); //sets the weapon by the item name
                     gp.gameState = gp.playState;
-                    if(usedItem.getName().equalsIgnoreCase("tablet") && gp.currentRoom.getRoomCode() == 2 ){
-                        gp.ui.setCurrentDialogue("You have successfully disabled the laser shield on the biobrain");
-                        gp.gameState = gp.dialogueState;
+                    if(usedItem.getName().equalsIgnoreCase("tablet")){
+                        handleUseTablet(gp.currentRoom,gp.isLaser);
                     }
-                    if(usedItem.getName().equalsIgnoreCase("tablet") && gp.currentRoom.getRoomCode() != 2 ){
-                        gp.ui.setCurrentDialogue("You must use the tablet where the Network Interface is located");
-                        gp.gameState = gp.dialogueState;
-                    }
-                }
 
+                }
             }
         }
+    }
+
+    private void handleUseTablet(Location current, boolean laser) {
+        if ( current.getRoomCode() == 2 && laser) {
+            gp.ui.setCurrentDialogue("You have successfully disabled the laser shield on the biobrain");
+            gp.gameState = gp.dialogueState;
+            gp.isLaser = false;
+        } else if (current.getRoomCode() != 2 && laser) {
+            gp.ui.setCurrentDialogue("You must use the tablet where the Network Interface is located");
+            gp.gameState = gp.dialogueState;
+        }else if(gp.currentRoom.getRoomCode() == 2 && !laser){
+            gp.ui.setCurrentDialogue("You have already disabled the laser shield");
+            gp.gameState = gp.dialogueState;
+        }
+
     }
 
 

@@ -81,6 +81,7 @@ public class GamePanel extends JPanel implements Runnable {
     public final int inventoryState = 6;
     public final int gameOverState = 7;
     public int switchStateCounter = 300;
+    public boolean isLaser = true;
 
     //weapons / projectile stuff
     public ArrayList<Projectile> projectiles = new ArrayList<>();
