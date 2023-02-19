@@ -221,6 +221,9 @@ public class KeyHandler implements KeyListener {
                 if (code == KeyEvent.VK_ENTER) {       //new game - changing the gameState transition into the player.update();
                     gp.playSfx("menuSelectSound"); //play menu selection sound
                     if (gp.ui.commandNum == 0) {
+                        gp.getMusic().setVolumeScale(0);
+                        gp.getMusic().checkVolume();
+                        gp.playVoice("instructionVoice");
                         gp.ui.titleSubState = 1;
                     }                //quit game
                     if (gp.ui.commandNum == 1) {
@@ -245,23 +248,35 @@ public class KeyHandler implements KeyListener {
                 if (code == KeyEvent.VK_ENTER) {
                     if (gp.ui.commandNum == 0) {
                         gp.playSfx("menuSelectSound");     // play menu navigation sound
+                        gp.stopVoice();
+                        gp.getMusic().setVolumeScale(1);
+                        gp.getMusic().checkVolume();
                         gp.ui.titleSubState = 2;
                     }
                     if (gp.ui.commandNum == 1) {
                         gp.stopMusic();                          // stop menu music
+                        gp.stopVoice();
                         gp.ui.commandNum = 0;                    // reset commandNum for cursor selection
                         gp.playSfx("menuSelectPlaySound");     // play new game selection sound
                         gp.playMusic("mainGameTheme");         // begin gameplay theme music
+                        gp.getMusic().setVolumeScale(1);
+                        gp.getMusic().checkVolume();
                         gp.gameState = gp.playState;
                     }
                     if (gp.ui.commandNum == 2) {
                         gp.playSfx("menuSelectSound");     // play menu navigation sound
+                        gp.stopVoice();
+                        gp.getMusic().setVolumeScale(1);
+                        gp.getMusic().checkVolume();
                         gp.ui.titleSubState = 0;
                     }
                 }
             } else if (gp.ui.titleSubState == 2) {
                 if (code == KeyEvent.VK_ENTER) {
                     if (gp.ui.commandNum == 0) {
+                        gp.stopVoice();
+                        gp.getMusic().setVolumeScale(1);
+                        gp.getMusic().checkVolume();
                         gp.ui.titleSubState = 1;
                     }
                 }
