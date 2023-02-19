@@ -9,6 +9,7 @@ package com.biobrain.view.panels;
 import com.biobrain.app.BioBrainApp;
 import com.biobrain.items.ItemManager;
 import com.biobrain.model.Location;
+import com.biobrain.util.music.InstructionVoice;
 import com.biobrain.util.music.SoundManager;
 import com.biobrain.objects.ObjectManager;
 import com.biobrain.view.entities.NPC.Npc;
@@ -55,6 +56,7 @@ public class GamePanel extends JPanel implements Runnable {
     public TileHelper tileHelper = new TileHelper(this);        // instance of TileHelper to line up tiles
     private SoundManager sfx;                                       // instance of SoundManager used for SFX
     private SoundManager music;                                     // instance of SoundManager used for music
+    private InstructionVoice instructionVoice;                      // instance of InstructionVoice used for voice reader
 
     public LocationManager locations = new LocationManager(true);
 
@@ -99,6 +101,7 @@ public class GamePanel extends JPanel implements Runnable {
         this.setFocusable(true);
         setSfx(new SoundManager(this));
         setMusic(new SoundManager(this));
+        setInstructionVoice(new InstructionVoice(this));
     }
 
     // CLASS METHODS
@@ -277,6 +280,14 @@ public class GamePanel extends JPanel implements Runnable {
         sfx.play();
     }
 
+    public void playVoice(String name){
+        instructionVoice.setFile(name);
+        instructionVoice.play();
+    }
+    public void stopVoice(){
+        instructionVoice.stop();
+    }
+
     // ACCESSOR METHODS
     public BioBrainApp getBioBrainApp() {
         return bioBrainApp;
@@ -308,6 +319,14 @@ public class GamePanel extends JPanel implements Runnable {
 
     public void setSfx(SoundManager sound) {
         this.sfx = sound;
+    }
+
+    public void setInstructionVoice(InstructionVoice sound){
+        this.instructionVoice = sound;
+    }
+
+    public InstructionVoice getInstructionVoice(InstructionVoice instructionVoice){
+        return instructionVoice;
     }
 
     public SoundManager getMusic() {
