@@ -61,4 +61,11 @@ public class TileSetter {
     public List<Tile> getRoomTiles(String roomShortName){
         return roomTiles.get(roomShortName);
     }
+
+    public List<Tile> getRoomTiles(int roomCode){
+        if(roomCode == 0){
+            return  getRoomTiles("lab");
+        }
+        return getRoomTiles(String.format("sector%s", roomCode));
+    }
 }

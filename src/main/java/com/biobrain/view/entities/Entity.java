@@ -1,5 +1,6 @@
 package com.biobrain.view.entities;
 
+import com.biobrain.model.Location;
 import com.biobrain.view.panels.GamePanel;
 
 import java.awt.*;
@@ -22,35 +23,18 @@ public class Entity {
     private int width;
     public int colliderDefaultX, colliderDefaultY;
     public boolean collisionOn = false;
-    private int health;
+    public int health;
     private boolean isDead = false;
     public int actionLockCounter =0;
-    public int life;
-    public int maxLife;
+    public int currentLocation;
+    public boolean invincible =false;
+    public int invincibleCounter = 0;
 
     public Entity(){
     }
 
     public Entity(GamePanel gamePanel) {
         this.gp = gamePanel;
-    }
-
-    public int getHealth() {
-        return health;
-    }
-
-    public void setHealth(int health){
-        if(health < MIN_HEALTH){
-            setDead(true);
-        } else {
-            this.health = health;
-        }
-    }
-    public boolean isDead() {
-        return isDead;
-    }
-    public void setDead(boolean dead) {
-        this.isDead = dead;
     }
 
     public int getHeight() {
@@ -67,5 +51,16 @@ public class Entity {
 
     public void setWidth(int width) {
         this.width = width;
+    }
+
+    public boolean isDead() {
+        return isDead;
+    }
+    public void setDead(boolean dead) {
+        this.isDead = dead;
+    }
+
+    public void decreaseHealth(){
+
     }
 }

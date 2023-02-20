@@ -246,9 +246,16 @@ public class BioBrainApp {
 
     // removes items from location in memory
     private void getItem(String itemToPickup) {
+        Item item = Item.itemName(itemToPickup);
+        if(item != null){
+            if(item.getDamage() > 0)
+                gamePanel.player.setMainWeapon(item);
+        }
         // if room contained the item, pass it to the Player class now
         addToPlayerInventory(itemToPickup, Item.getAllItems().get(itemToPickup));
         itemsInRoom.remove(itemToPickup); // remove item from room in memory
+        gamePanel.currentRoom.getItems().remove(itemToPickup);
+        gamePanel.playerMap.createLabMap();
 }
 
     // add to inventory tracked by player class

@@ -2,10 +2,13 @@ package com.biobrain.view.entities;
 
 import com.biobrain.model.Item;
 import com.biobrain.util.FileLoader;
+import com.biobrain.view.entities.NPC.Npc;
 import com.biobrain.view.panels.GamePanel;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Projectile{
     GamePanel gamePanel;
@@ -22,40 +25,23 @@ public class Projectile{
     BufferedImage directionImage;
     int projectileLength;
     int  projectileWidth;
+    Rectangle collider;
+    int colliderDefaultX;
+    int colliderDefaultY;
 
     public Projectile(GamePanel gamePanel, Item weapon, String direction, Player user) {
         this.user = user;
         this.gamePanel = gamePanel;
         this.weapon = weapon;
-        figureOutXY(direction);
+        x = user.labX;
+        y = user.labY;
+        //figureOutXY(direction);
         this.playerDirection = direction;
         this.alive = true;
         this.life = 80;
         this.speed = 6;
         getImage();
-    }
-
-    public void figureOutXY(String direction){
-        if(gamePanel.currentRoom.isSector()){
-            this.x = user.labX;
-            this.y = user.labY;
-        }
-        else{
-            this.x = user.screenX;
-            this.y = user.screenY;
-        }
-
-        if(direction.equalsIgnoreCase("down")){
-            this.x = x + (gamePanel.getTileSize() - 10);
-            this.y = y + 20;
-        }
-        if(direction.equalsIgnoreCase("left") ){
-            this.y = y + (gamePanel.getTileSize()/2);
-        }
-        if(direction.equalsIgnoreCase("right") ){
-            this.x = x + (gamePanel.getTileSize()/2);
-            this.y = y + (gamePanel.getTileSize()/2);
-        }
+        collider = new Rectangle(projectileWidth *2, projectileLength *2, projectileWidth, projectileLength);
     }
 
     public void getImage(){
@@ -104,6 +90,19 @@ public class Projectile{
                 x += speed;
                 break;
         }
+
+        List<Npc> npcsHit = new ArrayList<>();
+
+        if(gamePanel.aiRobots.size() > 0 && isAlive()) {
+            npcsHit = gamePanel.collisionDetector.checkPlayerProjectileCollision(this, gamePanel.aiRobots);
+        }
+
+        if(npcsHit.size() > 0){
+            for (Npc target : npcsHit) {
+                target.setUpHit();
+            }
+        }
+
         life--;
 
         if (life <= 0) {
@@ -112,13 +111,65 @@ public class Projectile{
     }
 
     public void draw(Graphics2D g2){
-        if(alive) {
-            g2.drawImage(directionImage, x, y, projectileWidth, projectileLength, null);
+        boolean isSector = gamePanel.locations.getRoomByCode(user.currentLocation).isSector();
+
+        int screenX = x - gamePanel.player.labX + gamePanel.player.screenX;
+        int screenY = y - gamePanel.player.labY + gamePanel.player.screenY;
+
+        int drawX = isSector ? x : screenX;
+        int drawY = isSector ? y : screenY;
+
+        if(playerDirection.equalsIgnoreCase("down")){
+            drawX = drawX + (gamePanel.getTileSize() - 10);
+            drawY = drawY + 20;
         }
+        if(playerDirection.equalsIgnoreCase("left") ){
+            drawY = drawY + (gamePanel.getTileSize()/2);
+        }
+        if(playerDirection.equalsIgnoreCase("right") ){
+            drawX = drawX + (gamePanel.getTileSize()/2);
+            drawY = drawY + (gamePanel.getTileSize()/2);
+        }
+
+        if(isAlive()) {
+            g2.drawImage(directionImage, drawX, drawY, projectileWidth, projectileLength, null);
+        }
+    }
+
+    public int getX(){
+        return this.x;
+    }
+
+    public int getY(){
+        return this.y;
+    }
+
+    public String getPlayerDirection(){
+        return this.playerDirection;
+    }
+
+    public int getColliderDefaultX() {
+        return colliderDefaultX;
+    }
+
+    public int getColliderDefaultY() {
+        return colliderDefaultY;
+    }
+
+    public int getSpeed(){
+        return this.speed;
+    }
+
+    public void kill(){
+        this.alive = false;
     }
 
     public boolean isAlive() {
         return alive;
+    }
+
+    public Rectangle getCollider(){
+        return this.collider;
     }
 
     public void setAlive(boolean alive) {

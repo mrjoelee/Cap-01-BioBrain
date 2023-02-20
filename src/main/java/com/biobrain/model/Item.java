@@ -50,7 +50,4 @@ public class Item implements Inventory{
     public static Item itemName(String name){
         return getAllItems().get(name);
     }
-
 }
-
-

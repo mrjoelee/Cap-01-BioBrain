@@ -12,20 +12,18 @@ import com.biobrain.util.FileLoader;
 import com.biobrain.util.WindowInterface;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.File;
 
 public class GameSetter extends JFrame implements WindowInterface {
-    static JFrame window;
-    //static JPanel inventory;
-    static GamePanel gamePanel;
-    static InventoryPanel inventoryPanel;
-    JLabel inventoryImg;
+    private static JFrame window;
+    private static GamePanel gamePanel;
+    private static InventoryPanel inventoryPanel;
+    private JLabel inventoryImg;
+    private static final BufferedImage icon = FileLoader.loadBuffered("images/player/player_down_1.png");
     // create a window of the game logic and begins play
 
-    public GameSetter() {
-        BufferedImage image = FileLoader.loadBuffered("images/inventory.png");
-        BufferedImage icon = FileLoader.loadBuffered("images/player/player_down_1.png");
+    public static void setGame() {
         window = new JFrame();
 
         // create new JFrame window
@@ -35,9 +33,9 @@ public class GameSetter extends JFrame implements WindowInterface {
         window.setIconImage(icon);
 
         gamePanel = new GamePanel();               // new instance of GamePanel (contains game logic)
-        inventoryPanel = new InventoryPanel(this, gamePanel); // new panel for inventory
-        inventoryImg = new JLabel(new ImageIcon(image));            // label to add inventory img
-        inventoryPanel.add(inventoryImg);
+//        inventoryPanel = new InventoryPanel(this, gamePanel); // new panel for inventory
+//        inventoryImg = new JLabel(new ImageIcon(image));            // label to add inventory img
+//        inventoryPanel.add(inventoryImg);
 
         window.add(gamePanel);                                  // add Game Panel as window display
         window.pack();
@@ -50,5 +48,27 @@ public class GameSetter extends JFrame implements WindowInterface {
         gamePanel.startGameThread();                            // begin the game thread to start game loop
 
         //WindowInterface.displayPopUpWindow(gamePanel, FileLoader.loadTextFile("Instructions/Instructions.txt")); // call a pop-up window
+    }
+
+    public static void restartGame() {
+        gamePanel.stopMusic();
+        gamePanel = null;
+        window.dispose(); // dispose of the old window
+
+        // create a new window and gamePanel
+        window = new JFrame();
+        window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        window.setResizable(false);
+        window.setTitle("BioBrain");
+        window.setIconImage(icon);
+        gamePanel = new GamePanel();
+        window.add(gamePanel);
+        window.pack();
+        window.setLocationRelativeTo(null);
+        window.setVisible(true);
+
+        gamePanel.setupGame();
+        gamePanel.gameState = gamePanel.titleState;
+        gamePanel.startGameThread();
     }
 }

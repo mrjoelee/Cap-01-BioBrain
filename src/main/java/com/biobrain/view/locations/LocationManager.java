@@ -56,4 +56,8 @@ public class LocationManager {
     public Map<String, Location> getLocations() {
         return locations;
     }
+
+    public Location getRoomByCode(int roomCode){
+        return rooms.stream().filter(x -> x.getRoomCode() == roomCode).findFirst().orElse(null);
+    }
 }
