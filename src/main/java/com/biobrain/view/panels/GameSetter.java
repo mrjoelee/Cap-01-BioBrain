@@ -51,6 +51,8 @@ public class GameSetter extends JFrame implements WindowInterface {
     }
 
     public static void restartGame() {
+        gamePanel.stopMusic();
+        gamePanel = null;
         window.dispose(); // dispose of the old window
 
         // create a new window and gamePanel

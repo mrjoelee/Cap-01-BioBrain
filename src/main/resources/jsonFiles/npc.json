@@ -66,10 +66,43 @@
     "blockY": 29
   },
   {
+    "name": "Rouge AI Robot7",
+    "description": "A rouge AI robot that has been programmed to stop you. It is armed with a blaster and is very dangerous.",
+    "roomCode": 0,
+    "speed": 6,
+    "health": 8,
+    "width": 60,
+    "height": 60,
+    "blockX":  3,
+    "blockY": 2
+  },
+  {
+    "name": "Rouge AI Robot8",
+    "description": "A rouge AI robot that has been programmed to stop you. It is armed with a blaster and is very dangerous.",
+    "roomCode" : 0,
+    "speed": 6,
+    "health": 5,
+    "width": 60,
+    "height": 60,
+    "blockX":  22,
+    "blockY": 2
+  },
+  {
+    "name": "Rouge AI Robot9",
+    "description": "A rouge AI robot that has been programmed to stop you. It is armed with a blaster and is very dangerous.",
+    "roomCode": 0,
+    "speed": 6,
+    "health": 10,
+    "width": 60,
+    "height": 60,
+    "blockX":  41,
+    "blockY": 2
+  },
+  {
     "name": "Boss AI Robot",
     "description" : "This is the boss of the game. You need to defeat it to escape the facility.",
     "roomCode": 6,
-    "speed": 4,
+    "speed": 5,
     "health": 15,
     "width": 72,
     "height": 72,

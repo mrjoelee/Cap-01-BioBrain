@@ -49,9 +49,6 @@ public class Player extends Entity {
     // CTOR
     public Player(GamePanel gamePanel, KeyHandler keyHandler) {
         super(gamePanel);
-        //TODO Undo for testing purposes
-        this.mainWeapon = null;
-                //= new Item("neuralyzer", "a blaster test", 5);
         this.visitedLocations = new ArrayList<>();
         this.inventory = new HashMap<>();
         this.invItemImages  = new HashMap<>();
@@ -398,7 +395,7 @@ public class Player extends Entity {
         }
         if(invincible){
             invincibleCounter++;
-            if(invincibleCounter > 120){
+            if(invincibleCounter > 80){
                 invincible = false;
                 invincibleCounter =0;
             }
@@ -509,6 +506,7 @@ public class Player extends Entity {
         int newHealth = (int) Math.max(currentHealth - (fractionToDecrease * currentHealth), MIN_HEALTH); // decrease health by fraction and ensure it doesn't fall below MIN_HEALTH
         if (newHealth <= MIN_HEALTH) {
             setDead(true);
+            gamePanel.gameState = gamePanel.gameOverState;
         } else {
             setHealth(newHealth);
         }

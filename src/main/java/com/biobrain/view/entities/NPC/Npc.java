@@ -300,6 +300,10 @@ public class Npc extends Entity {
         int newHealth = (int) Math.max(currentHealth - (fractionToDecrease * currentHealth), MIN_HEALTH); // decrease health by fraction and ensure it doesn't fall below MIN_HEALTH
         if (newHealth <= MIN_HEALTH) {
             setDead(true);
+            if(currentLocation == 6){
+                gamePanel.isBossDead = true;
+                gamePanel.gameState = gamePanel.winState;
+            }
         } else {
             setHealth(newHealth);
         }
@@ -311,7 +315,6 @@ public class Npc extends Entity {
     public void setHealth(int health){
         this.health = health;
     }
-
 
     public void setUpHit(){
         if(!invincible){
