@@ -82,8 +82,10 @@ public class GamePanel extends JPanel implements Runnable {
     public final int dialoguePlay = 5;
     public final int inventoryState = 6;
     public final int gameOverState = 7;
+    public final int winState = 8;
     public int switchStateCounter = 300;
     public boolean isLaser = true;
+    public boolean isBossDead = false;
 
     //weapons / projectile stuff
     public ArrayList<Projectile> projectiles = new ArrayList<>();
@@ -164,7 +166,11 @@ public class GamePanel extends JPanel implements Runnable {
     // update() runs every frame
     public void update() {
         // if game is in a state that allows the player to move
+
         if (gameState == playState || gameState == dialoguePlay) {
+            if(isBossDead){
+                gameState = winState;
+            }
             player.update(); /* listens for player controller for movement */
 //            for (Npc aiRobot : aiRobots) {
 //                if (aiRobot != null) {

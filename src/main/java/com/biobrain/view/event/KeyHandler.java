@@ -53,6 +53,33 @@ public class KeyHandler implements KeyListener {
             inventoryState(code);
         } else if (gp.gameState == gp.gameOverState) {
             gameOverState(code);
+        } else if (gp.gameState == gp.winState){
+            winState(code);
+        }
+    }
+
+    private void winState(int code) {
+        if (code == KeyEvent.VK_W || code == KeyEvent.VK_UP) {
+            gp.ui.commandNum--;
+            gp.playSfx("menuNavigationSound");
+            if (gp.ui.commandNum < 0) {
+                gp.ui.commandNum = 1;
+            }
+        }
+        if (code == KeyEvent.VK_S || code == KeyEvent.VK_DOWN) {
+            gp.ui.commandNum++;
+            gp.playSfx("menuNavigationSound");
+            if (gp.ui.commandNum > 1) {
+                gp.ui.commandNum = 0;
+            }
+        }
+        if (code == KeyEvent.VK_ENTER) {
+            if (gp.ui.commandNum == 0) {
+                gp.gameState = gp.titleState;
+                gp.tryAgain();
+            } else if (gp.ui.commandNum == 1) {
+                System.exit(0);
+            }
         }
     }
 
