@@ -74,7 +74,7 @@
   {
     "name": "sphereBioBrain",
     "image": "images/items/sphereBioBrain.png",
-    "description": "The A.I. Sphere with the mighty BioBrain.",
+    "description": "The A.I. Sphere with \nthe mighty BioBrain. \nAccess to Sector 6",
     "damage": 0,
     "roomCode": 9,
     "x": 1000,
@@ -85,7 +85,7 @@
     "roomCode": 1,
     "image": "images/items/biobrainLaser.png",
     "image2": "images/items/biobrainNoLaser.png",
-    "description": "BioBrain sits suspended\nin the fluid of the A.I.\nSphere, the device is humming.",
+    "description": "BioBrain sits suspended\nin the fluid of the A.I.\nSphere",
     "damage": 0,
     "x": 250,
     "y": 288

@@ -134,9 +134,9 @@ public class CollisionDetector {
             gamePanel.ui.setCurrentDialogue("The LASER SHIELD defenses must be deactivated before I can download the BIOBRAIN!");
             gamePanel.gameState = gamePanel.dialogueState;
         }
-        if (gamePanel.getPlayer().getInventory().containsKey("sphere") && !gamePanel.isLaser){
+        if (itemName.equalsIgnoreCase("biobrain") && gamePanel.getPlayer().getInventory().containsKey("sphere") && !gamePanel.isLaser){
             System.out.println("got sphere");
-            gamePanel.ui.setCurrentDialogue("Sector 6 is unlocked!! Use the Sphere to download the BIOBRAIN on it!!");
+            gamePanel.ui.setCurrentDialogue("Use the sphere to download the biobrain on it and also to unlock Sector 6");
             gamePanel.gameState = gamePanel.dialogueState;
 
         } else if (itemName.equalsIgnoreCase("biobrain") && !gamePanel.getPlayer().getInventory().containsKey("sphere") && !gamePanel.isLaser){
