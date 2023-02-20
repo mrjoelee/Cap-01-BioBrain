@@ -8,8 +8,8 @@ package com.biobrain.view.event;
  */
 
 import com.biobrain.items.ItemManager;
-import com.biobrain.objects.Health;
 import com.biobrain.model.Item;
+import com.biobrain.objects.Health;
 import com.biobrain.util.FileLoader;
 import com.biobrain.util.WindowInterface;
 import com.biobrain.view.entities.ItemEntity;
@@ -530,6 +530,7 @@ public class UI implements WindowInterface {
 
         // using an iterator to go through the map of items in the player's inventory
         Iterator<Map.Entry<String, Item>> itemItr = gamePanel.getPlayer().getInventory().entrySet().iterator();
+
 
         // while there is still another item in the inventory,
         while (itemItr.hasNext()) {

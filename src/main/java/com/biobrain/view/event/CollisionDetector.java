@@ -8,14 +8,14 @@ package com.biobrain.view.event;
  */
 
 import com.biobrain.model.Location;
-import com.biobrain.view.entities.ItemEntity;
-import com.biobrain.view.entities.Player;
+import com.biobrain.view.entities.*;
 import com.biobrain.view.entities.NPC.Npc;
-import com.biobrain.view.entities.SuperObject;
 import com.biobrain.view.panels.GamePanel;
-import com.biobrain.view.entities.Entity;
 import com.biobrain.view.tile.Tile;
 import com.biobrain.view.tile.TileHelper;
+
+import java.awt.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -67,7 +67,7 @@ public class CollisionDetector {
         if (entity.collider.intersects(obj.getObjectCollider())) {
             if (obj.collision) {
                 entity.collisionOn = true;
-                if(!(entity instanceof Npc)) {
+                if (!(entity instanceof Npc)) {
                     if (!obj.getDescription().isEmpty()) {
                         gamePanel.ui.setCurrentDialogue(obj.getDescription());
                         gamePanel.gameState = gamePanel.dialogueState;
@@ -128,22 +128,22 @@ public class CollisionDetector {
     }
 
     // check if BioBrain can be downloaded yet
-    private void isBioBrainLocked(String itemName, Player player){
-        if (itemName.equals("biobrain") && !gamePanel.getPlayer().getInventory().containsKey("sphere") && gamePanel.isLaser){
+    private void isBioBrainLocked(String itemName, Player player) {
+        if (itemName.equals("biobrain") && !gamePanel.getPlayer().getInventory().containsKey("sphere") && gamePanel.isLaser) {
             player.collisionOn = true;
             gamePanel.ui.setCurrentDialogue("The LASER SHIELD defenses must be deactivated before I can download the BIOBRAIN!");
             gamePanel.gameState = gamePanel.dialogueState;
         }
-        if (gamePanel.getPlayer().getInventory().containsKey("sphere") && !gamePanel.isLaser){
+        if (gamePanel.getPlayer().getInventory().containsKey("sphere") && !gamePanel.isLaser) {
             System.out.println("got sphere");
             gamePanel.ui.setCurrentDialogue("Sector 6 is unlocked!! Use the Sphere to download the BIOBRAIN on it!!");
             gamePanel.gameState = gamePanel.dialogueState;
 
-        } else if (itemName.equalsIgnoreCase("biobrain") && !gamePanel.getPlayer().getInventory().containsKey("sphere") && !gamePanel.isLaser){
+        } else if (itemName.equalsIgnoreCase("biobrain") && !gamePanel.getPlayer().getInventory().containsKey("sphere") && !gamePanel.isLaser) {
             player.collisionOn = true;
             gamePanel.ui.setCurrentDialogue("You must get the sphere first to get the BIOBRAIN");
             gamePanel.gameState = gamePanel.dialogueState;
-        } else if (itemName.equalsIgnoreCase("biobrain") && gamePanel.getPlayer().getInventory().containsKey("sphere") && gamePanel.isLaser){
+        } else if (itemName.equalsIgnoreCase("biobrain") && gamePanel.getPlayer().getInventory().containsKey("sphere") && gamePanel.isLaser) {
             player.collisionOn = true;
             gamePanel.ui.setCurrentDialogue("The LASER SHIELD defenses must be deactivated before I can download the BIOBRAIN!");
             gamePanel.gameState = gamePanel.dialogueState;
@@ -156,7 +156,9 @@ public class CollisionDetector {
         int entityRight = entity.labX + entity.collider.x + entity.collider.width;
         int entityTop = entity.labY + entity.collider.y;
         int entityBottom = entity.labY + entity.collider.y + entity.collider.height;
-        List<Tile> roomTiles = gamePanel.tileSetter.getRoomTiles(gamePanel.currentRoom.getShortName());
+
+        List<Tile> roomTiles = gamePanel.tileSetter.getRoomTiles(entity.currentLocation);
+        int entityLocation = entity.currentLocation;
 
         int leftCol = entityLeft / gamePanel.getTileSize();
         int rightCol = entityRight / gamePanel.getTileSize();
@@ -169,8 +171,8 @@ public class CollisionDetector {
 
             case "up":
                 topRow = (entityTop - entity.speed) / gamePanel.getTileSize();
-                tileNum1 = TileHelper.mapTileNum[gamePanel.currentRoom.getRoomCode()][leftCol][topRow];
-                tileNum2 = TileHelper.mapTileNum[gamePanel.currentRoom.getRoomCode()][rightCol][topRow];
+                tileNum1 = TileHelper.mapTileNum[entityLocation][leftCol][topRow];
+                tileNum2 = TileHelper.mapTileNum[entityLocation][rightCol][topRow];
 
                 if (roomTiles.get(tileNum1).collision || roomTiles.get(tileNum2).collision) {
                     entity.collisionOn = true;
@@ -179,8 +181,8 @@ public class CollisionDetector {
 
             case "down":
                 bottomRow = (entityBottom + entity.speed) / gamePanel.getTileSize();
-                tileNum1 = TileHelper.mapTileNum[gamePanel.currentRoom.getRoomCode()][leftCol][bottomRow];
-                tileNum2 = TileHelper.mapTileNum[gamePanel.currentRoom.getRoomCode()][rightCol][bottomRow];
+                tileNum1 = TileHelper.mapTileNum[entityLocation][leftCol][bottomRow];
+                tileNum2 = TileHelper.mapTileNum[entityLocation][rightCol][bottomRow];
 
                 if (roomTiles.get(tileNum1).collision || roomTiles.get(tileNum2).collision) {
                     entity.collisionOn = true;
@@ -190,8 +192,8 @@ public class CollisionDetector {
 
             case "left":
                 leftCol = (entityLeft - entity.speed) / gamePanel.getTileSize();
-                tileNum1 = TileHelper.mapTileNum[gamePanel.currentRoom.getRoomCode()][leftCol][topRow];
-                tileNum2 = TileHelper.mapTileNum[gamePanel.currentRoom.getRoomCode()][leftCol][bottomRow];
+                tileNum1 = TileHelper.mapTileNum[entityLocation][leftCol][topRow];
+                tileNum2 = TileHelper.mapTileNum[entityLocation][leftCol][bottomRow];
 
                 if (roomTiles.get(tileNum1).collision || roomTiles.get(tileNum2).collision) {
                     entity.collisionOn = true;
@@ -200,8 +202,8 @@ public class CollisionDetector {
 
             case "right":
                 rightCol = (entityRight + entity.speed) / gamePanel.getTileSize();
-                tileNum1 = TileHelper.mapTileNum[gamePanel.currentRoom.getRoomCode()][rightCol][topRow];
-                tileNum2 = TileHelper.mapTileNum[gamePanel.currentRoom.getRoomCode()][rightCol][bottomRow];
+                tileNum1 = TileHelper.mapTileNum[entityLocation][rightCol][topRow];
+                tileNum2 = TileHelper.mapTileNum[entityLocation][rightCol][bottomRow];
 
                 if (roomTiles.get(tileNum1).collision || roomTiles.get(tileNum2).collision) {
                     entity.collisionOn = true;
@@ -226,6 +228,7 @@ public class CollisionDetector {
                     if (entity.collider.intersects(gamePanel.currentRoom.getExit())) {
                         Location lab = gamePanel.locations.getLocations().get("lab");
                         gamePanel.currentRoom = lab;
+                        entity.currentLocation = lab.getRoomCode();
                         gamePanel.player.labX = previous.getEntrance().x + 24; // get the entrance of the room add 24 so player exits in middle
                         gamePanel.player.labY = previous.getEntrance().y + gamePanel.getTileSize();
                         gamePanel.ui.setCurrentDialogue(lab.getDescription());
@@ -251,21 +254,23 @@ public class CollisionDetector {
                     if (entity.collider.intersects(room.getEntrance())) {
                         if (!room.isLocked()) {
                             gamePanel.currentRoom = room;
+                            entity.currentLocation = room.getRoomCode();
                             gamePanel.player.labX = room.getExit().x + 24;
                             gamePanel.player.labY = room.getExit().y - gamePanel.getTileSize();
                             gamePanel.ui.setCurrentDialogue(room.getDescription());
                             gamePanel.getBioBrainApp().setCurrentLocation(room);
                             gamePanel.gameState = gamePanel.dialoguePlay;
                             break;
-                        } else if (room.isLocked() && gamePanel.getPlayer().getInventory().containsKey("biobrain")){
+                        } else if (room.isLocked() && gamePanel.getPlayer().getInventory().containsKey("sphereBioBrain")) {
                             gamePanel.ui.setCurrentDialogue("With the BioBrain in hand, the door unlocks!");
                             gamePanel.currentRoom = room;
+                            entity.currentLocation = room.getRoomCode();
                             gamePanel.player.labX = room.getExit().x + 24;
                             gamePanel.player.labY = room.getExit().y - gamePanel.getTileSize();
                             gamePanel.getBioBrainApp().setCurrentLocation(room);
                             gamePanel.gameState = gamePanel.dialoguePlay;
                         } else {
-                            gamePanel.ui.setCurrentDialogue(room.getLockedMessage());
+                            gamePanel.ui.setCurrentDialogue("We need BioBrain enter Sector 6.");
                             gamePanel.gameState = gamePanel.dialogueState;
                         }
                     }
@@ -277,7 +282,8 @@ public class CollisionDetector {
     }
 
     //check npc collision
-    public void checkNPCCollision(Entity entity, List<Npc> target) {
+    public boolean checkNPCCollision(Entity entity, List<Npc> target) {
+        boolean hit = false;
 
         for (Npc npc : target) {
             if (npc != null) {
@@ -287,34 +293,40 @@ public class CollisionDetector {
                 npc.collider.x = npc.labX + npc.collider.x;
                 npc.collider.y = npc.labY + npc.collider.y;
 
+                boolean inSameLocation = entity.currentLocation == npc.currentLocation;
+
                 switch (entity.direction) {
                     case "up":
                         entity.collider.y -= entity.speed;
-                        if (entity.collider.intersects(npc.collider)) {
+                        if (entity.collider.intersects(npc.collider) && inSameLocation) {
                             entity.collisionOn = true;
+                            hit = true;
+
                         }
                         break;
 
                     case "down":
                         entity.collider.y += entity.speed;
-                        if (entity.collider.intersects(npc.collider)) {
+                        if (entity.collider.intersects(npc.collider) && inSameLocation) {
                             entity.collisionOn = true;
+                            hit = true;
                         }
-
                         break;
 
                     case "left":
                         entity.collider.x -= entity.speed;
-                        if (entity.collider.intersects(npc.collider)) {
+                        if (entity.collider.intersects(npc.collider) && inSameLocation) {
                             entity.collisionOn = true;
+                            hit = true;
                         }
 
                         break;
 
                     case "right":
                         entity.collider.x += entity.speed;
-                        if (entity.collider.intersects(npc.collider)) {
+                        if (entity.collider.intersects(npc.collider) && inSameLocation) {
                             entity.collisionOn = true;
+                            hit = true;
                         }
                         break;
                 }
@@ -324,5 +336,69 @@ public class CollisionDetector {
                 npc.collider.y = npc.colliderDefaultY;
             }
         }
+        return hit;
+    }
+
+    public List<Npc> checkPlayerProjectileCollision(Projectile projectile, List<Npc> targets) {
+        List<Npc> targetsHit = new ArrayList<>();
+
+        for (Npc npc : targets) {
+            boolean hit = false;
+            if (npc != null) {
+                boolean inSameLocation = gamePanel.currentRoom.getRoomCode() == npc.currentLocation;
+
+                // update collider position of NPC
+                projectile.getCollider().x = projectile.getX() + projectile.getCollider().x;
+                projectile.getCollider().y = projectile.getY() + projectile.getCollider().y;
+
+                npc.collider.x = npc.labX + npc.collider.x;
+                npc.collider.y = npc.labY + npc.collider.y;
+
+                switch (projectile.getPlayerDirection()) {
+                    case "up":
+                        projectile.getCollider().y -= projectile.getSpeed();
+                        if (projectile.getCollider().intersects(npc.collider) && inSameLocation) {
+                            hit = true;
+                        }
+                        break;
+
+                    case "down":
+                        projectile.getCollider().y += projectile.getSpeed();
+                        if (projectile.getCollider().intersects(npc.collider) && inSameLocation) {
+                            hit = true;
+                        }
+                        break;
+
+                    case "left":
+                        projectile.getCollider().x -= projectile.getSpeed();
+                        if (projectile.getCollider().intersects(npc.collider) && inSameLocation) {
+                            hit = true;
+                        }
+                        break;
+
+                    case "right":
+                        projectile.getCollider().x += projectile.getSpeed();
+                        if (projectile.getCollider().intersects(npc.collider)) {
+                            hit = true;
+                        }
+                        break;
+                }
+
+                if (hit) {
+                    targetsHit.add(npc);
+                    projectile.kill();
+                }
+
+                // reset collider positions
+                npc.collider.x = npc.colliderDefaultX;
+                npc.collider.y = npc.colliderDefaultY;
+                if(projectile.isAlive()) {
+                    projectile.getCollider().x = projectile.getColliderDefaultX();
+                    projectile.getCollider().y = projectile.getColliderDefaultY();
+                }
+            }
+        }
+
+        return targetsHit;
     }
 }

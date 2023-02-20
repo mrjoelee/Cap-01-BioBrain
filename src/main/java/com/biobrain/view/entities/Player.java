@@ -35,8 +35,9 @@ public class Player extends Entity {
     public int screenY;
     private long lastAttackTime =0;
     private boolean isAttacking = false;
-    public int health = getHealth();
-    public int maxHealth;
+    public int health;
+    public boolean npcCollision;
+    public BufferedImage upHit, downHit, leftHit, rightHit;
 
     public Player() {
         super();
@@ -64,6 +65,7 @@ public class Player extends Entity {
         colliderDefaultY = collider.y;
         getPlayerImage();
         setDefaultValues(); // set default player configurations
+        currentLocation = 2;
     }
 
     public void setMainWeapon(Item item){
@@ -81,10 +83,8 @@ public class Player extends Entity {
         setWidth(gamePanel.getTileSize());
         setHeight(gamePanel.getTileSize());
         speed = 4;   // how fast player moves through positions
-
         //Player Status
-        maxHealth = 10; //5 hearts
-        health = maxHealth; //1 heart equals a half heart
+        health = 10; //5 hearts
     }
 
 
@@ -94,8 +94,7 @@ public class Player extends Entity {
         labY = (gamePanel.getTileSize() * gamePanel.getMaxSectorRow()) /2; // player y position in lab
     }
     public void restoreLife(){
-        maxHealth = MAX_HEALTH;
-        health = maxHealth;
+      health = MAX_HEALTH;
     }
     public void resetInventory(){
         inventory.clear();
@@ -139,6 +138,7 @@ public class Player extends Entity {
     }
     // default player configuration values
     public void getPlayerImage() {
+
         if(mainWeapon == null) {
             //manage sprites loaded
             up1 = FileLoader.loadBuffered("images/player/player_up_1.png");
@@ -149,6 +149,11 @@ public class Player extends Entity {
             left2 = FileLoader.loadBuffered("images/player/player_left_2.png");
             right1 = FileLoader.loadBuffered("images/player/player_right_1.png");
             right2 = FileLoader.loadBuffered("images/player/player_right_2.png");
+            // loading images when player hit
+            upHit = FileLoader.loadBuffered("images/player/playerHit/player_up.png");
+            downHit = FileLoader.loadBuffered("images/player/playerHit/player_down.png");
+            leftHit= FileLoader.loadBuffered("images/player/playerHit/player_left.png");
+            rightHit = FileLoader.loadBuffered("images/player/playerHit/player_right.png");
         }
         else if(mainWeapon.getName().equalsIgnoreCase("harpoon")){
             up1 = FileLoader.loadBuffered("images/player/harpoon/player_up_1.png");
@@ -159,6 +164,11 @@ public class Player extends Entity {
             left2 = FileLoader.loadBuffered("images/player/harpoon/player_left_2.png");
             right1 = FileLoader.loadBuffered("images/player/harpoon/player_right_1.png");
             right2 = FileLoader.loadBuffered("images/player/harpoon/player_right_2.png");
+              // loading images when player hit
+            upHit = FileLoader.loadBuffered("images/player/playerHit/harpoon/player_up.png");
+            downHit = FileLoader.loadBuffered("images/player/playerHit/harpoon/player_down.png");
+            leftHit= FileLoader.loadBuffered("images/player/playerHit/harpoon/player_left.png");
+            rightHit = FileLoader.loadBuffered("images/player/playerHit/harpoon/player_right.png");
         }
         else if(mainWeapon.getName().equalsIgnoreCase("neuralyzer")){
             up1 = FileLoader.loadBuffered("images/player/neuralyzer/player_up_1.png");
@@ -169,6 +179,11 @@ public class Player extends Entity {
             left2 = FileLoader.loadBuffered("images/player/neuralyzer/player_left_2.png");
             right1 = FileLoader.loadBuffered("images/player/neuralyzer/player_right_1.png");
             right2 = FileLoader.loadBuffered("images/player/neuralyzer/player_right_2.png");
+              // loading images when player hit
+            upHit = FileLoader.loadBuffered("images/player/playerHit/neuralyzer/player_up.png");
+            downHit = FileLoader.loadBuffered("images/player/playerHit/neuralyzer/player_down.png");
+            leftHit= FileLoader.loadBuffered("images/player/playerHit/neuralyzer/player_left.png");
+            rightHit = FileLoader.loadBuffered("images/player/playerHit/neuralyzer/player_right.png");
         }
         else if(mainWeapon.getName().equalsIgnoreCase("blaster")){
             up1 = FileLoader.loadBuffered("images/player/blaster/player_up_1.png");
@@ -179,90 +194,13 @@ public class Player extends Entity {
             left2 = FileLoader.loadBuffered("images/player/blaster/player_left_2.png");
             right1 = FileLoader.loadBuffered("images/player/blaster/player_right_1.png");
             right2 = FileLoader.loadBuffered("images/player/blaster/player_right_2.png");
+             // loading images when player hit
+            upHit = FileLoader.loadBuffered("images/player/playerHit/blaster/player_up.png");
+            downHit = FileLoader.loadBuffered("images/player/playerHit/blaster/player_down.png");
+            leftHit= FileLoader.loadBuffered("images/player/playerHit/blaster/player_left.png");
+            rightHit = FileLoader.loadBuffered("images/player/playerHit/blaster/player_right.png");
         }
     }
-
-    // function will be called each frame, only contains logic that needs constant updating
-    public void update() {
-        playerControls(); // listens for user input each frame
-
-        if(health > MAX_HEALTH){
-            health = MAX_HEALTH;
-        }
-        if(health <= 0){
-            gamePanel.gameState = gamePanel.gameOverState;
-            gamePanel.stopMusic();
-            gamePanel.playSfx("gameOverSound");
-        }
-    }
-
-    // a list of user inputs via keyboard
-    public void playerControls() {
-        if (handler.isUpPressed() || handler.isDownPressed() || handler.isLeftPressed() || handler.isRightPressed()) {
-            if (handler.isUpPressed()) {
-                direction = "up";
-            }
-            if (handler.isDownPressed()) {
-                direction = "down";
-            }
-            if (handler.isLeftPressed()) {
-                direction = "left";
-            }
-            if (handler.isRightPressed()) {
-                direction = "right";
-            }
-
-            collisionOn = false;
-
-            /* check tile checks if a specific tile has collision on (user cant walk over it)
-             * check entrance is constantly checking if the players collider hits a room entrance
-             * if player is in the sector have to check if their collider hit the room exit
-             */
-            gamePanel.collisionDetector.checkTile(this);
-            gamePanel.collisionDetector.checkEntrance(this);
-            gamePanel.collisionDetector.checkExit(this);
-            gamePanel.collisionDetector.checkObject(this);
-            String itemGrabbed = gamePanel.collisionDetector.checkGrabItem(this);
-            pickUpItem(itemGrabbed);
-            //gamePanel.collisionDetector.checkNPCCollision(this, gamePanel.aiRobots);
-            //gamePanel.eventHandler.checkEvent();
-
-            if (!collisionOn) {
-                switch (direction) {
-                    case "up":
-                        labY -= speed;
-                        break;
-
-                    case "down":
-                        labY += speed;
-                        break;
-
-                    case "left":
-                        labX -= speed;
-                        break;
-
-                    case "right":
-                        labX += speed;
-                        break;
-                }
-            }
-
-            counter++;
-            if (counter > 10) {
-                if (spriteSelected == 1) {
-                    spriteSelected = 2;
-                } else if (spriteSelected == 2) {
-                    spriteSelected = 1;
-                }
-                counter = 0;
-            }
-        }
-        if(gamePanel.keyHandler.attackKeyPressed){
-            isAttacking = true;
-            playerAttack();
-        }
-    }
-
     private void playerAttack(){
         if(mainWeapon == null){
             loadAttackImages();
@@ -383,6 +321,90 @@ public class Player extends Entity {
                 "\n\n =========================================\n");
     }
 
+
+    // function will be called each frame, only contains logic that needs constant updating
+    public void update() {
+        playerControls(); // listens for user input each frame
+    }
+
+    // a list of user inputs via keyboard
+    public void playerControls() {
+        if (handler.isUpPressed() || handler.isDownPressed() || handler.isLeftPressed() || handler.isRightPressed()) {
+            if (handler.isUpPressed()) {
+                direction = "up";
+            }
+            if (handler.isDownPressed()) {
+                direction = "down";
+            }
+            if (handler.isLeftPressed()) {
+                direction = "left";
+            }
+            if (handler.isRightPressed()) {
+                direction = "right";
+            }
+
+            collisionOn = false;
+            npcCollision = false;
+            /* check tile checks if a specific tile has collision on (user cant walk over it)
+             * check entrance is constantly checking if the players collider hits a room entrance
+             * if player is in the sector have to check if their collider hit the room exit
+             */
+            gamePanel.collisionDetector.checkTile(this);
+            gamePanel.collisionDetector.checkEntrance(this);
+            gamePanel.collisionDetector.checkExit(this);
+            gamePanel.collisionDetector.checkObject(this);
+            String itemGrabbed = gamePanel.collisionDetector.checkGrabItem(this);
+            pickUpItem(itemGrabbed);
+            if(gamePanel.aiRobots.size() > 0) {
+                npcCollision = gamePanel.collisionDetector.checkNPCCollision(this, gamePanel.aiRobots);
+            }
+            if(npcCollision){
+                npcContact();
+            }
+            //gamePanel.eventHandler.checkEvent();
+            if (!collisionOn) {
+                switch (direction) {
+                    case "up":
+                        labY -= speed;
+                        break;
+
+                    case "down":
+                        labY += speed;
+                        break;
+
+                    case "left":
+                        labX -= speed;
+                        break;
+
+                    case "right":
+                        labX += speed;
+                        break;
+                }
+            }
+
+            counter++;
+            if (counter > 10) {
+                if (spriteSelected == 1) {
+                    spriteSelected = 2;
+                } else if (spriteSelected == 2) {
+                    spriteSelected = 1;
+                }
+                counter = 0;
+            }
+        }
+        if(gamePanel.keyHandler.attackKeyPressed){
+            isAttacking = true;
+            playerAttack();
+        }
+        if(invincible){
+            invincibleCounter++;
+            if(invincibleCounter > 120){
+                invincible = false;
+                invincibleCounter =0;
+            }
+        }
+    }
+
     // update player graphics
     public void draw(Graphics2D g2) {
         BufferedImage image = null;
@@ -403,7 +425,24 @@ public class Player extends Entity {
                     break;
             }
             isAttacking = false;
-        }else {
+        }else if (npcCollision){
+                // Handle attack animation
+                switch (direction) {
+                    case "up":
+                        image = upHit;
+                        break;
+                    case "down":
+                        image = downHit;
+                        break;
+                    case "left":
+                        image = leftHit;
+                        break;
+                    case "right":
+                        image = rightHit;
+                        break;
+                }
+        }
+        else{
             switch (direction) {
                 case "up":
                     if (spriteSelected == 1) {
@@ -446,10 +485,33 @@ public class Player extends Entity {
         }
     }
 
-
     // ACCESSOR METHODS
-
     public Map<String, ItemEntity> getInvItemImages() {
         return invItemImages;
     }
+
+    public int getHealth() {
+        return health;
+    }
+
+    public void setHealth(int health){
+        this.health = health;
+    }
+    private void npcContact(){
+        if(!invincible){
+            decreaseHealth();
+            invincible = true;
+        }
+    }
+    public void decreaseHealth(){
+        double fractionToDecrease = 1.0 / 60; // decrease health by 1/60th of total health every frame
+        int currentHealth = getHealth();
+        int newHealth = (int) Math.max(currentHealth - (fractionToDecrease * currentHealth), MIN_HEALTH); // decrease health by fraction and ensure it doesn't fall below MIN_HEALTH
+        if (newHealth <= MIN_HEALTH) {
+            setDead(true);
+        } else {
+            setHealth(newHealth);
+        }
+    }
+
 }

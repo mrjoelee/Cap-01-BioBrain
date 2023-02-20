@@ -73,7 +73,7 @@ public class Main {
     }
 
     private static void loadGui(){
-        new GameSetter();
+        GameSetter.setGame();
     }
 }
 

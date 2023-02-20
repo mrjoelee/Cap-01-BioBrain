@@ -17,21 +17,25 @@ public class Npc extends Entity {
     private int blockX; // count only 1 block then x by tilesize
     private int blockY;
     private String collisionDirection = "up";
+    public BufferedImage upHit, downHit, leftHit, rightHit;
+    public boolean isHit;
+    public int waitNextMove =0;
 
-    public Npc(GamePanel gp, String name, String description, int roomCode, int maxLife, int speed, int width, int height, int blockX, int blockY) {
+    public Npc(GamePanel gp, String name, String description, int roomCode, int health, int speed, int width, int height, int blockX, int blockY) {
         super(gp);
         this.gamePanel = gp;
         this.name = name;
         this.description = description;
         this.roomCode = roomCode;
-        this.maxLife = maxLife;
-        this.life = maxLife;
+        currentLocation = roomCode;
+        this.health = health;
         this.speed = speed;
         setWidth(width);
         setHeight(height);
         this.labX = blockX * gamePanel.getTileSize();
         this.labY = blockY * gamePanel.getTileSize();
-        this.collider = new Rectangle(0, 0, width, height);
+
+        collider = new Rectangle(width *2, height *2, width, height);
         getImage();
     }
 
@@ -79,6 +83,11 @@ public class Npc extends Entity {
             right1 = FileLoader.loadBuffered("images/AIBots/Boss/ai_right_1.png");
             right2 = FileLoader.loadBuffered("images/AIBots/Boss/ai_right_2.png");
 
+            upHit = FileLoader.loadBuffered("images/AIBots/Boss/bossHit/ai_up.png");
+            downHit = FileLoader.loadBuffered("images/AIBots/Boss/bossHit/ai_down.png");
+            leftHit = FileLoader.loadBuffered("images/AIBots/Boss/bossHit/ai_left.png");
+            rightHit = FileLoader.loadBuffered("images/AIBots/Boss/bossHit/ai_right.png");
+
         } else {
             up1 = FileLoader.loadBuffered("images/AIBots/ai_up_1.png");
             up2 = FileLoader.loadBuffered("images/AIBots/ai_up_2.png");
@@ -88,64 +97,83 @@ public class Npc extends Entity {
             left2 = FileLoader.loadBuffered("images/AIBots/ai_left_2.png");
             right1 = FileLoader.loadBuffered("images/AIBots/ai_right_1.png");
             right2 = FileLoader.loadBuffered("images/AIBots/ai_right_2.png");
+
+            upHit = FileLoader.loadBuffered("images/AIBots/botHit/ai_up.png");
+            downHit = FileLoader.loadBuffered("images/AIBots/botHit/ai_down.png");
+            leftHit = FileLoader.loadBuffered("images/AIBots/botHit/ai_left.png");
+            rightHit = FileLoader.loadBuffered("images/AIBots/botHit/ai_right.png");
         }
     }
 
     public void update() {
-        setAction();
-        collisionOn = false;
-        gamePanel.collisionDetector.checkTile(this);
-        gamePanel.collisionDetector.checkObject(this);
-
-        if (!collisionOn) {
-            switch (direction) {
-                case "up":
-                    labY -= speed;
-                    break;
-
-                case "down":
-                    labY += speed;
-                    break;
-
-                case "left":
-                    labX -= speed;
-                    break;
-
-                case "right":
-                    labX += speed;
-                    break;
-            }
-        } else {
-            switch (collisionDirection) {
-                case "up":
-                    labY += speed;
-                    break;
-
-                case "down":
-                    labY -= speed;
-                    break;
-
-                case "left":
-                    labX += speed;
-                    break;
-
-                case "right":
-                    labX -= speed;
-                    break;
-            }
+        if(isHit && waitNextMove != 120){
+            waitNextMove++;
         }
+        else {
+            waitNextMove = 0;
+            setAction();
+            collisionOn = false;
+            isHit = false;
+            gamePanel.collisionDetector.checkTile(this);
+            gamePanel.collisionDetector.checkObject(this);
 
-        counter++;
-        if (counter > 10) {
-            if (spriteSelected == 1) {
-                spriteSelected = 2;
-            } else if (spriteSelected == 2) {
-                spriteSelected = 1;
+            if (!collisionOn) {
+                switch (direction) {
+                    case "up":
+                        labY -= speed;
+                        break;
+
+                    case "down":
+                        labY += speed;
+                        break;
+
+                    case "left":
+                        labX -= speed;
+                        break;
+
+                    case "right":
+                        labX += speed;
+                        break;
+                }
+            } else {
+                switch (collisionDirection) {
+                    case "up":
+                        labY += speed;
+                        break;
+
+                    case "down":
+                        labY -= speed;
+                        break;
+
+                    case "left":
+                        labX += speed;
+                        break;
+
+                    case "right":
+                        labX -= speed;
+                        break;
+                }
             }
-            counter = 0;
+
+            counter++;
+            if (counter > 10) {
+                if (spriteSelected == 1) {
+                    spriteSelected = 2;
+                } else if (spriteSelected == 2) {
+                    spriteSelected = 1;
+                }
+                counter = 0;
+            }
+
+            if (invincible) {
+                invincibleCounter++;
+                if (invincibleCounter > 40) {
+                    invincible = false;
+                    invincibleCounter = 0;
+                }
+            }
         }
     }
-
 
     public void setAction() {
         if (actionLockCounter != 120) {
@@ -205,39 +233,58 @@ public class Npc extends Entity {
                     labY + gamePanel.getTileSize() > gamePanel.player.labY - gamePanel.player.screenY &&
                     labY - gamePanel.getTileSize() < gamePanel.player.labY + gamePanel.player.screenY) {
 
-                switch (direction) {
-                    case "up":
-                        if (spriteSelected == 1) {
-                            image = up1;
-                        }
-                        if (spriteSelected == 2) {
-                            image = up2;
-                        }
-                        break;
-                    case "down":
-                        if (spriteSelected == 1) {
-                            image = down1;
-                        }
-                        if (spriteSelected == 2) {
-                            image = down2;
-                        }
-                        break;
-                    case "left":
-                        if (spriteSelected == 1) {
-                            image = left1;
-                        }
-                        if (spriteSelected == 2) {
-                            image = left2;
-                        }
-                        break;
-                    case "right":
-                        if (spriteSelected == 1) {
-                            image = right1;
-                        }
-                        if (spriteSelected == 2) {
-                            image = right2;
-                        }
-                        break;
+                if(isHit){
+                    switch (direction) {
+                        case "up":
+                            image = upHit;
+                            break;
+                        case "down":
+                            image = downHit;
+                            break;
+                        case "left":
+                            image = leftHit;
+                            break;
+                        case "right":
+                            image = rightHit;
+                            break;
+                    }
+                }
+                else {
+
+                    switch (direction) {
+                        case "up":
+                            if (spriteSelected == 1) {
+                                image = up1;
+                            }
+                            if (spriteSelected == 2) {
+                                image = up2;
+                            }
+                            break;
+                        case "down":
+                            if (spriteSelected == 1) {
+                                image = down1;
+                            }
+                            if (spriteSelected == 2) {
+                                image = down2;
+                            }
+                            break;
+                        case "left":
+                            if (spriteSelected == 1) {
+                                image = left1;
+                            }
+                            if (spriteSelected == 2) {
+                                image = left2;
+                            }
+                            break;
+                        case "right":
+                            if (spriteSelected == 1) {
+                                image = right1;
+                            }
+                            if (spriteSelected == 2) {
+                                image = right2;
+                            }
+                            break;
+                    }
                 }
                 if (gamePanel.currentRoom.isSector()) {
                     g2.drawImage(image, this.labX, this.labY, getWidth(), getHeight(), null);
@@ -247,7 +294,32 @@ public class Npc extends Entity {
             }
         }
     }
+    public void decreaseHealth(){
+        double fractionToDecrease = 1.0 / 60; // decrease health by 1/60th of total health every frame
+        int currentHealth = getHealth();
+        int newHealth = (int) Math.max(currentHealth - (fractionToDecrease * currentHealth), MIN_HEALTH); // decrease health by fraction and ensure it doesn't fall below MIN_HEALTH
+        if (newHealth <= MIN_HEALTH) {
+            setDead(true);
+        } else {
+            setHealth(newHealth);
+        }
+    }
 
+    public int getHealth(){
+        return health;
+    }
+    public void setHealth(int health){
+        this.health = health;
+    }
+
+
+    public void setUpHit(){
+        if(!invincible){
+            decreaseHealth();
+            isHit = true;
+            invincible = true;
+        }
+    }
 }
 
 

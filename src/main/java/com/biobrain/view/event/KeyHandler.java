@@ -10,6 +10,7 @@ import com.biobrain.model.Item;
 import com.biobrain.model.Location;
 import com.biobrain.view.entities.ItemEntity;
 import com.biobrain.view.panels.GamePanel;
+import com.biobrain.view.panels.GameSetter;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -76,7 +77,7 @@ public class KeyHandler implements KeyListener {
         if (code == KeyEvent.VK_ENTER) {
             if (gp.ui.commandNum == 0) {
                 gp.gameState = gp.titleState;
-                gp.tryAgain();
+                GameSetter.restartGame();
             } else if (gp.ui.commandNum == 1) {
                 System.exit(0);
             }
@@ -125,7 +126,7 @@ public class KeyHandler implements KeyListener {
         if (code == KeyEvent.VK_ENTER) {
             if (gp.ui.commandNum == 0) {
                 gp.gameState = gp.titleState;
-                gp.tryAgain();
+                GameSetter.restartGame();
             } else if (gp.ui.commandNum == 1) {
                 System.exit(0);
             }

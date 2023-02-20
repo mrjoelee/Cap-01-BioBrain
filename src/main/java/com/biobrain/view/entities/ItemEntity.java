@@ -79,6 +79,7 @@ public class ItemEntity{
     public String getImagePath(){
         return image;
     }
+
     public void setImage(String image){
         this.image = image;
     }
