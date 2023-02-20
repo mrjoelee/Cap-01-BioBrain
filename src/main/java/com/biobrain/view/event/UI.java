@@ -434,7 +434,7 @@ public class UI implements WindowInterface {
 
         textX = frameX + gamePanel.getTileSize() * 5;
         textY = frameY + gamePanel.getTileSize() * 2;
-        g2.drawString("W A S D / Arrows", textX, textY); // draw next keyboard input
+        g2.drawString("W A S D / Arrows︎", textX, textY); // draw next keyboard input
         textY = textY + gamePanel.getTileSize();                     // move text down
         g2.drawString("W A S D / Arrows", textX, textY); // draw next keyboard input
         textY = textY + gamePanel.getTileSize();                     // move text down
