@@ -6,8 +6,11 @@ package com.biobrain.view.event;
  * tracks basic logic for menus and selections
  */
 
+import com.biobrain.model.Item;
+import com.biobrain.model.Location;
 import com.biobrain.view.entities.ItemEntity;
 import com.biobrain.view.panels.GamePanel;
+import com.biobrain.view.panels.GameSetter;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -30,6 +33,7 @@ public class KeyHandler implements KeyListener {
     public void keyTyped(KeyEvent e) {
 
     }
+
     @Override
     public void keyPressed(KeyEvent e) {
         int code = e.getKeyCode();
@@ -50,8 +54,36 @@ public class KeyHandler implements KeyListener {
             inventoryState(code);
         } else if (gp.gameState == gp.gameOverState) {
             gameOverState(code);
+        } else if (gp.gameState == gp.winState){
+            winState(code);
         }
     }
+
+    private void winState(int code) {
+        if (code == KeyEvent.VK_W || code == KeyEvent.VK_UP) {
+            gp.ui.commandNum--;
+            gp.playSfx("menuNavigationSound");
+            if (gp.ui.commandNum < 0) {
+                gp.ui.commandNum = 1;
+            }
+        }
+        if (code == KeyEvent.VK_S || code == KeyEvent.VK_DOWN) {
+            gp.ui.commandNum++;
+            gp.playSfx("menuNavigationSound");
+            if (gp.ui.commandNum > 1) {
+                gp.ui.commandNum = 0;
+            }
+        }
+        if (code == KeyEvent.VK_ENTER) {
+            if (gp.ui.commandNum == 0) {
+                gp.gameState = gp.titleState;
+                GameSetter.restartGame();
+            } else if (gp.ui.commandNum == 1) {
+                System.exit(0);
+            }
+        }
+    }
+
     @Override
     public void keyReleased(KeyEvent e) {
         int code = e.getKeyCode();
@@ -70,7 +102,7 @@ public class KeyHandler implements KeyListener {
         if (code == KeyEvent.VK_ENTER) {
             setEnterPressed(false);
         }
-        if(code == KeyEvent.VK_K){
+        if (code == KeyEvent.VK_K) {
             attackKeyPressed = false;
         }
     }
@@ -94,7 +126,7 @@ public class KeyHandler implements KeyListener {
         if (code == KeyEvent.VK_ENTER) {
             if (gp.ui.commandNum == 0) {
                 gp.gameState = gp.titleState;
-                gp.tryAgain();
+                GameSetter.restartGame();
             } else if (gp.ui.commandNum == 1) {
                 System.exit(0);
             }
@@ -188,12 +220,10 @@ public class KeyHandler implements KeyListener {
         if (code == KeyEvent.VK_W || code == KeyEvent.VK_UP
                 || code == KeyEvent.VK_S || code == KeyEvent.VK_DOWN
                 || code == KeyEvent.VK_A || code == KeyEvent.VK_LEFT
-                || code == KeyEvent.VK_D || code == KeyEvent.VK_RIGHT)
-        {
+                || code == KeyEvent.VK_D || code == KeyEvent.VK_RIGHT) {
             gp.gameState = gp.playState;
             playState(code);
-        }
-        else if (code == KeyEvent.VK_ENTER) {
+        } else if (code == KeyEvent.VK_ENTER) {
             enterPressed = true;
         }
     }
@@ -219,6 +249,9 @@ public class KeyHandler implements KeyListener {
                 if (code == KeyEvent.VK_ENTER) {       //new game - changing the gameState transition into the player.update();
                     gp.playSfx("menuSelectSound"); //play menu selection sound
                     if (gp.ui.commandNum == 0) {
+                        gp.getMusic().setVolumeScale(0);
+                        gp.getMusic().checkVolume();
+                        gp.playVoice("instructionVoice");
                         gp.ui.titleSubState = 1;
                     }                //quit game
                     if (gp.ui.commandNum == 1) {
@@ -243,23 +276,35 @@ public class KeyHandler implements KeyListener {
                 if (code == KeyEvent.VK_ENTER) {
                     if (gp.ui.commandNum == 0) {
                         gp.playSfx("menuSelectSound");     // play menu navigation sound
+                        gp.stopVoice();
+                        gp.getMusic().setVolumeScale(1);
+                        gp.getMusic().checkVolume();
                         gp.ui.titleSubState = 2;
                     }
                     if (gp.ui.commandNum == 1) {
                         gp.stopMusic();                          // stop menu music
+                        gp.stopVoice();
                         gp.ui.commandNum = 0;                    // reset commandNum for cursor selection
                         gp.playSfx("menuSelectPlaySound");     // play new game selection sound
                         gp.playMusic("mainGameTheme");         // begin gameplay theme music
+                        gp.getMusic().setVolumeScale(1);
+                        gp.getMusic().checkVolume();
                         gp.gameState = gp.playState;
                     }
                     if (gp.ui.commandNum == 2) {
                         gp.playSfx("menuSelectSound");     // play menu navigation sound
+                        gp.stopVoice();
+                        gp.getMusic().setVolumeScale(1);
+                        gp.getMusic().checkVolume();
                         gp.ui.titleSubState = 0;
                     }
                 }
             } else if (gp.ui.titleSubState == 2) {
                 if (code == KeyEvent.VK_ENTER) {
                     if (gp.ui.commandNum == 0) {
+                        gp.stopVoice();
+                        gp.getMusic().setVolumeScale(1);
+                        gp.getMusic().checkVolume();
                         gp.ui.titleSubState = 1;
                     }
                 }
@@ -279,7 +324,7 @@ public class KeyHandler implements KeyListener {
         } else if (code == KeyEvent.VK_M && gp.getPlayer().getInventory().containsKey("tablet")) {
             gp.mapDisplayed = gp.currentRoom.getRoomCode();
             gp.gameState = gp.mapState;
-        } else if (code == KeyEvent.VK_M && !gp.getPlayer().getInventory().containsKey("tablet")){
+        } else if (code == KeyEvent.VK_M && !gp.getPlayer().getInventory().containsKey("tablet")) {
             gp.ui.setCurrentDialogue("You must have the tablet to use the map!");
             gp.gameState = gp.dialogueState;
         } else if (code == KeyEvent.VK_ESCAPE) {
@@ -313,14 +358,14 @@ public class KeyHandler implements KeyListener {
         // press up/down arrows or W/S keys to navigate up and down
         if (code == KeyEvent.VK_W || code == KeyEvent.VK_UP) {
             gp.getUi().setSlotRow((gp.getUi().getSlotRow() - 1));
-            if(gp.getUi().getSlotRow() < 0){
+            if (gp.getUi().getSlotRow() < 0) {
                 gp.getUi().setSlotRow(gp.getUi().getMaxSlotRow());
             }
             gp.playSfx("menuNavigationSound"); // play a sound effect
         }
         if (code == KeyEvent.VK_S || code == KeyEvent.VK_DOWN) {
             gp.getUi().setSlotRow((gp.getUi().getSlotRow() + 1));
-            if(gp.getUi().getSlotRow() > gp.getUi().getMaxSlotRow()){
+            if (gp.getUi().getSlotRow() > gp.getUi().getMaxSlotRow()) {
                 gp.getUi().setSlotRow(0);
             }
             gp.playSfx("menuNavigationSound"); // play a sound effect
@@ -328,14 +373,14 @@ public class KeyHandler implements KeyListener {
         // press left/right arrows or A/D keys to navigate left and right
         if (code == KeyEvent.VK_A || code == KeyEvent.VK_LEFT) {
             gp.getUi().setSlotCol((gp.getUi().getSlotCol() - 1));
-            if(gp.getUi().getSlotCol() < 0){
+            if (gp.getUi().getSlotCol() < 0) {
                 gp.getUi().setSlotCol(gp.getUi().getMaxSlotCol());
             }
             gp.playSfx("menuNavigationSound"); // play a sound effect
         }
         if (code == KeyEvent.VK_D || code == KeyEvent.VK_RIGHT) {
             gp.getUi().setSlotCol((gp.getUi().getSlotCol() + 1));
-            if(gp.getUi().getSlotCol() > gp.getUi().getMaxSlotCol()){
+            if (gp.getUi().getSlotCol() > gp.getUi().getMaxSlotCol()) {
                 gp.getUi().setSlotCol(0);
             }
             gp.playSfx("menuNavigationSound"); // play a sound effect
@@ -347,16 +392,37 @@ public class KeyHandler implements KeyListener {
         if (code == KeyEvent.VK_ENTER) {
             gp.playSfx("menuSelectSound"); // play a sound effect
 
-            if(gp.getUi().getInventoryIndexArray().size() > gp.getUi().getItemIndexOnSlot()){
-                if(gp.getUi().getInventoryIndexArray().get(gp.getUi().getItemIndexOnSlot()) != null){
+            if (gp.getUi().getInventoryIndexArray().size() > gp.getUi().getItemIndexOnSlot()) {
+                if (gp.getUi().getInventoryIndexArray().get(gp.getUi().getItemIndexOnSlot()) != null) {
                     gp.playSfx("menuSelectPlaySound"); // play a sound effect
 
                     ItemEntity usedItem = gp.getUi().getInventoryIndexArray().get(gp.getUi().getItemIndexOnSlot());
                     gp.getBioBrainApp().validateThenUseItem(usedItem.getName());
+                    Item item = Item.itemName(usedItem.getName()); // gets the item name
+                    gp.getPlayer().setMainWeapon(item); //sets the weapon by the item name
                     gp.gameState = gp.playState;
+                    if(usedItem.getName().equalsIgnoreCase("tablet")){
+                        handleUseTablet(gp.currentRoom,gp.isLaser);
+                    }
+
                 }
             }
         }
+    }
+
+    private void handleUseTablet(Location current, boolean laser) {
+        if ( current.getRoomCode() == 2 && laser) {
+            gp.ui.setCurrentDialogue("You have successfully disabled the laser shield on the biobrain");
+            gp.gameState = gp.dialogueState;
+            gp.isLaser = false;
+        } else if (current.getRoomCode() != 2 && laser) {
+            gp.ui.setCurrentDialogue("You must use the tablet where the Network Interface is located");
+            gp.gameState = gp.dialogueState;
+        }else if(gp.currentRoom.getRoomCode() == 2 && !laser){
+            gp.ui.setCurrentDialogue("You have already disabled the laser shield");
+            gp.gameState = gp.dialogueState;
+        }
+
     }
 
 

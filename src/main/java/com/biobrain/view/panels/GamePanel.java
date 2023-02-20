@@ -8,7 +8,9 @@ package com.biobrain.view.panels;
 
 import com.biobrain.app.BioBrainApp;
 import com.biobrain.items.ItemManager;
+import com.biobrain.model.Item;
 import com.biobrain.model.Location;
+import com.biobrain.util.music.InstructionVoice;
 import com.biobrain.util.music.SoundManager;
 import com.biobrain.objects.ObjectManager;
 import com.biobrain.view.entities.NPC.Npc;
@@ -25,6 +27,7 @@ import com.biobrain.view.tile.TileSetter;
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class GamePanel extends JPanel implements Runnable {
@@ -43,6 +46,9 @@ public class GamePanel extends JPanel implements Runnable {
     public final int screenWidth = tileSize * maxSectorCol;        // window width
     public final int screenHeight = tileSize * maxSectorRow;       // window height
     public int mapDisplayed;                                       // number for which map should display
+    public boolean isLaser = true;
+    public boolean isBossDead = false;
+
 
     // BioBrainApp logic
     private BioBrainApp bioBrainApp;
@@ -55,10 +61,12 @@ public class GamePanel extends JPanel implements Runnable {
     public TileHelper tileHelper = new TileHelper(this);        // instance of TileHelper to line up tiles
     private SoundManager sfx;                                       // instance of SoundManager used for SFX
     private SoundManager music;                                     // instance of SoundManager used for music
+    private InstructionVoice instructionVoice;                      // instance of InstructionVoice used for voice reader
 
     public LocationManager locations = new LocationManager(true);
 
     public Location currentRoom = locations.getLocations().get("sector2");
+
     public ItemManager items = new ItemManager(this);
 
     public ObjectManager object = new ObjectManager(this);
@@ -80,6 +88,7 @@ public class GamePanel extends JPanel implements Runnable {
     public final int dialoguePlay = 5;
     public final int inventoryState = 6;
     public final int gameOverState = 7;
+    public final int winState = 8;
     public int switchStateCounter = 300;
 
     //weapons / projectile stuff
@@ -98,6 +107,7 @@ public class GamePanel extends JPanel implements Runnable {
         this.setFocusable(true);
         setSfx(new SoundManager(this));
         setMusic(new SoundManager(this));
+        setInstructionVoice(new InstructionVoice(this));
     }
 
     // CLASS METHODS
@@ -108,17 +118,11 @@ public class GamePanel extends JPanel implements Runnable {
         bioBrainApp.setPlayer(getPlayer()); // track the created player in memory
         gameState = playState;              // begin playstate, which changes to bring user to new scenes/menus
         mapDisplayed = currentRoom.getRoomCode();
-       robotSetter.setRobots();
+        robotSetter.setRobots();
         playMusic("mainMenuTheme"); // plays main menu theme from soundsURL map inside SoundManager
     }
 
     //resetting the player status
-    public void tryAgain(){
-        player.setDefaultPositions();
-        player.setDefaultValues();
-        player.restoreLife();
-        currentRoom = locations.getLocations().get("sector2");
-    }
 
     // starts new thread
     public void startGameThread() {
@@ -159,13 +163,13 @@ public class GamePanel extends JPanel implements Runnable {
     // update() runs every frame
     public void update() {
         // if game is in a state that allows the player to move
+
         if (gameState == playState || gameState == dialoguePlay) {
+            if(isBossDead){
+                gameState = winState;
+            }
             player.update(); /* listens for player controller for movement */
-//            for (Npc aiRobot : aiRobots) {
-//                if (aiRobot != null) {
-//                    aiRobot.update();
-//                }
-//            }
+            updateNPCs();
             int i = 0;
             while(projectiles.size() > 0 && i < projectiles.size()){
                 if(projectiles.get(i) != null){
@@ -178,7 +182,6 @@ public class GamePanel extends JPanel implements Runnable {
                 }
                 i++;
             }
-
         }
     }
 
@@ -191,7 +194,7 @@ public class GamePanel extends JPanel implements Runnable {
         }
         // displays map of game for player to navigate
         else if (gameState == mapState) {
-            playerMap.setCurrentMapDisplayed(g2, mapDisplayed);
+            playerMap.drawFullMapScreen(g2, mapDisplayed);
         }
         else if (grayScreen){
             //neuralyzer was used
@@ -207,7 +210,6 @@ public class GamePanel extends JPanel implements Runnable {
         }
         g2.dispose(); // dispose of old configurations, player sprite will update each frame
     }
-
     private void drawAttack(Graphics2D g2) {
         List<Projectile> projectilesCopy = new ArrayList<>(projectiles);
         for (Projectile proj: projectilesCopy) {
@@ -220,12 +222,7 @@ public class GamePanel extends JPanel implements Runnable {
             items.draw(g2);
             object.draw(g2);
             currentRoom.draw(g2);
-//            for (Npc aiRobot : aiRobots) {
-//                if (aiRobot != null) {
-//                    aiRobot.draw(g2);
-//                }
-//            }
-
+            drawNPCs(g2);
             player.draw(g2);
             ui.draw(g2);
             drawAttack(g2);
@@ -241,14 +238,37 @@ public class GamePanel extends JPanel implements Runnable {
         items.draw(g2);
         object.draw(g2);
         currentRoom.draw(g2);
-//        for (Npc aiRobot : aiRobots) {
-//            if (aiRobot != null) {
-//                aiRobot.draw(g2);
-//            }
-//        }
+        drawNPCs(g2);
         player.draw(g2);
         ui.draw(g2);
         drawAttack(g2);
+    }
+    public void updateNPCs(){
+        Iterator<Npc> iterator = aiRobots.iterator();
+
+        while(iterator.hasNext()){
+            Npc aiRobot = iterator.next();
+            if (aiRobot != null){
+                if(aiRobot.isDead()){
+                    iterator.remove();
+                }
+                else{
+                    if(currentRoom.getRoomCode() == aiRobot.getRoomCode()){
+                        aiRobot.update();
+                    }
+                }
+            }
+        }
+    }
+    public void drawNPCs(Graphics2D g2){
+        for (Npc aiRobot : aiRobots) {
+            if (aiRobot != null) {
+                if(aiRobot.getRoomCode() == currentRoom.getRoomCode()) {
+                    aiRobot.draw(g2);
+                }
+            }
+        }
+
     }
     public void runGrayScreenEffect(Graphics2D g2){
         g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, (float) alpha / 255));
@@ -256,7 +276,6 @@ public class GamePanel extends JPanel implements Runnable {
         g2.fillRect(0, 0, screenWidth, screenHeight);
         g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1.0f)); // reset composite
     }
-
     // plays music on a loop, made for looped music and sounds
     public void playMusic(String name){
         music.setFile(name); // set which audio file to use
@@ -273,6 +292,14 @@ public class GamePanel extends JPanel implements Runnable {
     public void playSfx(String name){
         sfx.setFile(name); // set which audio file to use
         sfx.play();
+    }
+
+    public void playVoice(String name){
+        instructionVoice.setFile(name);
+        instructionVoice.play();
+    }
+    public void stopVoice(){
+        instructionVoice.stop();
     }
 
     // ACCESSOR METHODS
@@ -306,6 +333,14 @@ public class GamePanel extends JPanel implements Runnable {
 
     public void setSfx(SoundManager sound) {
         this.sfx = sound;
+    }
+
+    public void setInstructionVoice(InstructionVoice sound){
+        this.instructionVoice = sound;
+    }
+
+    public InstructionVoice getInstructionVoice(InstructionVoice instructionVoice){
+        return instructionVoice;
     }
 
     public SoundManager getMusic() {

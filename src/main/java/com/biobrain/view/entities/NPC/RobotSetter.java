@@ -19,13 +19,13 @@ public class RobotSetter {
             String description = aiRobot.get("description").getAsString();
             int roomCode = aiRobot.get("roomCode").getAsInt();
             int speed = aiRobot.get("speed").getAsInt();
-            int maxLife = aiRobot.get("maxLife").getAsInt();
+            int health = aiRobot.get("health").getAsInt();
             int width = aiRobot.get("width").getAsInt();
             int height = aiRobot.get("height").getAsInt();
             int blockX = aiRobot.get("blockX").getAsInt();
             int blockY = aiRobot.get("blockY").getAsInt();
 
-            Npc newRobot = new Npc(gamePanel, name, description, roomCode, maxLife, speed, width, height, blockX, blockY);
+            Npc newRobot = new Npc(gamePanel, name, description, roomCode, health, speed, width, height, blockX, blockY);
             gamePanel.aiRobots.add(newRobot);
         }
     }

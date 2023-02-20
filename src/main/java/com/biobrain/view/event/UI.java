@@ -7,13 +7,15 @@ package com.biobrain.view.event;
  * draws windows for dialogues and menus
  */
 
-import com.biobrain.objects.Health;
+import com.biobrain.items.ItemManager;
 import com.biobrain.model.Item;
+import com.biobrain.objects.Health;
 import com.biobrain.util.FileLoader;
 import com.biobrain.util.WindowInterface;
 import com.biobrain.view.entities.ItemEntity;
 import com.biobrain.view.panels.GamePanel;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.font.FontRenderContext;
 import java.awt.font.LineBreakMeasurer;
@@ -22,7 +24,6 @@ import java.awt.font.TextLayout;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
-import java.sql.Array;
 import java.text.AttributedCharacterIterator;
 import java.text.AttributedString;
 import java.util.*;
@@ -59,9 +60,9 @@ public class UI implements WindowInterface {
 
         //Create Health
         Health heart = new Health(gamePanel);
-        fullHeart = heart.imageHeart1.getScaledInstance(50,40,0);
-        halfHeart = heart.imageHeart2.getScaledInstance(50,40,0);
-        blankHeart = heart.imageHeart3.getScaledInstance(50,40,0);
+        fullHeart = heart.imageHeart1.getScaledInstance(40,30,0);
+        halfHeart = heart.imageHeart2.getScaledInstance(40,30,0);
+        blankHeart = heart.imageHeart3.getScaledInstance(40,30,0);
     }
 
 
@@ -101,6 +102,54 @@ public class UI implements WindowInterface {
         if(gamePanel.gameState == gamePanel.gameOverState){
             drawGameOver();
         }
+        if(gamePanel.gameState == gamePanel.winState){
+            drawWin();
+        }
+    }
+
+    private void drawWin() {
+        Image win = new ImageIcon(getClass().getResource("/images/win.gif")).getImage();
+        int x = 0;
+        int y = 0;
+        g2.drawImage(win, x, y, null);
+
+        g2.setFont(g2.getFont().deriveFont(Font.BOLD, 72F));
+        String text = "You have won";
+        //Shadow
+        g2.setColor(Color.black);
+        x = getXForCenteredText(text);
+        y = gamePanel.getTileSize()*4;
+        g2.drawString(text,x,y);
+        //Main
+        g2.setColor(Color.white);
+        g2.drawString(text,x-4,y-4);
+
+        g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 24F));
+        text = "While waiting for the next train,";
+        x = getXForCenteredText(text);
+        y += gamePanel.getTileSize()*3;
+        g2.drawString(text,x,y);
+
+        g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 24F));
+        text = "would you like to play again?";
+        x = getXForCenteredText(text);
+        y += gamePanel.getTileSize();
+        g2.drawString(text,x,y);
+
+        g2.setFont(g2.getFont().deriveFont(18f));
+        text="Yes?";
+        x = getXForCenteredText(text);
+        y += gamePanel.getTileSize();
+        g2.drawString(text,x,y);
+        playerIconPos(x,y,0);
+
+        //quits the game
+        text="No";
+        x=getXForCenteredText(text);
+        y += gamePanel.getTileSize();
+        g2.drawString(text,x,y);
+        playerIconPos(x,y,1);
+
     }
 
     private void drawGameOver() {
@@ -127,7 +176,7 @@ public class UI implements WindowInterface {
         g2.drawString(text,x,y);
         playerIconPos(x,y,0);
 
-        //Back to title screen
+        //quits the game
         text="Quit";
         x=getXForCenteredText(text);
         y +=55;
@@ -136,8 +185,8 @@ public class UI implements WindowInterface {
     }
 
     private void drawPlayerHealth() {
-        int x = gamePanel.getTileSize()*12;  //starting point to place the health heart
-        int y = gamePanel.getTileSize()-30;
+        int x = gamePanel.getTileSize()*11;  //starting point to place the health heart
+        int y = gamePanel.getTileSize()-32;
         int i = 0;
 
         // Draw max health
@@ -149,8 +198,8 @@ public class UI implements WindowInterface {
         }
 
         //Reset
-        x = gamePanel.getTileSize()*12;
-        y = gamePanel.getTileSize()-30;
+        x = gamePanel.getTileSize()*11;
+        y = gamePanel.getTileSize()-32;
         i=0;
 
         //Draw current health
@@ -385,7 +434,7 @@ public class UI implements WindowInterface {
 
         textX = frameX + gamePanel.getTileSize() * 5;
         textY = frameY + gamePanel.getTileSize() * 2;
-        g2.drawString("W A S D / Arrows", textX, textY); // draw next keyboard input
+        g2.drawString("W A S D / Arrows︎", textX, textY); // draw next keyboard input
         textY = textY + gamePanel.getTileSize();                     // move text down
         g2.drawString("W A S D / Arrows", textX, textY); // draw next keyboard input
         textY = textY + gamePanel.getTileSize();                     // move text down
@@ -482,6 +531,7 @@ public class UI implements WindowInterface {
         // using an iterator to go through the map of items in the player's inventory
         Iterator<Map.Entry<String, Item>> itemItr = gamePanel.getPlayer().getInventory().entrySet().iterator();
 
+
         // while there is still another item in the inventory,
         while (itemItr.hasNext()) {
             Map.Entry<String, Item> item = itemItr.next();
@@ -574,12 +624,20 @@ public class UI implements WindowInterface {
 
             g2.setColor(color);
             g2.drawString(text, x-4, y-4);
+
+            g2.setColor(new Color(255,255,255,200));
+            g2.setFont(g2.getFont().deriveFont(Font.BOLD, 36F));
+            text = "Press Enter";
+            x = getXForCenteredText(text);
+            y += gamePanel.getTileSize();
+            g2.drawString(text, x, y);
             /* --- Menu ---*/
             //New Game
+            g2.setColor(color);
             g2.setFont(g2.getFont().deriveFont(Font.BOLD, 36F));
             text = "New Game";
             x = getXForCenteredText(text);
-            y += gamePanel.getTileSize() * 8;
+            y += gamePanel.getTileSize() * 7;
             g2.drawString(text, x, y);
             playerIconPos(x, y, 0);
             //TODO:Load Game?

@@ -224,7 +224,8 @@ public class BioBrainApp {
     public void validateThenGetItem(String itemToPickup) throws IllegalArgumentException {
         // throws an exception if player attempts to hack an item into their inventory
         // which does not exist in the room already
-        if (currentLocation.getItems().contains(itemToPickup) || itemToPickup.equals("sphere") || itemToPickup.equals("biobrain")) {
+        if (currentLocation.getItems().contains(itemToPickup) || itemToPickup.equals("sphere")
+                || itemToPickup.equals("biobrain") || itemToPickup.equals("sphereBioBrain")) {
             if (itemsInRoom.contains(itemToPickup)) {
                 // if item exists, pass it to the normal method for getting items
                 getItem(itemToPickup);
@@ -234,6 +235,9 @@ public class BioBrainApp {
             } else if (itemToPickup.equals("biobrain")){
             // if sphere is added to inventory ignore room standards
             getItem(itemToPickup);
+        } else if (itemToPickup.equals("sphereBioBrain")){
+            // if sphereBioBrain is added to inventory ignore room standards
+            getItem(itemToPickup);
         }
         } else {
             throw new RuntimeException(new IllegalArgumentException("\n" + itemToPickup + " was not found! Please try again."));
@@ -242,9 +246,16 @@ public class BioBrainApp {
 
     // removes items from location in memory
     private void getItem(String itemToPickup) {
+        Item item = Item.itemName(itemToPickup);
+        if(item != null){
+            if(item.getDamage() > 0)
+                gamePanel.player.setMainWeapon(item);
+        }
         // if room contained the item, pass it to the Player class now
         addToPlayerInventory(itemToPickup, Item.getAllItems().get(itemToPickup));
         itemsInRoom.remove(itemToPickup); // remove item from room in memory
+        gamePanel.currentRoom.getItems().remove(itemToPickup);
+        gamePanel.playerMap.createLabMap();
 }
 
     // add to inventory tracked by player class
@@ -270,6 +281,7 @@ public class BioBrainApp {
         String networkLocation = locations.get("Sector 2 - Control Lab").getName(); //must be in sector 2 to hack the network interface
         String playerLocation = currentLocation.getName(); // get the player current location
         Set<String> itemForSphere = Set.of("memory", "interface", "motherboard"); //using set since we are checking for a certain item (faster)
+        Set<String> itemForSphereBiobrain = Set.of("sphere","biobrain");
         String sphere = "A.I. Transfer Sphere";
 
         if (!isGui) {
@@ -283,9 +295,7 @@ public class BioBrainApp {
                 }
                 System.out.printf("\nAwesome! You've added the %s to your inventory!\n", sphere);
                 System.out.println(player.displayPlayerInfo());
-
             }
-
             // todo use sphere = download biobrain REVIEW LOGIC WITH TEAM
             // needs a check to ensure laser shield is disabled
             else if (usedItem.equalsIgnoreCase("sphere")) {
@@ -297,9 +307,16 @@ public class BioBrainApp {
             }
             // todo use weapons
             System.out.println(player.displayPlayerInfo()); // finally, display player info to user again
-        } else {
+        }
+        if (itemForSphereBiobrain.contains(usedItem) &&
+                itemForSphereBiobrain.stream().allMatch(item -> player.getInventory().containsKey(item))) {
+            guiCreateSphereBioBrain(usedItem,itemForSphereBiobrain);
+            player.addItem("sphereBioBrain", Item.getAllItems().get("sphereBioBrain"));
+        }
+        else {
             guiCreateSphere(usedItem, itemForSphere);
         }
+
     }
 
     // creates the AI Sphere in memory when playing the GUI version
@@ -308,6 +325,18 @@ public class BioBrainApp {
             validateThenGetItem("sphere");
 
             //once combines to a sphere, it will remove the 3 elements
+            for (String item : itemForSphere) {
+                player.removeItem(item, getPlayer().getInventory().get(item));
+            }
+        }
+    }
+
+    //downloads the biobrain to the AI Sphere in memory when playing the GUI version
+    private void guiCreateSphereBioBrain(String usedItem, Set<String> itemForSphere) {
+        if (itemForSphere.contains(usedItem) && itemForSphere.stream().allMatch(item -> getPlayer().getInventory().containsKey(item))) {
+            validateThenGetItem("sphereBioBrain");
+
+            //once combines to a sphere, it will remove the 2 elements
             for (String item : itemForSphere) {
                 player.removeItem(item, getPlayer().getInventory().get(item));
             }

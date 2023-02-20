@@ -9,13 +9,14 @@ import com.biobrain.view.panels.GamePanel;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.Collections;
 import java.util.List;
 
 public class Map {
     GamePanel gamePanel;
     BufferedImage[] roomMaps;
     //game extras
-    public boolean miniMapOn = false;
+
     public Map(GamePanel gp) {
         this.gamePanel = gp;
         createLabMap();
@@ -24,14 +25,15 @@ public class Map {
     public void createLabMap() {
         roomMaps = new BufferedImage[gamePanel.maxRooms];
         List<Location> locations = gamePanel.locations.getRooms();
+        int tileSize = gamePanel.getTileSize();
 
         for (int i = 0; i < locations.size(); i++) {
 
             Location curr = locations.get(i);
             List<Tile> roomTiles = gamePanel.tileSetter.getRoomTiles(curr.getShortName());
             //items
-//            List<ItemEntity> itemList = ItemManager.getItemsByRoomCode(curr.getRoomCode());
-//            List<SuperObject> objectList = ObjectManager.getObjectsByRoomCode(curr.getRoomCode());
+            List<ItemEntity> itemList = gamePanel.getItemManager().getItemsByRoomCode(curr.getRoomCode());
+            List<SuperObject> objectList = ObjectManager.getObjectsByRoomCode(curr.getRoomCode());
             int width = curr.isSector() ?
                     gamePanel.getMaxSectorCol() * gamePanel.getTileSize() :
                     gamePanel.maxLabCol * gamePanel.getTileSize();
@@ -46,47 +48,41 @@ public class Map {
             roomMaps[i] = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB); //creating image based on item
             Graphics2D graphics2D = (Graphics2D) roomMaps[i].createGraphics();
 
-
             int col = 0;
             int row = 0;
 
             while (col < maxCol && row < maxRow) {
                 int tileNum = TileHelper.mapTileNum[curr.getRoomCode()][col][row];
-                int x = gamePanel.getTileSize() * col;
-                int y = gamePanel.getTileSize() * row;
-                graphics2D.drawImage(roomTiles.get(tileNum).image, x, y, gamePanel.getTileSize(), gamePanel.getTileSize(), null);
-
-                //adding items
-//                if(gamePanel.currentRoom.getRoomCode() != 0 && curr.getRoomCode() != 0){
-//                    for (ItemEntity item : itemList) {
-//                            graphics2D.drawImage(item.getItemImage(), item.getX(), item.getY(), gamePanel.getTileSize(),
-//                                    gamePanel.getTileSize(), null);
-//                    }
-//                }
-
-//                //adding objects
-//                if(gamePanel.currentRoom.getRoomCode() != 0 && curr.getRoomCode() != 0){
-//                    for (SuperObject obj : objectList) {
-//                        graphics2D.drawImage(obj.getObjectImage(), obj.getX()*2, (obj.getY()*2), gamePanel.getTileSize()*2,
-//                                gamePanel.getTileSize()*2, null);
-//                    }
-//                }
+                int x = tileSize * col;
+                int y = tileSize * row;
+                graphics2D.drawImage(roomTiles.get(tileNum).image, x, y, tileSize, tileSize, null);
 
                 col++;
-
                 if (col == maxCol) {
                     col = 0;
                     row++;
                 }
             }
+            if(gamePanel.currentRoom.getRoomCode() != 0 && curr.getRoomCode() != 0 && itemList.size() > 0) {
+                for (ItemEntity item : itemList) {
+                    if(item != null && item.getRoomCode() == curr.getRoomCode()) {
+                        if(item.getName().equalsIgnoreCase("biobrain") && !gamePanel.isLaser){
+                          item.setImage("images/items/biobrainNoLaser.png");
+                        }
+                        graphics2D.drawImage(item.getItemImage(), item.getX(), item.getY(), tileSize, tileSize, null);
+                    }
+                }
+            }
+
+            if(gamePanel.currentRoom.getRoomCode() !=0 && curr.getRoomCode() != 0){
+            for (SuperObject obj : objectList) {
+                    graphics2D.drawImage(obj.getObjectImage(), obj.getX() * 2, obj.getY() * 2, tileSize * 2, tileSize * 2, null);
+                }
+            }
         }
     }
 
-    public void setCurrentMapDisplayed(Graphics2D g2, int roomCode) {
-        drawFullMapScreen(g2, roomCode);
-    }
-
-    private void drawFullMapScreen(Graphics2D g2, int roomCode) {
+    public void drawFullMapScreen(Graphics2D g2, int roomCode) {
 //        g2.setColor(Color.black);
         g2.fillRect(0, 0, gamePanel.screenWidth, gamePanel.screenHeight);
         Location roomDisplayed = gamePanel.locations.getRooms()
@@ -103,7 +99,7 @@ public class Map {
             g2.drawImage(roomMaps[roomCode], mapX, mapY, width, height, null);
 
             //only display user on map if they are in the room or if they are looking at the lab map
-            if (roomDisplayed.getRoomCode() == gamePanel.currentRoom.getRoomCode() || roomCode == 0) {
+            if (roomDisplayed.getRoomCode() == gamePanel.getPlayer().currentLocation || roomCode == 0) {
                 double maxCol = roomDisplayed.isSector() ? gamePanel.getMaxSectorCol() : gamePanel.maxLabCol;
                 double maxRow = roomDisplayed.isSector() ? gamePanel.getMaxSectorRow() : gamePanel.maxLabRow;
 
