@@ -15,6 +15,7 @@ import com.biobrain.util.WindowInterface;
 import com.biobrain.view.entities.ItemEntity;
 import com.biobrain.view.panels.GamePanel;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.font.FontRenderContext;
 import java.awt.font.LineBreakMeasurer;
@@ -101,6 +102,54 @@ public class UI implements WindowInterface {
         if(gamePanel.gameState == gamePanel.gameOverState){
             drawGameOver();
         }
+        if(gamePanel.gameState == gamePanel.winState){
+            drawWin();
+        }
+    }
+
+    private void drawWin() {
+        Image win = new ImageIcon(getClass().getResource("/images/win.gif")).getImage();
+        int x = 0;
+        int y = 0;
+        g2.drawImage(win, x, y, null);
+
+        g2.setFont(g2.getFont().deriveFont(Font.BOLD, 72F));
+        String text = "You have won";
+        //Shadow
+        g2.setColor(Color.black);
+        x = getXForCenteredText(text);
+        y = gamePanel.getTileSize()*4;
+        g2.drawString(text,x,y);
+        //Main
+        g2.setColor(Color.white);
+        g2.drawString(text,x-4,y-4);
+
+        g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 24F));
+        text = "While waiting for the next train,";
+        x = getXForCenteredText(text);
+        y += gamePanel.getTileSize()*3;
+        g2.drawString(text,x,y);
+
+        g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 24F));
+        text = "would you like to play again?";
+        x = getXForCenteredText(text);
+        y += gamePanel.getTileSize();
+        g2.drawString(text,x,y);
+
+        g2.setFont(g2.getFont().deriveFont(18f));
+        text="Yes?";
+        x = getXForCenteredText(text);
+        y += gamePanel.getTileSize();
+        g2.drawString(text,x,y);
+        playerIconPos(x,y,0);
+
+        //quits the game
+        text="No";
+        x=getXForCenteredText(text);
+        y += gamePanel.getTileSize();
+        g2.drawString(text,x,y);
+        playerIconPos(x,y,1);
+
     }
 
     private void drawGameOver() {
@@ -127,7 +176,7 @@ public class UI implements WindowInterface {
         g2.drawString(text,x,y);
         playerIconPos(x,y,0);
 
-        //Back to title screen
+        //quits the game
         text="Quit";
         x=getXForCenteredText(text);
         y +=55;
