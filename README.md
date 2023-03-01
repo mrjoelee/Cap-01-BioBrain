@@ -19,7 +19,7 @@ Download [Java SDK](https://www.oracle.com/java/technologies/downloads/#java11)
 **Play**
 
 1. JAR
-   1. Download the latest JAR [file](https://github.com/tlg-22-10-sde-9/Cap-01-BioBrain/releases/tag/v2.3.1)
+   1. Download the latest JAR [file](https://github.com/mrjoelee/Cap-01-BioBrain/releases/tag/v2.3.1)
    2. Run the game java -jar biobrain-2.3.1.jar
 
 #### Developed by 
